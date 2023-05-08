@@ -35,4 +35,9 @@ div {
 .botones {
     border-color: #2699b1;
     background-color: #2699b1;
+    
+}
+
+.botones:hover{
+    background-color: black;
 }
