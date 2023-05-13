@@ -20,7 +20,7 @@ class Perro(models.Model):
     fecha_nacimiento = models.DateField(verbose_name="Fecha de nacimiento", default=date.today)
     color = models.CharField(max_length=20, blank=True)  # poner opciones?
     # foto = models.ImageField(upload_to="images")  # ver MEDIA_ROOT y MEDIA_URL en settings
-    observaciones = models.TextField()
+    observaciones = models.TextField(blank=True)
 
     class Sexo(models.TextChoices):
         HEMBRA = "H", "Hembra"
@@ -29,11 +29,12 @@ class Perro(models.Model):
     sexo = models.CharField(  # incluir default?
         max_length=1,
         choices=Sexo.choices,
+        blank=True, null=True,
     )
 
-    fecha_ultimo_celo = models.DateField()
-    dueño = models.ForeignKey("Usuario", on_delete=models.CASCADE,)
-    activo = models.BooleanField()
+    fecha_ultimo_celo = models.DateField(blank=True, null=True)
+    dueño = models.ForeignKey("Usuario", on_delete=models.CASCADE)
+    activo = models.BooleanField(default= True)
 
     class Raza(models.TextChoices):
         MESTIZO = "MEST", "Mestizo"
