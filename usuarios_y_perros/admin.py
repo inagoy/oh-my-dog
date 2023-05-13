@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import Usuario, Perro
 
-# Register your models here.
+admin.site.register(Usuario)
+admin.site.register(Perro)
