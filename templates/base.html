@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>¡Oh My Dog!</title>
+    <link rel="shortcut icon" src="{% static 'favicon.ico' %}" />
+
+    <link href="{% static 'css/global.css' %}" rel="stylesheet" />
+  </head>
+  <body>
+    {% if user.is_authenticated %}
+    <nav>
+      <img
+        src="{% static 'Logo1_con_nombre.png' %}"
+        alt="El logo de la veterinaria Oh my dog!"
+      />
+      <ul>
+        <li>Cerrar Sesion</li>
+      </ul>
+    </nav>
+    {% endif %} {% block content %} {%endblock %}
+  </body>
+</html>

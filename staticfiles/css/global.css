@@ -1,43 +1,48 @@
 .centerText {
-    text-align: center;
-  }
+  text-align: center;
+}
 
 .centerObjects {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
 }
-
-img {
-    width: 15%;
-    background-color: transparent;
-  }
-
-.menu {
-    width: 50%;
-    align-items:center;
-}
-
 body {
-    background-color: #fc904e;
+  background-color: #fc904e;
 }
 
 div {
-    margin-block-end: 10px;
+  margin-block-end: 50px;
 }
 
-.banner{
-    background-color: white;
-    width: 100%;
+nav {
+  background-color: white;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  height: 10%;
 }
 
-.botones {
-    border-color: #2699b1;
-    background-color: #2699b1;
-    
+nav > ul {
+  display: flex;
+  list-style: none;
+  font-size: 1.5rem;
+  margin-left: auto;
+  margin-right: 1em;
 }
 
-.botones:hover{
-    background-color: black;
+nav > ul > li {
+  margin-inline: 1em;
+  color: red;
+  cursor: pointer;
+}
+nav > ul > li:hover,
+nav > ul > li:focus {
+  color: #fc904e;
+}
+
+img {
+  height: 90%;
+  width: auto;
 }

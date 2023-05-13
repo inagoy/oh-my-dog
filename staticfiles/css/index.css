@@ -1,0 +1,18 @@
+.menu {
+  width: 50%;
+  align-items: center;
+}
+.botones {
+  border-color: #2699b1;
+  background-color: #2699b1;
+}
+
+.botones:hover {
+  background-color: black;
+}
+
+.banner {
+  background-color: white;
+  height: 20%;
+  box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.1);
+}
