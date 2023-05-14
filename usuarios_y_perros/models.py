@@ -1,8 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from datetime import date
+from .managers import CustomUserManager
 
 class Usuario(AbstractUser):
+    username = None
     email = models.EmailField(unique=True) # lo defino como pk o dejo la automática y lo defino como unique?  dejo "email" porque así lo reconoce autom para EMAIL_FIELD
     dni = models.IntegerField()
     apellido = models.CharField(max_length=20)
@@ -10,7 +12,9 @@ class Usuario(AbstractUser):
     fecha_nacimiento = models.DateField(verbose_name="Fecha de nacimiento", default=date.today)
     domicilio = models.CharField(max_length=30)
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['dni', 'apellido', 'nombre', 'fecha_nacimiento']
+
+    objects = CustomUserManager()
 
     def __str__(self):
         return self.email
