@@ -42,3 +42,8 @@ En Windows
 ```bash
     py -m pip install -r requirements.txt
 ```
+
+## Crear usuario admin
+```bash
+    python manage.py createsuperuser 
+```
