@@ -18,10 +18,11 @@ def es_menor_18(birth):
 def generar_contraseña():
     return get_random_string(8)
 
-def enviar_mail_bienvenida(contraseña):
+def enviar_mail_bienvenida(usuario, contraseña):
     send_mail(
                     "Bienvenidx a ¡Oh my dog!",
-                    "Para ingresar por primera vez al sitio, utilice la contraseña: "+ contraseña,
+                    "Cada vez que quieras acceder al sitio, utilizá tu email: "+ usuario+ 
+                    ". \nPara ingresar por primera vez, utilizá la contraseña: "+ contraseña,
                     settings.EMAIL_HOST_USER,
                     ["alive.soluciones.software@gmail.com"],
                     fail_silently=False,

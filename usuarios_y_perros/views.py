@@ -40,7 +40,7 @@ def registrar_usuario(request):
             return redirect('registrar_usuario')
         try:
             u.save()
-            enviar_mail_bienvenida(contraseña)
+            enviar_mail_bienvenida(u.email, contraseña)
             print("INFO: Email enviado a: "+ contraseña)
             return redirect('cargar_perro')
         except:
