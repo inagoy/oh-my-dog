@@ -32,6 +32,7 @@
   >
 </div>
 <div>
+  {% if not user.is_authenticated %}
   <button
     class="btn btn-primary centerObjects botones"
     type="button"
@@ -39,6 +40,8 @@
   >
   <a href="{% url 'iniciar_sesion' %}">Iniciar Sesión</a>
   </button>
+  {% endif %}
+  {% if user.is_staff %}
   <button
     class="btn btn-primary centerObjects botones"
     type="button"
@@ -46,5 +49,6 @@
   >
   <a href="{% url 'registrar_usuario' %}">Registrar Usuario</a>
   </button>
+  {% endif %}
 </div>
 {% endblock %}

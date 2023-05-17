@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from usuarios_y_perros.models import (Usuario)
 from datetime import date
-from usuarios_y_perros.helpers import es_menor_18, generarContraseña
+from usuarios_y_perros.helpers import es_menor_18, generar_contraseña, enviar_mail_bienvenida
 from django.core.mail import send_mail
 from django.conf import settings
 
@@ -33,24 +33,19 @@ def registrar_usuario(request):
         u.fechaNacimiento = date.fromisoformat(request.POST['fechaNacimiento'])
         u.dni = request.POST['dni']
         u.direccion = request.POST['direccion']
-        u.set_password = generarContraseña()
+        contraseña = generar_contraseña()
+        u.set_password(contraseña)
         if (es_menor_18(u.fechaNacimiento)):
             messages.error(request, "El usuario es menor de edad y no puede ser usuario del sistema")
             return redirect('registrar_usuario')
         try:
             u.save()
-            send_mail(
-                "Bienvenidx a ¡Oh my dog!",
-                "Acá va un mensaje lindo",
-                settings.EMAIL_HOST_USER,
-                ["alive.soluciones.software@gmail.com"],
-                fail_silently=False,
-            )
-            print("INFO: Email enviado a: "+u.email)
+            enviar_mail_bienvenida(u.email, contraseña)
+            print("INFO: Email enviado a: "+ contraseña)
+            return redirect('cargar_perro')
         except:
             print("-"*100)
             messages.error(request, ("El mail ya está registrado en el sistema"))
-        return redirect('cargar_perro')
     return redirect('registrar_usuario')
 
 def iniciar_sesion(request):
