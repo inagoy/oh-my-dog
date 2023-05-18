@@ -3,6 +3,20 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <BASE href="http://127.0.0.1:8000/">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript">
+
+      $(document).ready(function () {
+       
+      window.setTimeout(function() {
+          $(".alert").fadeTo(1000, 0).slideUp(1000, function(){
+              $(this).remove(); 
+          });
+      }, 3000);
+       
+      });
+      </script>
     <title>¡Oh My Dog!</title>
     <link rel="shortcut icon" src="{% static 'favicon.ico' %}" />
     <script
@@ -20,18 +34,12 @@
     <BASE href="http://127.0.0.1:8000/">
   </head>
   <body>
-    {% if messages %}
-            <ul class="messages alert alert-success" role="alert">
-                {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-            </ul>
-    {% endif %}
     {% if user.is_authenticated %}
     <nav>
       <img
         src="{% static 'Logo1_con_nombre.png' %}"
         alt="El logo de la veterinaria Oh my dog!"
+        onclick="location.href = '/'"
       />
       <ul>
         <li > <a href= "{% url 'cargar_perro' %}">Cargar Perro</a></li>
@@ -43,6 +51,7 @@
             <input type="button" value="Aceptar" onclick="location.href='usuarios/cerrar_sesion';" style="float: right; margin-right: 0.2cm;">
           </div>
         </dialog>
+
 
         <script>
           function abrir() {
@@ -61,6 +70,17 @@
         
       </ul>
     </nav>
+    {% for message in messages %}
+    {% if 'error' in message.tags %}
+      <div class="alert alert-danger" role="alert">
+        {{ message }}
+      </div>
+      {% else %}
+      <div class="alert alert-success" role="alert">
+        {{ message }}
+      </div>
+      {% endif %}
+    {% endfor %}
     {% endif %} {% block content %} {%endblock %}
   </body>
 </html>
