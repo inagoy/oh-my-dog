@@ -17,24 +17,27 @@ div {
 }
 
 nav {
+  margin: 1rem;
+  padding: 1rem;
   background-color: white;
   display: flex;
   align-items: center;
   user-select: none;
-  height: 10%;
+  height: 8rem;
+  border-radius: 10px;
 }
 
 nav > ul {
   display: flex;
   list-style: none;
-  font-size: 1.5rem;
+  font-size: 1rem;
   margin-left: auto;
   margin-right: 1em;
 }
 
 nav > ul > li {
   margin-inline: 1em;
-  color: red;
+  color: #2699b1;
   cursor: pointer;
 }
 nav > ul > li:hover,
@@ -43,6 +46,6 @@ nav > ul > li:focus {
 }
 
 img {
-  height: 90%;
+  height: 100%;
   width: auto;
 }
