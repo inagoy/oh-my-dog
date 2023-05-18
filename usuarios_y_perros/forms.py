@@ -6,4 +6,4 @@ class CargarPerroForm(forms.ModelForm):
         model = Perro
         fields = ['nombre','fecha_nacimiento', 'color', 
                   'observaciones',
-                  'raza'] 
+                  'raza', 'dueño'] 
