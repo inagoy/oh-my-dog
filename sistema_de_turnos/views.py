@@ -1,3 +1,4 @@
 from django.shortcuts import render
 
-# Create your views here.
+def solicitar_turno(request):
+    return render(request, 'sistema_de_turnos/sacar_turno.html', {})
