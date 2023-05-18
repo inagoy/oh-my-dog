@@ -8,23 +8,10 @@ from usuarios_y_perros.helpers import es_menor_18, generar_contraseña, enviar_m
 from django.core.mail import send_mail
 from django.conf import settings
 
-def cargar_perro(request):
-    if request.method == 'POST':
-        form = CargarPerroForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('carga_exitosa')
-    else:
-        form = CargarPerroForm()
-    
-    return render(request, 'cargar_perro.html', {'form': form})
-
-def carga_exitosa(request):
-    return render(request, "carga_exitosa.html")
 
 def registrar_usuario(request):
     if request.method == "GET":
-        return render(request,"usuarios_y_perros/registrar_usuario.html")
+        return render(request, "usuarios_y_perros/registrar_usuario.html")
     elif request.method == "POST":
         u = Usuario()
         u.email = request.POST['email']
@@ -36,17 +23,41 @@ def registrar_usuario(request):
         contraseña = generar_contraseña()
         u.set_password(contraseña)
         if (es_menor_18(u.fechaNacimiento)):
-            messages.error(request, "El usuario es menor de edad y no puede ser usuario del sistema")
+            messages.error(
+                request, "El usuario es menor de edad y no puede ser usuario del sistema")
             return redirect('registrar_usuario')
         try:
             u.save()
             enviar_mail_bienvenida(u.email, contraseña)
-            print("INFO: Email enviado a: "+ contraseña)
-            return redirect('cargar_perro')
+            print("INFO: Email enviado a: " + contraseña)
+            return redirect('cargar_perro', user_id=u.id)
         except:
             print("-"*100)
-            messages.error(request, ("El mail ya está registrado en el sistema"))
+            messages.error(
+                request, ("El mail ya está registrado en el sistema"))
     return redirect('registrar_usuario')
+
+
+def cargar_perro(request, user_id=None):
+    print(request.user.pk)
+    if request.method == 'POST':
+        form = CargarPerroForm(request.POST)
+        if form.is_valid():
+            if user_id == None:
+                form.instance.dueño = request.user
+            else:
+                form.instance.dueño = Usuario.objects.get(pk=user_id)
+            form.save()
+            return redirect('carga_exitosa')
+    else:
+        form = CargarPerroForm()
+
+    return render(request, 'cargar_perro.html', {'form': form})
+
+
+def carga_exitosa(request):
+    return render(request, "carga_exitosa.html")
+
 
 def iniciar_sesion(request):
     if request.method == "POST":
@@ -58,10 +69,12 @@ def iniciar_sesion(request):
             messages.success(request, ("Bienvenidx!"))
             return redirect('index')
         else:
-            messages.error(request, ("Alguno de los datos ingresados no es correcto. Inténtelo de nuevo..."))	
+            messages.error(
+                request, ("Alguno de los datos ingresados no es correcto. Inténtelo de nuevo..."))
             return redirect('iniciar_sesion')
     else:
         return render(request, 'usuarios_y_perros/iniciar_sesion.html', {})
+
 
 def cerrar_sesion(request):
     logout(request)

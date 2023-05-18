@@ -12,10 +12,6 @@ body {
   background-color: #fc904e;
 }
 
-div {
-  margin-block-start: 50px;
-}
-
 nav {
   margin: 1rem;
   padding: 1rem;
@@ -25,8 +21,13 @@ nav {
   user-select: none;
   height: 8rem;
   border-radius: 10px;
+  box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.1);
+  color: #fc904e;
 }
-
+a {
+  text-decoration: none;
+  color: inherit;
+}
 nav > ul {
   display: flex;
   list-style: none;

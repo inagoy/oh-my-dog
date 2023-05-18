@@ -33,17 +33,18 @@
         alt="El logo de la veterinaria Oh my dog!"
       />
       <ul>
-        <!-- <li><a href="{% url 'cerrar_sesion' %}">Cerrar Sesión</a></li> -->
+        <li > <a href= "{% url 'cargar_perro' %}">Cargar Perro</a></li>
         <li onclick="myFunction()">Cerrar Sesión</li>
           <script>
           function myFunction() {
             var ask = window.confirm("Está segurx que quiere cerrar sesión?");
               if (ask) {
                   // window.alert("Se ha cerrado sesión.");
-                  window.location.href = "usuarios/cerrar_sesion";
+                  window.location.href = "/usuarios/cerrar_sesion";
               }
           }
           </script>
+        
       </ul>
     </nav>
     {% endif %} {% block content %} {%endblock %}
