@@ -5,8 +5,6 @@ from django.contrib import messages
 from usuarios_y_perros.models import (Usuario)
 from datetime import date
 from usuarios_y_perros.helpers import es_menor_18, generar_contraseña, enviar_mail_bienvenida
-from django.core.mail import send_mail
-from django.conf import settings
 
 
 def registrar_usuario(request):
@@ -39,7 +37,6 @@ def registrar_usuario(request):
 
 
 def cargar_perro(request, user_id=None):
-    print(request.user.pk)
     if request.method == 'POST':
         form = CargarPerroForm(request.POST)
         if form.is_valid():
@@ -52,11 +49,11 @@ def cargar_perro(request, user_id=None):
     else:
         form = CargarPerroForm()
 
-    return render(request, 'cargar_perro.html', {'form': form})
+    return render(request, "usuarios_y_perros/cargar_perro.html", {'form': form})
 
 
 def carga_exitosa(request):
-    return render(request, "carga_exitosa.html")
+    return render(request, "usuarios_y_perros/carga_exitosa.html")
 
 
 def iniciar_sesion(request):

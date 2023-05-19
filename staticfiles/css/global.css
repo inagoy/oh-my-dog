@@ -11,7 +11,6 @@
 body {
   background-color: #fc904e;
 }
-
 nav {
   margin: 1rem;
   padding: 1rem;
@@ -36,10 +35,19 @@ nav > ul {
   margin-right: 1em;
 }
 
+.adm_tag {
+  color: gray;
+}
+.user_tag {
+  margin-top: 1rem;
+  margin-left: 3rem;
+  display: inline-block;
+}
 nav > ul > li {
   margin-inline: 1em;
   color: #2699b1;
   cursor: pointer;
+  margin-top: 1rem;
 }
 nav > ul > li:hover,
 nav > ul > li:focus {

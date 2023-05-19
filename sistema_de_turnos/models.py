@@ -3,7 +3,8 @@ from django.db import models
 
 class Turno(models.Model):
     fecha_turno = models.DateField()
-    perro = models.ForeignKey("usuarios_y_perros.Perro", on_delete=models.CASCADE,)
+    perro = models.ForeignKey(
+        "usuarios_y_perros.Perro", on_delete=models.CASCADE,)
     sugerencia_turno = models.CharField(max_length=50)
 
     class Estado(models.TextChoices):
@@ -32,7 +33,7 @@ class Turno(models.Model):
         default=Motivo.CONSULTA,
     )
 
-    #Otra forma de armar choices
+    # Otra forma de armar choices
     MAÑANA = "TM"
     TARDE = "TT"
     FRANJA_HORARIA_OPCIONES = [
@@ -40,7 +41,21 @@ class Turno(models.Model):
         (TARDE, "Tarde"),
         (None, "Seleccione una opción")
     ]
-    franja_horaria = models.CharField(max_length=2, choices=FRANJA_HORARIA_OPCIONES) # default=MAÑANA podría agregarlo
+    # default=MAÑANA podría agregarlo
+    franja_horaria = models.CharField(
+        max_length=2, choices=FRANJA_HORARIA_OPCIONES)
+
+    def dueño(self):
+        return self.perro.dueño
+
+    def get_motivo(self):
+        return self.Motivo(self.motivo).label
+
+    def get_franja_horaria(self):
+        for option in self.FRANJA_HORARIA_OPCIONES:
+            if option[0] == self.franja_horaria:
+                return option[1]
+        return ""
 
     def __str__(self):
         return f'{self.perro.nombre} {self.fecha_turno}'

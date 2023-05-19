@@ -1,0 +1,19 @@
+{% extends 'base.html' %}{% load static %} {% block content %}
+<link href="{% static 'css/ver_turnos_solicitados.css' %}" rel="stylesheet" />
+{% for turno in turnos %}
+
+<div class="card text-center card-s centerObjects">
+  <div class="card-header">
+    {{ turno.dueño.apellido }}, {{ turno.dueño.nombre }}
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">{{ turno.perro.nombre }}</h5>
+    <p class="card-text">{{ turno.get_motivo }}</p>
+    <a href="#" class="btn btn-primary">Aceptar Turno</a>
+    <a href="#" class="btn btn-primary">Rechazar Turno</a>
+  </div>
+  <div class="card-footer text-muted">
+    {{turno.fecha_turno}} {{turno.get_franja_horaria}}
+  </div>
+</div>
+{% endfor %} {% endblock %}

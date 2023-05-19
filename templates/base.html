@@ -32,6 +32,10 @@
         src="{% static 'Logo1_con_nombre.png' %}"
         alt="El logo de la veterinaria Oh my dog!"
       />
+      <div class="user_tag">
+        <h5> Hola {{ user.nombre }}!</h5>
+        <p class = adm_tag>{% if user.is_staff %} Administrador {% endif %}</p>
+      </div>
       <ul>
         <li > <a href= "{% url 'cargar_perro' %}">Cargar Perro</a></li>
         <li onclick="myFunction()">Cerrar Sesión</li>
@@ -48,5 +52,6 @@
       </ul>
     </nav>
     {% endif %} {% block content %} {%endblock %}
+
   </body>
 </html>
