@@ -3,6 +3,20 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <BASE href="http://127.0.0.1:8000/">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript">
+
+      $(document).ready(function () {
+       
+      window.setTimeout(function() {
+          $(".alert").fadeTo(1000, 0).slideUp(1000, function(){
+              $(this).remove(); 
+          });
+      }, 3000);
+       
+      });
+      </script>
     <title>¡Oh My Dog!</title>
     <link rel="shortcut icon" src="{% static 'favicon.ico' %}" />
     <script
@@ -17,20 +31,15 @@
       crossorigin="anonymous"
     />
     <link href="{% static 'css/global.css' %}" rel="stylesheet" />
+    <BASE href="http://127.0.0.1:8000/">
   </head>
   <body>
-    {% if messages %}
-            <ul class="messages alert alert-success" role="alert">
-                {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-            </ul>
-    {% endif %}
     {% if user.is_authenticated %}
     <nav>
       <img
         src="{% static 'Logo1_con_nombre.png' %}"
         alt="El logo de la veterinaria Oh my dog!"
+        onclick="location.href = '/'"
       />
       <div class="user_tag">
         <h5> Hola {{ user.nombre }}!</h5>
@@ -38,19 +47,44 @@
       </div>
       <ul>
         <li > <a href= "{% url 'cargar_perro' %}">Cargar Perro</a></li>
-        <li onclick="myFunction()">Cerrar Sesión</li>
-          <script>
-          function myFunction() {
-            var ask = window.confirm("Está segurx que quiere cerrar sesión?");
-              if (ask) {
-                  // window.alert("Se ha cerrado sesión.");
-                  window.location.href = "/usuarios/cerrar_sesion";
-              }
+        <li onclick="abrir()">Cerrar Sesión</li>
+        <dialog
+          id="dialogo"><p>¿Está segurx que quiere cerrar sesión?</p>
+          <div>
+            <input type="button" value="Cancelar" onclick="cerrar()" style="float: right">
+            <input type="button" value="Aceptar" onclick="location.href='usuarios/cerrar_sesion';" style="float: right; margin-right: 0.2cm;">
+          </div>
+        </dialog>
+
+
+        <script>
+          function abrir() {
+            const element = document.getElementById("dialogo");
+            element.showModal();
+            // < !--setTimeout(cerrar, 2500); -->
           }
-          </script>
+        </script>
+
+        <script>
+          function cerrar() {
+            const element = document.getElementById("dialogo");
+            element.close();
+          }
+        </script>
         
       </ul>
     </nav>
+    {% for message in messages %}
+    {% if 'error' in message.tags %}
+      <div class="alert alert-danger" role="alert">
+        {{ message }}
+      </div>
+      {% else %}
+      <div class="alert alert-success" role="alert">
+        {{ message }}
+      </div>
+      {% endif %}
+    {% endfor %}
     {% endif %} {% block content %} {%endblock %}
 
   </body>
