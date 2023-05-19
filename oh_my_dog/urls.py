@@ -23,7 +23,9 @@ urlpatterns = [
     path('usuarios/', include('usuarios_y_perros.urls')),
     path('usuarios/', include('django.contrib.auth.urls')),
     path('turnos/', include('sistema_de_turnos.urls')),
-    path('',include('pag_principal.urls')),
-    path('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('favicon.ico'))),
-    path('admin/', admin.site.urls)
+    path('', include('pag_principal.urls')),
+    path('favicon.ico', RedirectView.as_view(
+        url=staticfiles_storage.url('favicon.ico'))),
+    path('admin/', admin.site.urls),
+    path('publicaciones/', include('publicaciones.urls'))
 ]

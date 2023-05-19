@@ -1,8 +1,9 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from .forms import CargarPerroForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from usuarios_y_perros.models import (Usuario)
+from usuarios_y_perros.models import (Perro, Usuario)
 from datetime import date
 from usuarios_y_perros.helpers import es_menor_18, generar_contraseña, enviar_mail_bienvenida
 
@@ -77,3 +78,21 @@ def cerrar_sesion(request):
     logout(request)
     messages.success(request, ("Se cerró la sesión"))
     return redirect('index')
+
+
+def perro(request, perro_id):
+    try:
+        perro = Perro.objects.get(id=perro_id)
+        data = {
+            'nombre': perro.nombre,
+            'fecha_nacimiento': perro.fecha_nacimiento,
+            'color': perro.color,
+            'observaciones': perro.observaciones,
+            'sexo': perro.sexo,
+            'fecha_ultimo_celo': perro.fecha_ultimo_celo,
+            'raza': perro.raza,
+            'dueño': perro.dueño.id
+        }
+        return JsonResponse(data)
+    except Perro.DoesNotExist:
+        return JsonResponse({'error': 'Perro not found'}, status=404)
