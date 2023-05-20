@@ -19,3 +19,12 @@ class SacarTurnoForm(forms.ModelForm):
         if Turno.objects.filter(Q(estado_turno="SOLI") | Q(estado_turno="ACEP"), perro=perro_form).exists():
             raise ValidationError("Este perro ya tiene un turno activo")
         return perro_form
+
+
+class HorarioForm(forms.Form):
+    horario = forms.TimeField(
+        widget=forms.TimeInput(
+            attrs={'type': 'time',
+                   'placeholder': '00:00', 'class': 'form-control'}
+        )
+    )

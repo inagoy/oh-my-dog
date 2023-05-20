@@ -9,11 +9,43 @@
   <div class="card-body">
     <h5 class="card-title">{{ turno.perro.nombre }}</h5>
     <p class="card-text">{{ turno.get_motivo }}</p>
-    <a href="#" class="btn btn-primary">Aceptar Turno</a>
-    <a href="#" class="btn btn-primary">Rechazar Turno</a>
-  </div>
+    <a onclick="mostrarHorarioSugerido()" class="btn btn-primary">Aceptar Turno</a>
+    <a href="{% url 'rechazar_turno' %}" class="btn btn-primary">Rechazar Turno</a>
+  
+
   <div class="card-footer text-muted">
     {{turno.fecha_turno}} {{turno.get_franja_horaria}}
   </div>
 </div>
+
+</div>
+<dialog id="dialogo2">
+  <p>Ingrese el horario asignado para el turno</p>
+  <form method="post" action="{% url 'aceptar_turno' nroTurno=turno.id %}">
+    {% csrf_token %} {{ form.as_p }}
+    <button
+      type="button submit"
+      class="btn btn-primary"
+      style="float: right; margin-right: 0.2cm">
+      Confirmar
+    </button>
+      <input
+      id="horario"
+      name="Horario"
+      type="time"
+      style="float: right; margin-right:0.5cm"
+      required="true"
+    />
+  </form>
+</dialog>
+<script>
+
+  function mostrarHorarioSugerido(){
+    const element = document.getElementById("dialogo2");
+    element.showModal();
+  }
+</script>
 {% endfor %} {% endblock %}
+
+
+
