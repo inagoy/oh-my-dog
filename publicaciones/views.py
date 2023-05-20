@@ -14,3 +14,7 @@ def crear_adopcion(request):
         form = AdopcionForm()
         form.fields["perro"].queryset = Perro.objects.filter(dueño=request.user, activo=True)
     return render(request, 'publicaciones/crear_adopcion.html', {'form': form})
+
+
+def adopciones(request):
+    return render(request, 'publicaciones/adopciones.html')

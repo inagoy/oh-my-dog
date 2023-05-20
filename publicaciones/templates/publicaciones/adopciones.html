@@ -1,0 +1,10 @@
+{% extends 'base.html' %}{% load static %} {% block content %} 
+{% if user.is_authenticated %}
+<a
+  class="btn btn-primary centerObjects w-50"
+  href="{% url 'crear_adopcion' %}"
+  role="button"
+>
+  Crear Adopción
+</a>
+{% endif %} {% endblock %}

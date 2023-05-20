@@ -3,20 +3,19 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <BASE href="http://127.0.0.1:8000/">
+    <base href="http://127.0.0.1:8000/" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script type="text/javascript">
-
       $(document).ready(function () {
-       
-      window.setTimeout(function() {
-          $(".alert").fadeTo(1000, 0).slideUp(1000, function(){
-              $(this).remove(); 
-          });
-      }, 3000);
-       
+        window.setTimeout(function () {
+          $(".alert")
+            .fadeTo(1000, 0)
+            .slideUp(1000, function () {
+              $(this).remove();
+            });
+        }, 3000);
       });
-      </script>
+    </script>
     <title>¡Oh My Dog!</title>
     <link rel="shortcut icon" src="{% static 'favicon.ico' %}" />
     <script
@@ -31,7 +30,7 @@
       crossorigin="anonymous"
     />
     <link href="{% static 'css/global.css' %}" rel="stylesheet" />
-    <BASE href="http://127.0.0.1:8000/">
+    <base href="http://127.0.0.1:8000/" />
   </head>
   <body>
     {% if user.is_authenticated %}
@@ -42,20 +41,29 @@
         onclick="location.href = '/'"
       />
       <div class="user_tag">
-        <h5> Hola {{ user.nombre }}!</h5>
-        <p class = adm_tag>{% if user.is_staff %} Administrador {% endif %}</p>
+        <h5>Hola {{ user.nombre }}!</h5>
+        <p class="adm_tag">{% if user.is_staff %} Administrador {% endif %}</p>
       </div>
       <ul>
-        <li > <a href= "{% url 'cargar_perro' %}">Cargar Perro</a></li>
+        <li><a href="{% url 'cargar_perro' %}">Cargar Perro</a></li>
         <li onclick="abrir()">Cerrar Sesión</li>
-        <dialog
-          id="dialogo"><p>¿Está segurx que quiere cerrar sesión?</p>
+        <dialog id="dialogo">
+          <p>¿Está segurx que quiere cerrar sesión?</p>
           <div>
-            <input type="button" value="Cancelar" onclick="cerrar()" style="float: right">
-            <input type="button" value="Aceptar" onclick="location.href='usuarios/cerrar_sesion';" style="float: right; margin-right: 0.2cm;">
+            <input
+              type="button"
+              value="Cancelar"
+              onclick="cerrar()"
+              style="float: right"
+            />
+            <input
+              type="button"
+              value="Aceptar"
+              onclick="location.href='usuarios/cerrar_sesion';"
+              style="float: right; margin-right: 0.2cm"
+            />
           </div>
         </dialog>
-
 
         <script>
           function abrir() {
@@ -71,21 +79,12 @@
             element.close();
           }
         </script>
-        
       </ul>
     </nav>
-    {% for message in messages %}
-    {% if 'error' in message.tags %}
-      <div class="alert alert-danger" role="alert">
-        {{ message }}
-      </div>
-      {% else %}
-      <div class="alert alert-success" role="alert">
-        {{ message }}
-      </div>
-      {% endif %}
-    {% endfor %}
-    {% endif %} {% block content %} {%endblock %}
-
+    {% for message in messages %} {% if 'error' in message.tags %}
+    <div class="alert alert-danger" role="alert">{{ message }}</div>
+    {% else %}
+    <div class="alert alert-success" role="alert">{{ message }}</div>
+    {% endif %} {% endfor %} {% endif %} {% block content %} {%endblock %}
   </body>
 </html>

@@ -57,4 +57,5 @@ nav > ul > li:focus {
 img {
   height: 100%;
   width: auto;
+  cursor: pointer;
 }
