@@ -45,6 +45,7 @@
         <p class="adm_tag">{% if user.is_staff %} Administrador {% endif %}</p>
       </div>
       <ul>
+        <li><a href="{% url 'sacar_turno' %}">Solicitar turno</a></li>
         <li><a href="{% url 'cargar_perro' %}">Cargar Perro</a></li>
         <li onclick="abrir()">Cerrar Sesión</li>
         <dialog id="dialogo">
