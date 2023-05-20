@@ -52,5 +52,10 @@ class Perro(models.Model):
         choices=Raza.choices,
     )
 
+    def edad_en_meses(self, fecha):
+        f_nac = self.fecha_nacimiento
+        dias = -1 if (fecha.day - f_nac.day) < 0 else 0
+        return (fecha.year - f_nac.year) * 12 + (fecha.month - f_nac.month) + dias
+
     def __str__(self) -> str:
         return self.nombre
