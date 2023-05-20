@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
-from .forms import SacarTurnoForm, HorarioForm
+from .forms import SacarTurnoForm, HorarioForm, SugerenciaForm
 from usuarios_y_perros.models import Perro
 from sistema_de_turnos.models import Turno
-from sistema_de_turnos.helpers import enviar_mail_turno_aceptado
+from sistema_de_turnos.helpers import enviar_mail_turno_aceptado, enviar_mail_turno_rechazado
 
 
 def sacar_turno(request):
@@ -34,16 +34,15 @@ def aceptar_turno(request, nroTurno=None, horario=None):
         return redirect('ver_turnos_solicitados')
 
 
-def rechazar_turno(request, nroTurno=None):
-    #borrar todo esto
+def rechazar_turno(request, nroTurno=None, sugerencia=None):
         turno = Turno.objects.get(id=nroTurno)
         turno.estado_turno = "RECH"
+        form = SugerenciaForm(request.POST)
+        sugerencia = request.POST['Sugerencia']
         turno.save()
-        return redirect('index')
+        enviar_mail_turno_rechazado(turno, sugerencia)
+        return redirect('ver_turnos_solicitados')
 
-        turno = Turno.objects.get(id=turno_id)
-        turno.Estado = ACEPTADO
-        t.save()
 
 
 

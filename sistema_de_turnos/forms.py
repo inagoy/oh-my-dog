@@ -28,3 +28,7 @@ class HorarioForm(forms.Form):
                    'placeholder': '00:00', 'class': 'form-control'}
         )
     )
+
+class SugerenciaForm(forms.Form):
+    sugerencia = forms.CharField(
+    )

@@ -10,7 +10,7 @@
     <h5 class="card-title">{{ turno.perro.nombre }}</h5>
     <p class="card-text">{{ turno.get_motivo }}</p>
     <a onclick="mostrarHorarioSugerido()" class="btn btn-primary">Aceptar Turno</a>
-    <a href="{% url 'rechazar_turno' %}" class="btn btn-primary">Rechazar Turno</a>
+    <a onclick="mostrarSugerenciaTurno()" class="btn btn-primary">Rechazar Turno</a>
   
 
   <div class="card-footer text-muted">
@@ -45,7 +45,31 @@
     element.showModal();
   }
 </script>
+
+<dialog id="dialogo3">
+  <p>Ingrese sugerencia de turno</p>
+  <form method="post" action="{% url 'rechazar_turno' nroTurno=turno.id %}">
+    {% csrf_token %} {{ form.as_p }}
+    <button
+      type="button submit"
+      class="btn btn-primary"
+      style="float: right; margin-right: 0.2cm">
+      Confirmar
+    </button>
+      <input
+      id="sugerencia"
+      name="Sugerencia"
+      type="text"
+      style="float: right; margin-right:0.5cm"
+      required="true"
+    />
+  </form>
+</dialog>
+<script>
+
+  function mostrarSugerenciaTurno(){
+    const element = document.getElementById("dialogo3");
+    element.showModal();
+  }
+</script>
 {% endfor %} {% endblock %}
-
-
-

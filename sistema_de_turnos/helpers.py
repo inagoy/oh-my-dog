@@ -11,3 +11,15 @@ def enviar_mail_turno_aceptado(turno,horario):
                     ["alive.soluciones.software@gmail.com"],
                     fail_silently=False,
                 )
+
+def enviar_mail_turno_rechazado(turno,sugerencia):
+    send_mail(
+                    "Turno rechazado por ¡Oh my dog!",
+                    "Hola! Lamentablemente, no disponemos de un turno para el día solicitado."+
+                    "\nTe sugerimos: "+sugerencia+
+                    ". Por favor, volvé a solicitar turno para "+ turno.perro.nombre +" teniendo en cuenta "+
+                    "nuestra sugerencia o comunicate con la veterinaria. \nSaludos,\nEquipo de ¡Oh my dog!",
+                    settings.EMAIL_HOST_USER,
+                    ["alive.soluciones.software@gmail.com"],
+                    fail_silently=False,
+                )
