@@ -8,9 +8,9 @@ from sistema_de_turnos.helpers import enviar_mail_turno_aceptado, enviar_mail_tu
 def sacar_turno(request):
     if request.method == 'POST':
         form = SacarTurnoForm(request.POST)
+        form.fields["perro"].queryset = Perro.objects.filter(dueño=request.user, activo=True)
         if form.is_valid():
             form.save()
-            # 'solicitud_turno_exitosa' lo cambié para que ande por ahora
             return redirect('index')
     else:
         form = SacarTurnoForm()
