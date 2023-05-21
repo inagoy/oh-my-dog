@@ -84,3 +84,18 @@ button[type=submit]{
   background-color: #2699b1;
   text-decoration-color: white;
 }
+
+.special_link {
+  background-color: #2699b1;
+  color: white;
+  padding: 10px 10px;
+  margin-right: 1rem;
+  display: inline-block;
+}
+
+.seguir {
+
+  text-align: center;
+  text-decoration: none;
+
+}

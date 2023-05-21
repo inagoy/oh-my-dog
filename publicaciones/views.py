@@ -33,7 +33,6 @@ def adopciones(request):
 def contestar_adopcion(request, usuario_id=None):
     if request.method == 'POST':
         mensaje = request.POST['Mensaje']
-<<<<<<< HEAD
         if request.user.is_authenticated:
             usuario = Usuario.objects.get(id=request.user.id)
             enviar_mail_contestar_adopcion(usuario.email, usuario.nombre, mensaje)
@@ -43,11 +42,14 @@ def contestar_adopcion(request, usuario_id=None):
             enviar_mail_contestar_adopcion(email, nombre, mensaje)
 
 
-=======
-        if usuario_id:
-            usuario = Usuario.objects.get(id=usuario_id)
-            enviar_mail_contestar_adopcion(
-                usuario.email, usuario.nombre, mensaje)
->>>>>>> 9489185a9dad6aadcf3ae1f4072bf846438343d1
         # messages.success("Se envío mail de solicitud de adopción")
         return redirect('adopciones')
+
+
+def marcar_adopcion_resuelta(request, nroAdopcion=None):
+    adopcion = Adopcion.objects.get(id=nroAdopcion)
+    adopcion.estado_publicacion = "I"
+    if not adopcion.perro == None:
+        adopcion.perro.activo=False
+    adopcion.save()
+    return redirect('index')

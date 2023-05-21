@@ -31,7 +31,7 @@
     <p class="card-text">{{ adopcion.perro.get_raza_display }}</p>
     <p class="card-text"> edad?</p>
     {% if user == adopcion.usuario %}
-    <a onclick="confirmarAdopcion()" class="btn btn-primary botones">Cerrar publicación</a>
+    <a onclick="confirmarAdopcion({{adopcion.id}})" class="btn btn-primary botones">Cerrar publicación</a>
     {% else %}
     <a onclick="contestarAdopcion()" class="btn btn-primary botones">Postularme para adoptar</a>
     {% endif %}
@@ -74,6 +74,35 @@
   function contestarAdopcion(){
     const element = document.getElementById("dialogo3");
     element.showModal();
+  }
+</script>
+
+<dialog id="dialogoAdopcion{{adopcion.id}}">
+  <p>¿La adopción ya ha sido llevada a cabo?</p>
+  <div>
+    <input
+      type="button"
+      class="special_link"
+      value="No"
+      onclick="cerrar({{adopcion.id}})"
+    />
+    <a type="button" class="special_link"
+    href="{% url 'marcar_adopcion_resuelta' nroAdopcion=adopcion.id %}">
+      Si
+    </a>
+  </div>
+</dialog>
+
+<script>
+  function confirmarAdopcion(idAdopcion){
+    const element = document.getElementById("dialogoAdopcion"+idAdopcion);
+    element.showModal();
+  }
+</script>
+<script>
+  function cerrar(idAdopcion) {
+    const element = document.getElementById("dialogoAdopcion"+idAdopcion);
+    element.close();
   }
 </script>
 </div>
