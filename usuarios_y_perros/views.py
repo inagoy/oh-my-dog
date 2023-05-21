@@ -15,7 +15,7 @@ def registrar_usuario(request):
         form = RegistrarUsuarioForm(request.POST)
         if form.is_valid():
             contraseña = generar_contraseña()
-            form.instance.contraseña = contraseña
+            form.instance.set_password(contraseña)
             enviar_mail_bienvenida(form.instance.email, contraseña)
             form.save()
             return redirect('cargar_perro', user_id=form.instance.id)
