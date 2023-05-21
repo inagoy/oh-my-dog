@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from .forms import SacarTurnoForm, HorarioForm, SugerenciaForm
 from usuarios_y_perros.models import Perro
@@ -30,7 +31,7 @@ def aceptar_turno(request, nroTurno=None, horario=None):
         horario = request.POST['Horario']
         turno.save()
         enviar_mail_turno_aceptado(turno, horario)
-        # por algun motivo, no funciona  messages.success("El turno fue aceptado")
+        messages.success(request, "El turno fue aceptado")
         return redirect('ver_turnos_solicitados')
 
 
@@ -41,6 +42,7 @@ def rechazar_turno(request, nroTurno=None, sugerencia=None):
         sugerencia = request.POST['Sugerencia']
         turno.save()
         enviar_mail_turno_rechazado(turno, sugerencia)
+        messages.success(request, "El turno fue rechazado")
         return redirect('ver_turnos_solicitados')
 
 

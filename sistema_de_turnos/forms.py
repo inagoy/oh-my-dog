@@ -51,7 +51,7 @@ class SacarTurnoForm(forms.ModelForm):
             if edad in (0, 1):
                 raise ValidationError("El perro no alcanza la edad mínima para recibir la vacuna")
             else:
-                turnos = Turno.objects.filter(perro=perro_form.id,
+                turnos = Turno.objects.filter(perro=perro_form.id, estado_turno="CONC",
                                               motivo="VACA")  # Turno.objects.filter(perro=perro_form, estado_turno="CONC", motivo="VACA")
                 cant_turnos = turnos.count()
                 # habría que recalcular edad según la que tenía en la última dosis??

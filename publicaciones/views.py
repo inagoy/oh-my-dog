@@ -40,9 +40,7 @@ def contestar_adopcion(request, usuario_id=None):
             nombre = request.POST['Nombre']
             email = request.POST['Email']
             enviar_mail_contestar_adopcion(email, nombre, mensaje)
-
-
-        # messages.success("Se envío mail de solicitud de adopción")
+        messages.success(request, "Se envío mail de solicitud de adopción")
         return redirect('adopciones')
 
 
