@@ -1,4 +1,4 @@
-{% extends 'base.html' %}{% load static %} {% block content %} 
+{% extends 'base.html' %}{% load static %} {% block content %}
 <link href="{% static 'css/index.css' %}" rel="stylesheet" />
 <link href="{% static 'css/global.css' %}" rel="stylesheet" />
 <link href="{% static 'css/ver_turnos_solicitados.css' %}" rel="stylesheet" />
@@ -11,101 +11,140 @@
 >
   Crear Adopción
 </a>
-<br>
+<br />
 {% else %}
-<div class="banner centerObjects" style="height: 4rem;">
-  <div class="vertical_align" style="font-weight: bold;"> Estos son los perros que están actualmente en adopción </div></div>
-{% endif %}
-{% for adopcion in adopciones %}
+<div class="banner centerObjects" style="height: 4rem">
+  <div class="vertical_align" style="font-weight: bold">
+    Estos son los perros que están actualmente en adopción
+  </div>
+</div>
+{% endif %} {% for adopcion in adopciones %}
 
 <div class="card text-center card-s centerObjects">
   <div class="card-header">
-    {% if adopcion.perro.nombre %}
-      {{ adopcion.perro.nombre }}
-    {% else %}
-      {{ "Este perro todavía no tiene nombre" }}
-    {% endif %}
+    {% if adopcion.nombre %} {{ adopcion.nombre }} {% else %} {{ "Este perro
+    todavía no tiene nombre" }} {% endif %}
   </div>
   <div class="card-body">
-    <h5 class="card-title">{{ adopcion.perro.nombre }}</h5>
-    <p class="card-text">{{ adopcion.perro.get_raza_display }}</p>
-    <p class="card-text"> edad?</p>
+    <p class="card-text">
+      {% if adopcion.raza %} {{ adopcion.raza }} {% endif %}
+    </p>
+    <p class="card-text">
+      {% if adopcion.fecha_nacimiento %} {{ adopcion.fecha_nacimiento }} 
+      {% endif %}
+    </p>
+    <p class="card-text">
+      {% if adopcion.color %} {{ adopcion.color }} {% endif %}
+    </p>
+    <p class="card-text">
+      {% if adopcion.descripcion %} {{ adopcion.descripcion }} {% endif %}
+    </p>
     {% if user == adopcion.usuario and adopcion.estado_publicacion == "A" %}
-    <a onclick="confirmarAdopcion({{adopcion.id}})" class="btn btn-primary botones">Cerrar publicación</a>
-    {% elif adopcion.estado_publicacion == "A" %}
-    <a onclick="contestarAdopcion()" class="btn btn-primary botones">Postularme para adoptar</a>
-    {% endif %}
-
-  <div class="card-footer text-muted">
-    {% if adopcion.estado_publicacion == "I" %}
-    <span class="badge text-bg-secondary">Publicación cerrada</span>
-    {% else %}
-    <span class="badge text-dark" style="background-color: #fc904e;">Perro esperando ser adoptado</span>
-    {% endif %}
-  </div>
-</div>
-<dialog id="dialogo3">
-  <p></p>
-  <form method="POST" action="{% url 'contestar_adopcion' usuario_id=adopcion.usuario.id %}">
-    {% csrf_token %} {{ form.as_p }}
-    <div style="float=left">
-      {% if not user.is_authenticated %}
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="Nombre" required="true"><br><br>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="Email" required="true"><br><br>
-      {% endif %}
-      <label for="mensaje">Mensaje:</label>
-      <textarea id="mensaje" name="Mensaje" cols="40" rows="5" placeholder="Mensaje de su parte que recibirá el dueño de la publicación"></textarea><br><br>
-      {% if user.is_authenticated %}
-        <p>Se enviarán además su nombre y su email</p>
-      {% endif %}
-      <button
-      type="button submit"
+    <a
+      onclick="confirmarAdopcion({{adopcion.id}})"
       class="btn btn-primary botones"
-      style="float: right; margin-right: 0.2cm">
-      Enviar mail de solicitud
-      </button>
+      >Cerrar publicación</a
+    >
+    {% elif adopcion.estado_publicacion == "A" %}
+    <a onclick="contestarAdopcion()" class="btn btn-primary botones"
+      >Postularme para adoptar</a
+    >
+    {% endif %}
+
+    <div class="card-footer text-muted">
+      {% if adopcion.estado_publicacion == "I" %}
+      <span class="badge text-bg-secondary">Publicación cerrada</span>
+      {% else %}
+      <span class="badge text-dark" style="background-color: #fc904e"
+        >Perro esperando ser adoptado</span
+      >
+      {% endif %}
     </div>
-  </form>
-</dialog>
-<script>
-
-  function contestarAdopcion(){
-    const element = document.getElementById("dialogo3");
-    element.showModal();
-  }
-</script>
-
-<dialog id="dialogoAdopcion{{adopcion.id}}">
-  <p>¿La adopción ya ha sido llevada a cabo?</p>
-  <div>
-    <input
-      type="button"
-      class="special_link"
-      value="No"
-      onclick="cerrar({{adopcion.id}})"
-    />
-    <a type="button" class="special_link"
-    href="{% url 'marcar_adopcion_resuelta' nroAdopcion=adopcion.id %}">
-      Si
-    </a>
   </div>
-</dialog>
+  <dialog id="dialogo3">
+    <p></p>
+    <form
+      method="POST"
+      action="{% url 'contestar_adopcion' usuario_id=adopcion.usuario.id %}"
+    >
+      {% csrf_token %} {{ form.as_p }}
+      <div style="float=left">
+        {% if not user.is_authenticated %}
+        <label for="nombre">Nombre:</label>
+        <input
+          type="text"
+          id="nombre"
+          name="Nombre"
+          required="true"
+        /><br /><br />
+        <label for="email">Email:</label>
+        <input
+          type="email"
+          id="email"
+          name="Email"
+          required="true"
+        /><br /><br />
+        {% endif %}
+        <label for="mensaje">Mensaje:</label>
+        <textarea
+          id="mensaje"
+          name="Mensaje"
+          cols="40"
+          rows="5"
+          placeholder="Mensaje de su parte que recibirá el dueño de la publicación"
+        ></textarea
+        ><br /><br />
+        {% if user.is_authenticated %}
+        <p>Se enviarán además su nombre y su email</p>
+        {% endif %}
+        <button
+          type="button submit"
+          class="btn btn-primary botones"
+          style="float: right; margin-right: 0.2cm"
+        >
+          Enviar mail de solicitud
+        </button>
+      </div>
+    </form>
+  </dialog>
+  <script>
+    function contestarAdopcion() {
+      const element = document.getElementById("dialogo3");
+      element.showModal();
+    }
+  </script>
 
-<script>
-  function confirmarAdopcion(idAdopcion){
-    const element = document.getElementById("dialogoAdopcion"+idAdopcion);
-    element.showModal();
-  }
-</script>
-<script>
-  function cerrar(idAdopcion) {
-    const element = document.getElementById("dialogoAdopcion"+idAdopcion);
-    element.close();
-  }
-</script>
+  <dialog id="dialogoAdopcion{{adopcion.id}}">
+    <p>¿La adopción ya ha sido llevada a cabo?</p>
+    <div>
+      <input
+        type="button"
+        class="special_link"
+        value="No"
+        onclick="cerrar({{adopcion.id}})"
+      />
+      <a
+        type="button"
+        class="special_link"
+        href="{% url 'marcar_adopcion_resuelta' nroAdopcion=adopcion.id %}"
+      >
+        Si
+      </a>
+    </div>
+  </dialog>
+
+  <script>
+    function confirmarAdopcion(idAdopcion) {
+      const element = document.getElementById("dialogoAdopcion" + idAdopcion);
+      element.showModal();
+    }
+  </script>
+  <script>
+    function cerrar(idAdopcion) {
+      const element = document.getElementById("dialogoAdopcion" + idAdopcion);
+      element.close();
+    }
+  </script>
 </div>
-<br>
-{% endfor %} 
-{% endblock %}
+<br />
+{% endfor %} {% endblock %}

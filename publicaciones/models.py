@@ -1,3 +1,4 @@
+from datetime import date
 from django.db import models
 from oh_my_dog import settings
 from usuarios_y_perros.models import Perro
@@ -22,6 +23,20 @@ class Publicacion(models.Model):
         choices=Estado.choices,
         default=Estado.ACTIVA,
     )
+
+    class Raza(models.TextChoices):
+        MESTIZO = "MEST", "Mestizo"
+        LABRADOR = "LABR", "Labrador"
+        BULLDOG = "BULL", "Bulldog"
+        BEAGLE = "BEAG", "Beagle"
+        BOXER = "BOXE", "Boxer"
+
+    raza = models.CharField(  # incluir default?
+        max_length=4,
+        choices=Raza.choices,
+        blank=True,
+    )
+
 
 
 class Adopcion(Publicacion):

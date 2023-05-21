@@ -28,8 +28,8 @@ class AdopcionForm(forms.ModelForm):
         required=False,
         widget=forms.TextInput(
             attrs={'class': 'form-control'}))
-
+    
     class Meta:
         model = Adopcion
         fields = ['perro', 'descripcion', 'nombre',
-                  'fecha_nacimiento', 'color']
+                  'fecha_nacimiento', 'color', 'raza']
