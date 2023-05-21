@@ -1,6 +1,7 @@
 from django.core.mail import send_mail
 from django.conf import settings
 
+
 def enviar_mail_contestar_adopcion(mail, nombre, mensaje):
     texto_mensaje = f'Te dejó este mensaje de presentación: {mensaje}' if mensaje  else ""
     send_mail(

@@ -28,8 +28,14 @@ def adopciones(request):
 def contestar_adopcion(request, usuario_id=None):
     if request.method == 'POST':
         mensaje = request.POST['Mensaje']
-        if usuario_id:
-            usuario = Usuario.objects.get(id=usuario_id)
+        if request.user.is_authenticated:
+            usuario = Usuario.objects.get(id=request.user.id)
             enviar_mail_contestar_adopcion(usuario.email, usuario.nombre, mensaje)
+        else:
+            nombre = request.POST['Nombre']
+            email = request.POST['Email']
+            enviar_mail_contestar_adopcion(email, nombre, mensaje)
+
+
         # messages.success("Se envío mail de solicitud de adopción")
         return redirect('adopciones')
