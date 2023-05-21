@@ -79,3 +79,8 @@ button[disabled]{
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
 }
+button[type=submit]{
+  border-color: #2699b1;
+  background-color: #2699b1;
+  text-decoration-color: white;
+}

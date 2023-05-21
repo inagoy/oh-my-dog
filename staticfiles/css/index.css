@@ -18,3 +18,8 @@
   margin-bottom: 5%;
   
 }
+
+button[type=submit]{
+  border-color: #2699b1;
+  background-color: #2699b1;
+}
