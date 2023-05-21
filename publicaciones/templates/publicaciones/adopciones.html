@@ -30,9 +30,9 @@
     <h5 class="card-title">{{ adopcion.perro.nombre }}</h5>
     <p class="card-text">{{ adopcion.perro.get_raza_display }}</p>
     <p class="card-text"> edad?</p>
-    {% if user == adopcion.usuario %}
+    {% if user == adopcion.usuario & adopcion.estado_publicacion == "A" %}
     <a onclick="confirmarAdopcion({{adopcion.id}})" class="btn btn-primary botones">Cerrar publicación</a>
-    {% else %}
+    {% elif adopcion.estado_publicacion == "A" %}
     <a onclick="contestarAdopcion()" class="btn btn-primary botones">Postularme para adoptar</a>
     {% endif %}
 
