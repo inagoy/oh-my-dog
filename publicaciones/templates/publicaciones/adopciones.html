@@ -1,5 +1,6 @@
 {% extends 'base.html' %}{% load static %} {% block content %} 
 <link href="{% static 'css/index.css' %}" rel="stylesheet" />
+<link href="{% static 'css/global.css' %}" rel="stylesheet" />
 <link href="{% static 'css/ver_turnos_solicitados.css' %}" rel="stylesheet" />
 
 {% if user.is_authenticated %}
@@ -12,7 +13,8 @@
 </a>
 <br>
 {% else %}
-<div class="banner centerObjects" style="vertical-align: middle;"> Estos son los perros que están actualmente en adopción</div>
+<div class="banner centerObjects" style="height: 4rem;">
+  <div class="vertical_align" style="font-weight: bold;"> Estos son los perros que están actualmente en adopción </div></div>
 {% endif %}
 {% for adopcion in adopciones %}
 
@@ -26,8 +28,8 @@
   </div>
   <div class="card-body">
     <h5 class="card-title">{{ adopcion.perro.nombre }}</h5>
-    <p class="card-text">{{ adopcion.perro.raza }}</p>
-    <p class="card-text">{{ adopcion.perro.edad }}</p>
+    <p class="card-text">{{ adopcion.perro.get_raza_display }}</p>
+    <p class="card-text"> edad?</p>
     {% if user == adopcion.usuario %}
     <a onclick="confirmarAdopcion()" class="btn btn-primary botones">Cerrar publicación</a>
     {% else %}
@@ -37,6 +39,8 @@
   <div class="card-footer text-muted">
     {% if adopcion.estado_publicacion == "I" %}
     <span class="badge text-bg-secondary">Publicación cerrada</span>
+    {% else %}
+    <span class="badge" style="background-color: #fc904e;">Perro esperando ser adoptado</span>
     {% endif %}
   </div>
 </div>
