@@ -82,10 +82,11 @@
         </script>
       </ul>
     </nav>
+    {% endif %}
     {% for message in messages %} {% if 'error' in message.tags %}
     <div class="alert alert-danger" role="alert">{{ message }}</div>
     {% else %}
     <div class="alert alert-success" role="alert">{{ message }}</div>
-    {% endif %} {% endfor %} {% endif %} {% block content %} {%endblock %}
+    {% endif %} {% endfor %}  {% block content %} {%endblock %}
   </body>
 </html>

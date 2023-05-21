@@ -1,0 +1,22 @@
+{% extends 'base.html' %}{% load static %} {% block content %}
+<link href="{% static 'css/ver_turnos_solicitados.css' %}" rel="stylesheet" />
+{% for adopcion in adopciones %}
+
+<div class="card text-center card-s centerObjects">
+  <div class="card-header">
+    {{ adopcion.perro.nombre }}, {{ adopcion.usuario.nombre }}
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">{{ adopcion.perro.nombre }}</h5>
+    <p class="card-text">{{ adopcion.color }}</p>
+    <a onclick="mostrarHorarioSugerido()" class="btn btn-primary">Confirmar Adopción</a>
+    <a onclick="mostrarSugerenciaTurno()" class="btn btn-primary">Contestar Adopción</a>
+  
+
+  <div class="card-footer text-muted">
+    {{adopcion.color}} {{adopcion.perro.nombre}}
+  </div>
+</div>
+
+</div>
+{% endfor %} {% endblock %}
