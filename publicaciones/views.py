@@ -1,8 +1,10 @@
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from .forms import AdopcionForm
 from .models import Perro
-from publicaciones.models import Adopcion, Publicacion
-from sistema_de_turnos.models import Turno
+from publicaciones.models import Adopcion
+from publicaciones.helpers import enviar_mail_contestar_adopcion
+from usuarios_y_perros.models import Usuario
 
 
 def crear_adopcion(request):
@@ -21,3 +23,13 @@ def crear_adopcion(request):
 def adopciones(request):
     adopciones = Adopcion.objects.all()
     return render(request, 'publicaciones/adopciones.html', {'adopciones': adopciones})
+
+
+def contestar_adopcion(request, usuario_id=None):
+    if request.method == 'POST':
+        mensaje = request.POST['Mensaje']
+        if usuario_id:
+            usuario = Usuario.objects.get(id=usuario_id)
+            enviar_mail_contestar_adopcion(usuario.email, usuario.nombre, mensaje)
+        # messages.success("Se envío mail de solicitud de adopción")
+        return redirect('adopciones')

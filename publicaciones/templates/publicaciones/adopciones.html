@@ -46,7 +46,7 @@
 </div>
 <dialog id="dialogo3">
   <p></p>
-  <form method="post">
+  <form method="POST" action="{% url 'contestar_adopcion' usuario_id=adopcion.usuario.id %}">
     {% csrf_token %} {{ form.as_p }}
     <div style="float=left">
       {% if not user.is_authenticated %}
@@ -61,6 +61,12 @@
         <p>Se enviarán además su nombre y su email</p>
       {% endif %}
       <input type="submit" value="Enviar mail de solicitud">
+      <button
+      type="button submit"
+      class="btn btn-primary"
+      style="float: right; margin-right: 0.2cm">
+      Enviar mail de solicitud
+      </button>
     </div>
   </form>
 </dialog>
