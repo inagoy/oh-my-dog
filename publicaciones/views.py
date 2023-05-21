@@ -11,6 +11,11 @@ def crear_adopcion(request):
     if request.method == 'POST':
         form = AdopcionForm(request.POST)
         if form.is_valid():
+            perro = form.cleaned_data.get('perro')
+            if perro is not None and Adopcion.objects.filter(perro=perro).exists():
+                messages.error(
+                    request, f"{perro} ya tiene una publicación de Adopción")
+                return redirect('crear_adopcion')
             form.instance.usuario = request.user
             form.save()
             return redirect('index')
@@ -28,6 +33,7 @@ def adopciones(request):
 def contestar_adopcion(request, usuario_id=None):
     if request.method == 'POST':
         mensaje = request.POST['Mensaje']
+<<<<<<< HEAD
         if request.user.is_authenticated:
             usuario = Usuario.objects.get(id=request.user.id)
             enviar_mail_contestar_adopcion(usuario.email, usuario.nombre, mensaje)
@@ -37,5 +43,11 @@ def contestar_adopcion(request, usuario_id=None):
             enviar_mail_contestar_adopcion(email, nombre, mensaje)
 
 
+=======
+        if usuario_id:
+            usuario = Usuario.objects.get(id=usuario_id)
+            enviar_mail_contestar_adopcion(
+                usuario.email, usuario.nombre, mensaje)
+>>>>>>> 9489185a9dad6aadcf3ae1f4072bf846438343d1
         # messages.success("Se envío mail de solicitud de adopción")
         return redirect('adopciones')

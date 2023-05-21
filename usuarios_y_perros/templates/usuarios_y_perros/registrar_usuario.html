@@ -1,45 +1,6 @@
-{% extends 'base.html' %}
-
-{% block content %}
-	
-	<h1>Registrar usuario</h1>
-<br/>
-
-
-		<form action="" method=POST>
-			{% csrf_token %}
-
-		<form>
-  <div style="width: 50%">
-  <div class="mb-3">
-    <label for="email" class="form-label">Email</label>
-    <input type="text" class="form-control" name="email" aria-describedby="emailHelp" required>
-  </div>
-  <div class="mb-3">
-    <label for="nombre" class="form-label">Nombre</label>
-    <input type="text" class="form-control" name="nombre" aria-describedby="nameHelp" required>
-  </div>
-  <div class="mb-3">
-    <label for="apellido" class="form-label">Apellido</label>
-    <input type="text" class="form-control" name="apellido" aria-describedby="surnameHelp" required>
-  </div>
-  <div class="mb-3">
-    <label for="dni" class="form-label">DNI</label>
-    <input type="number" class="form-control" name="dni" aria-describedby="dniHelp" required>
-  </div>
-  <div class="mb-3">
-    <label for="fechaNac" class="form-label">Fecha de Nacimiento</label>
-    <input type="date" class="form-control" name="fechaNacimiento" aria-describedby="dobHelp" required>
-  </div>
-  <div class="mb-3">
-    <label for="direccion" class="form-label">Direccion</label>
-    <input type="text" class="form-control" name="direccion" aria-describedby="adressHelp" required>
-  </div>
-  </div>
-		<input type="submit" value="Aceptar" class="btn btn-secondary">
-
-		</form>
-		
-
-<br/><br/>	
+{% extends 'base.html' %} {% block content %}
+<form method="POST" class="forms">
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit">Registrar Usuario</button>
+</form>
 {% endblock %}
