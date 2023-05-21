@@ -26,16 +26,42 @@
     <h5 class="card-title">{{ adopcion.perro.nombre }}</h5>
     <p class="card-text">{{ adopcion.color }}</p>
     {% if user == adopcion.usuario %}
-    <a onclick="confirmarAdopcion()" class="btn btn-primary botones">Confirmar Adopción</a>
+    <a onclick="confirmarAdopcion()" class="btn btn-primary botones">Cerrar publicación</a>
     {% else %}
-    <a onclick="contestarAdopcion()" class="btn btn-primary botones">Contestar Adopción</a>
+    <a onclick="contestarAdopcion()" class="btn btn-primary botones">Postularme para adoptar</a>
     {% endif %}
 
   <div class="card-footer text-muted">
     {{adopcion.color}} {{adopcion.perro.nombre}}
   </div>
 </div>
+<dialog id="dialogo3">
+  <p></p>
+  <form method="post">
+    {% csrf_token %} {{ form.as_p }}
+    <div style="float=left">
+      {% if not user.is_authenticated %}
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="Nombre" required="true"><br><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="Email" required="true"><br><br>
+      {% endif %}
+      <label for="mensaje">Mensaje:</label>
+      <textarea id="mensaje" name="Mensaje" cols="40" rows="5" placeholder="Mensaje de su parte que recibirá el dueño de la publicación"></textarea><br><br>
+      {% if user.is_authenticated %}
+        <p>Se enviarán además su nombre y su email</p>
+      {% endif %}
+      <input type="submit" value="Enviar mail de solicitud">
+    </div>
+  </form>
+</dialog>
+<script>
 
+  function contestarAdopcion(){
+    const element = document.getElementById("dialogo3");
+    element.showModal();
+  }
+</script>
 </div>
 <br>
 {% endfor %} 
