@@ -9,9 +9,9 @@
   <div class="card-body">
     <h5 class="card-title">{{ adopcion.perro.nombre }}</h5>
     <p class="card-text">{{ adopcion.color }}</p>
-    <a onclick="mostrarHorarioSugerido()" class="btn btn-primary">Confirmar Adopción</a>
-    <a onclick="mostrarSugerenciaTurno()" class="btn btn-primary">Contestar Adopción</a>
-  
+    <a onclick="confirmarAdopcion()" class="btn btn-primary">Confirmar Adopción</a>
+    <a onclick="contestarAdopcion()" class="btn btn-primary">Contestar Adopción</a>
+
 
   <div class="card-footer text-muted">
     {{adopcion.color}} {{adopcion.perro.nombre}}
