@@ -25,8 +25,7 @@ class RegistrarUsuarioForm(forms.ModelForm):
             widget=forms.DateInput(format = '%d/%m/%Y',
             attrs={'type': 'date',
                     'placeholder': 'dd-mm-yyyy (DOB)', 'class': 'form-control'}
-            ),
-            input_formats=settings.DATE_INPUT_FORMATS)
+            ))
 
     class Meta:
         model = Usuario
