@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from .forms import CargarPerroForm
+from .forms import CargarPerroForm, RegistrarUsuarioForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from usuarios_y_perros.models import (Perro, Usuario)
@@ -10,31 +10,20 @@ from usuarios_y_perros.helpers import es_menor_18, generar_contraseña, enviar_m
 
 def registrar_usuario(request):
     if request.method == "GET":
-        return render(request, "usuarios_y_perros/registrar_usuario.html")
-    elif request.method == "POST":
-        u = Usuario()
-        u.email = request.POST['email']
-        u.nombre = request.POST['nombre']
-        u.apellido = request.POST['apellido']
-        u.fechaNacimiento = date.fromisoformat(request.POST['fechaNacimiento'])
-        u.dni = request.POST['dni']
-        u.direccion = request.POST['direccion']
-        contraseña = generar_contraseña()
-        u.set_password(contraseña)
-        if (es_menor_18(u.fechaNacimiento)):
-            messages.error(
-                request, "El usuario es menor de edad y no puede ser usuario del sistema")
-            return redirect('registrar_usuario')
-        try:
-            u.save()
-            enviar_mail_bienvenida(u.email, contraseña)
-            print("INFO: Email enviado a: " + contraseña)
-            return redirect('cargar_perro', user_id=u.id)
-        except:
-            print("-"*100)
-            messages.error(
-                request, ("El mail ya está registrado en el sistema"))
-    return redirect('registrar_usuario')
+        form = RegistrarUsuarioForm()
+    else:
+        form = RegistrarUsuarioForm(request.POST)
+        if form.is_valid():
+            contraseña = generar_contraseña()
+            form.instance.contraseña = contraseña
+            enviar_mail_bienvenida(form.instance.email, contraseña)
+            form.save()
+            return redirect('cargar_perro', user_id=form.instance.id)
+        #except:
+         #   print("-"*100)
+          #  messages.error(
+           #     request, ("El mail ya está registrado en el sistema"))
+    return render(request, "usuarios_y_perros/registrar_usuario.html", {'form': form})
 
 
 def cargar_perro(request, user_id=None):
