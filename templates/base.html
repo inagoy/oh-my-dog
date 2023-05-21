@@ -33,6 +33,15 @@
     <base href="http://127.0.0.1:8000/" />
   </head>
   <body>
+    {% if not user.is_authenticated %}
+      <div class="banner centerObjects">
+      <img
+        src="{% static 'Logo1_con_nombre.png' %}"
+        alt="El logo de la veterinaria Oh my dog!"
+        onclick="location.href = '/'"
+      />
+      </div>
+    {% endif %}
     {% if user.is_authenticated %}
     <nav>
       <img
@@ -62,7 +71,7 @@
               type="button"
               class="botones"
               value="Aceptar"
-              onclick="location.href='usuarios/cerrar_sesion';"
+              onclick="location.href='usuarios/cerrar_sesion'"
               style="float: right; margin-right: 0.2cm"
             />
           </div>
