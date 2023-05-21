@@ -1,5 +1,6 @@
 {% extends 'base.html' %}{% load static %} {% block content %}
 <link href="{% static 'css/ver_turnos_solicitados.css' %}" rel="stylesheet" />
+<link href="{% static 'css/index.css' %}" rel="stylesheet" /> 
 {% for turno in turnos %}
 
 <div class="card text-center card-s centerObjects">
@@ -9,8 +10,8 @@
   <div class="card-body">
     <h5 class="card-title">{{ turno.perro.nombre }}</h5>
     <p class="card-text">{{ turno.get_motivo }}</p>
-    <a onclick="mostrarHorarioSugerido()" class="btn btn-primary">Aceptar Turno</a>
-    <a onclick="mostrarSugerenciaTurno()" class="btn btn-primary">Rechazar Turno</a>
+    <a onclick="mostrarHorarioSugerido()" class="btn btn-primary botones">Aceptar Turno</a>
+    <a onclick="mostrarSugerenciaTurno()" class="btn btn-primary botones">Rechazar Turno</a>
   
 
   <div class="card-footer text-muted">

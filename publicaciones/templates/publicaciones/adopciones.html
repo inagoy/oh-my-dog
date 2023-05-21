@@ -1,12 +1,16 @@
 {% extends 'base.html' %}{% load static %} {% block content %} 
+<link href="{% static 'css/index.css' %}" rel="stylesheet" />
+<link href="{% static 'css/ver_turnos_solicitados.css' %}" rel="stylesheet" />
+
 {% if user.is_authenticated %}
 <a
-  class="btn btn-primary centerObjects w-50"
+  class="btn btn-primary centerObjects w-50 botones"
   href="{% url 'crear_adopcion' %}"
   role="button"
 >
   Crear Adopción
 </a>
+<br>
 {% endif %}
 {% for adopcion in adopciones %}
 
@@ -21,9 +25,11 @@
   <div class="card-body">
     <h5 class="card-title">{{ adopcion.perro.nombre }}</h5>
     <p class="card-text">{{ adopcion.color }}</p>
-    <a onclick="confirmarAdopcion()" class="btn btn-primary">Confirmar Adopción</a>
-    <a onclick="contestarAdopcion()" class="btn btn-primary">Contestar Adopción</a>
-
+    {% if user == adopcion.usuario %}
+    <a onclick="confirmarAdopcion()" class="btn btn-primary botones">Confirmar Adopción</a>
+    {% else %}
+    <a onclick="contestarAdopcion()" class="btn btn-primary botones">Contestar Adopción</a>
+    {% endif %}
 
   <div class="card-footer text-muted">
     {{adopcion.color}} {{adopcion.perro.nombre}}

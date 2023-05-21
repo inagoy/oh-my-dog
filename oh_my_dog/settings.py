@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'usuarios_y_perros',
     'publicaciones',
     'servicio_vinculacion',
-    'sistema_de_turnos'
+    'sistema_de_turnos',
+    'django_sass'
 ]
 
 MIDDLEWARE = [
