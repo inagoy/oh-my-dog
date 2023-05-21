@@ -4,7 +4,11 @@
 
 <div class="card text-center card-s centerObjects">
   <div class="card-header">
-    {{ adopcion.perro.nombre }}, {{ adopcion.usuario.nombre }}
+    {% if adopcion.perro.nombre %}
+      {{ adopcion.perro.nombre }}
+    {% else %}
+      {{ "Este perro todavía no tiene nombre" }}
+    {% endif %}
   </div>
   <div class="card-body">
     <h5 class="card-title">{{ adopcion.perro.nombre }}</h5>
@@ -19,4 +23,5 @@
 </div>
 
 </div>
+<br>
 {% endfor %} {% endblock %}

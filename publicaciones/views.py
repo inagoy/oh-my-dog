@@ -19,7 +19,8 @@ def crear_adopcion(request):
 
 
 def adopciones(request):
-    return render(request, 'publicaciones/adopciones.html')
+    adopciones = Adopcion.objects.filter(estado_publicacion=Adopcion.Estado.ACTIVA)
+    return render(request, 'publicaciones/adopciones.html', {'adopciones': adopciones})
 
 def ver_perros_en_adopcion(request):
     adopciones = Adopcion.objects.filter(estado_publicacion=Adopcion.Estado.ACTIVA)
