@@ -19,7 +19,7 @@ def registrar_usuario(request):
             enviar_mail_bienvenida(form.instance.email, contraseña)
             form.save()
             return redirect('cargar_perro', user_id=form.instance.id)
-        #except:
+        # except:
          #   print("-"*100)
           #  messages.error(
            #     request, ("El mail ya está registrado en el sistema"))
@@ -35,7 +35,9 @@ def cargar_perro(request, user_id=None):
             else:
                 form.instance.dueño = Usuario.objects.get(pk=user_id)
             form.save()
-            return redirect('carga_exitosa')
+            messages.success(
+                request, "La carga del perro fue exitosa!")
+            return redirect('cargar_perro')
     else:
         form = CargarPerroForm()
 
