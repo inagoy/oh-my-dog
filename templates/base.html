@@ -54,8 +54,10 @@
         <p class="adm_tag">{% if user.is_staff %} Administrador {% endif %}</p>
       </div>
       <ul>
+        {% if not user.is_staff %}
         <li><a href="{% url 'sacar_turno' %}">Solicitar turno</a></li>
         <li><a href="{% url 'cargar_perro' %}">Cargar Perro</a></li>
+        {% endif %}
         <li onclick="abrir()">Cerrar Sesión</li>
         <dialog id="dialogo">
           <p>¿Está segurx que quiere cerrar sesión?</p>
