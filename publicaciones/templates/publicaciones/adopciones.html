@@ -24,7 +24,8 @@
   </div>
   <div class="card-body">
     <h5 class="card-title">{{ adopcion.perro.nombre }}</h5>
-    <p class="card-text">{{ adopcion.color }}</p>
+    <p class="card-text">{{ adopcion.perro.raza }}</p>
+    <p class="card-text">{{ adopcion.perro.edad }}</p>
     {% if user == adopcion.usuario %}
     <a onclick="confirmarAdopcion()" class="btn btn-primary botones">Cerrar publicación</a>
     {% else %}
@@ -32,7 +33,9 @@
     {% endif %}
 
   <div class="card-footer text-muted">
-    {{adopcion.color}} {{adopcion.perro.nombre}}
+    {% if adopcion.estado_publicacion == "I" %}
+    <span class="badge text-bg-secondary">Publicación cerrada</span>
+    {% endif %}
   </div>
 </div>
 <dialog id="dialogo3">
