@@ -1,4 +1,6 @@
 {% extends 'base.html' %}{% load static %} {% block content %}
+
+{% if turnos %}
 <link href="{% static 'css/ver_turnos_solicitados.css' %}" rel="stylesheet" />
 <link href="{% static 'css/index.css' %}" rel="stylesheet" /> 
 {% for turno in turnos %}
@@ -74,4 +76,8 @@
   }
 </script>
 <br>
-{% endfor %} {% endblock %}
+{% endfor %}
+{% else %}
+<h2 class="centerObjects"> Actualmente no hay turnos solicitados</h2>
+{% endif %}
+{% endblock %}

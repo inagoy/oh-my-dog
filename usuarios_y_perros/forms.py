@@ -37,6 +37,15 @@ class RegistrarUsuarioForm(forms.ModelForm):
         fecha_form = self.cleaned_data["fecha_nacimiento"]
         fecha_actual = date.today()
         fecha = date(fecha_actual.year-18, fecha_actual.month, fecha_actual.day)
+        año_min = date(1900,1,1)
         if fecha_form > fecha:
             raise ValidationError("El usuario debe ser mayor a 18 años")
+        if fecha_form < año_min:
+            raise ValidationError("La fecha de nacimiento debe ser posterior al año 1900")
         return fecha_form
+
+    def clean_dni(self):
+        dni_form = self.cleaned_data["dni"]
+        if dni_form <= 0:
+            raise ValidationError("El número de DNI no puede ser un valor negativo")
+        return dni_form

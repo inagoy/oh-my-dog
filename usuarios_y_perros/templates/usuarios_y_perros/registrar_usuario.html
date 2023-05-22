@@ -1,4 +1,7 @@
 {% extends 'base.html' %} {% block content %}
+
+<div align="left" style="padding-left: 20px">
+  <h1>Registrar usuario</h1>
 <form method="POST" class="forms">
   {% csrf_token %} {{ form.as_p }}
   <button type="submit" class="botones text-light">Registrar Usuario</button>
