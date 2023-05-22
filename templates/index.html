@@ -3,7 +3,7 @@
 
 
 <div class="list-group centerObjects menu">
-  <a href="{% url 'adopciones' %}" class="list-group-item list-group-item-action">Adopciones</a>
+  <button onclick="location.href='publicaciones/adopciones'" class="list-group-item list-group-item-action">Adopciones</button>
   <a href="#" class="list-group-item list-group-item-action"
     >Encontrados y perdidos</a
   >
@@ -21,8 +21,8 @@
     class="btn btn-primary centerObjects botones"
     type="button"
     style="width: 50%"
-  >
-    <a href="{% url 'sacar_turno' %}">Solicitar turno</a>
+    onclick="location.href='turnos/sacar_turno'"
+  >Solicitar turno
   </button>
   {% endif %} {% if not user.is_authenticated %}
   <button
@@ -49,4 +49,5 @@
   </button>
   {% endif %}
 </div>
+
 {% endblock %}

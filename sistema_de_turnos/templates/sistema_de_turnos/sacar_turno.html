@@ -1,6 +1,7 @@
 {% extends 'base.html' %} {% block content %}
-  <form method="POST" class="forms">
-    {% csrf_token %} {{ form.as_p }}
+  <form method="POST" class="forms" style="width: 50%">
+    <h2> Solicitar turno </h2><br><br>
+    {% csrf_token %} {{ form.as_p }}<br><br>
     <button type="submit" class="botones text-light">Sacar turno</button>
   </form>
 {% endblock %}

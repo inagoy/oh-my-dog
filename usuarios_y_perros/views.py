@@ -55,14 +55,18 @@ def iniciar_sesion(request):
         user = authenticate(request, username=email, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, ("Bienvenidx!"))
+            messages.success(request, "Bienvenidx!")
             return redirect('index')
         else:
-            messages.error(
-                request, ("Alguno de los datos ingresados no es correcto. Inténtelo de nuevo..."))
+            try:
+                Usuario.objects.get(email=email)
+            except Usuario.DoesNotExist:
+                messages.error(request, "El mail ingresado no se encuentra registrado en el sistema")
+            else:
+                messages.error(request, "La contraseña es inválida")
             return redirect('iniciar_sesion')
     else:
-        return render(request, 'usuarios_y_perros/iniciar_sesion.html', {})
+        return render(request, 'usuarios_y_perros/iniciar_sesion.html')
 
 
 def cerrar_sesion(request):
