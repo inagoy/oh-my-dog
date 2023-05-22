@@ -18,7 +18,10 @@
     Estos son los perros que están actualmente en adopción
   </div>
 </div>
-{% endif %} {% for adopcion in adopciones %}
+{% endif %} 
+
+{% if adopciones %}
+{% for adopcion in adopciones %}
 
 <div class="card text-center card-s centerObjects">
   <div class="card-header">
@@ -147,4 +150,8 @@
   </script>
 </div>
 <br />
-{% endfor %} {% endblock %}
+{% endfor %} 
+{% else %}
+<h2 class="centerObjects"> No hay adopciones cargadas</h2>
+{% endif %}
+{% endblock %}
