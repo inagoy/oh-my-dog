@@ -20,7 +20,7 @@ def generar_contraseña():
 
 def enviar_mail_bienvenida(usuario, contraseña):
     send_mail(
-                    "Bienvenidx a ¡Oh my dog!",
+                    "Te damos la bienvenida a ¡Oh my dog!",
                     "Cada vez que quieras acceder al sitio, utilizá tu email: "+ usuario+ 
                     ". \nPara ingresar por primera vez, utilizá la contraseña: "+ contraseña,
                     settings.EMAIL_HOST_USER,
