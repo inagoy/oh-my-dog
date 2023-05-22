@@ -29,7 +29,10 @@ def crear_adopcion(request):
 
 
 def adopciones(request):
-    adopciones = Adopcion.objects.all()
+    if request.method == 'POST':
+        adopciones = None
+    else:
+        adopciones = Adopcion.objects.all()
     return render(request, 'publicaciones/adopciones.html', {'adopciones': adopciones})
 
 

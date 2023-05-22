@@ -18,7 +18,12 @@
     Estos son los perros que están actualmente en adopción
   </div>
 </div>
-{% endif %} 
+{% endif %}
+
+<form method="POST" class="forms">
+  {% csrf_token %} {{ form.as_p }}
+  <button onclick="location.href='publicaciones/adopciones'" class="list-group-item list-group-item-action">Eliminar</button>
+</form>
 
 {% if adopciones %}
 {% for adopcion in adopciones %}
