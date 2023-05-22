@@ -27,7 +27,7 @@
   </div>
   <div class="card-body">
     <p class="card-text">
-      {% if adopcion.raza %} {{ adopcion.raza }} {% endif %}
+      {% if adopcion.raza %} {{ adopcion.get_raza_display }} {% endif %}
     </p>
     <p class="card-text">
       {% if adopcion.fecha_nacimiento %} {{ adopcion.fecha_nacimiento }} 

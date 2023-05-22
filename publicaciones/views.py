@@ -18,7 +18,9 @@ def crear_adopcion(request):
                 return redirect('crear_adopcion')
             form.instance.usuario = request.user
             form.save()
-            return redirect('index')
+            messages.success(
+                request, "Se ha creado la adopción")
+            return redirect('crear_adopcion')
     else:
         form = AdopcionForm()
         form.fields["perro"].queryset = Perro.objects.filter(dueño=request.user, activo=True)
@@ -35,7 +37,8 @@ def contestar_adopcion(request, usuario_id=None):
         mensaje = request.POST['Mensaje']
         if request.user.is_authenticated:
             usuario = Usuario.objects.get(id=request.user.id)
-            enviar_mail_contestar_adopcion(usuario.email, usuario.nombre, mensaje)
+            enviar_mail_contestar_adopcion(
+                usuario.email, usuario.nombre, mensaje)
         else:
             nombre = request.POST['Nombre']
             email = request.POST['Email']
@@ -48,6 +51,6 @@ def marcar_adopcion_resuelta(request, nroAdopcion=None):
     adopcion = Adopcion.objects.get(id=nroAdopcion)
     adopcion.estado_publicacion = "I"
     if not adopcion.perro == None:
-        adopcion.perro.activo=False
+        adopcion.perro.activo = False
     adopcion.save()
     return redirect('index')
