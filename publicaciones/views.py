@@ -53,4 +53,4 @@ def marcar_adopcion_resuelta(request, nroAdopcion=None):
     if not adopcion.perro == None:
         adopcion.perro.activo = False
     adopcion.save()
-    return redirect('index')
+    return redirect('adopciones')
