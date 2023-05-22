@@ -37,6 +37,13 @@ class Publicacion(models.Model):
         blank=True,
     )
 
+    def edad_meses(self):
+        today = date.today()
+        age_months = (today.year - self.fecha_nacimiento.year) * \
+            12 + (today.month - self.fecha_nacimiento.month)
+        if today.day < self.fecha_nacimiento.day:
+            age_months -= 1
+        return age_months
 
 
 class Adopcion(Publicacion):

@@ -1,3 +1,4 @@
+from datetime import date
 from django import forms
 from usuarios_y_perros.models import Perro
 from .models import Adopcion
@@ -28,7 +29,15 @@ class AdopcionForm(forms.ModelForm):
         required=False,
         widget=forms.TextInput(
             attrs={'class': 'form-control'}))
-    
+
+    def clean_fecha_nacimiento(self):
+        fecha_form = self.cleaned_data["fecha_nacimiento"]
+        hoy = date.today()
+        if fecha_form > hoy:
+            raise forms.ValidationError(
+                "La fecha elegida no puede ser posterior al día de hoy")
+        return fecha_form
+
     class Meta:
         model = Adopcion
         fields = ['perro', 'descripcion', 'nombre',

@@ -27,17 +27,17 @@
   </div>
   <div class="card-body">
     <p class="card-text">
-      {% if adopcion.raza %} {{ adopcion.get_raza_display }} {% endif %}
+      Raza: {% if adopcion.raza %} {{ adopcion.get_raza_display }} {% else %} - {% endif %}
     </p>
     <p class="card-text">
-      {% if adopcion.fecha_nacimiento %} {{ adopcion.fecha_nacimiento }} 
+     Edad: {% if adopcion.fecha_nacimiento %} {{ adopcion.edad_meses }} meses {% else %} - 
       {% endif %}
     </p>
     <p class="card-text">
-      {% if adopcion.color %} {{ adopcion.color }} {% endif %}
+      Color: {% if adopcion.color %} {{ adopcion.color }} {% else %} - {% endif %}
     </p>
     <p class="card-text">
-      {% if adopcion.descripcion %} {{ adopcion.descripcion }} {% endif %}
+     Descripción: {% if adopcion.descripcion %} {{ adopcion.descripcion }} {% else %} - {% endif %}
     </p>
     {% if user == adopcion.usuario and adopcion.estado_publicacion == "A" %}
     <a
