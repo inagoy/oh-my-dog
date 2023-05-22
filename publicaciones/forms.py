@@ -33,7 +33,7 @@ class AdopcionForm(forms.ModelForm):
     def clean_fecha_nacimiento(self):
         fecha_form = self.cleaned_data["fecha_nacimiento"]
         hoy = date.today()
-        if fecha_form > hoy:
+        if fecha_form is not None and fecha_form > hoy:
             raise forms.ValidationError(
                 "La fecha elegida no puede ser posterior al día de hoy")
         return fecha_form

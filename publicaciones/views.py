@@ -10,6 +10,7 @@ from usuarios_y_perros.models import Usuario
 def crear_adopcion(request):
     if request.method == 'POST':
         form = AdopcionForm(request.POST)
+        form.fields["perro"].queryset = Perro.objects.filter(dueño=request.user, activo=True)
         if form.is_valid():
             perro = form.cleaned_data.get('perro')
             if perro is not None and Adopcion.objects.filter(perro=perro).exists():
@@ -20,7 +21,7 @@ def crear_adopcion(request):
             form.save()
             messages.success(
                 request, "Se ha creado la adopción")
-            return redirect('crear_adopcion')
+            return redirect('adopciones')
     else:
         form = AdopcionForm()
         form.fields["perro"].queryset = Perro.objects.filter(dueño=request.user, activo=True)
@@ -32,17 +33,18 @@ def adopciones(request):
     return render(request, 'publicaciones/adopciones.html', {'adopciones': adopciones})
 
 
-def contestar_adopcion(request, usuario_id=None):
+def contestar_adopcion(request, usuario_id=None, adopcion_id=None):
     if request.method == 'POST':
         mensaje = request.POST['Mensaje']
+        adopcion = Adopcion.objects.get(id=adopcion_id)
+        nombre_perro = adopcion.nombre
         if request.user.is_authenticated:
             usuario = Usuario.objects.get(id=request.user.id)
-            enviar_mail_contestar_adopcion(
-                usuario.email, usuario.nombre, mensaje)
+            enviar_mail_contestar_adopcion(usuario.email, usuario.nombre, mensaje, nombre_perro)
         else:
             nombre = request.POST['Nombre']
             email = request.POST['Email']
-            enviar_mail_contestar_adopcion(email, nombre, mensaje)
+            enviar_mail_contestar_adopcion(email, nombre, mensaje, nombre_perro)
         messages.success(request, "Se envío mail de solicitud de adopción")
         return redirect('adopciones')
 

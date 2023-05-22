@@ -36,24 +36,22 @@
     class="btn btn-primary centerObjects botones"
     type="button"
     style="width: 50%"
-    onclick="iniciar_sesion"
-  >
-    <a href="{% url 'iniciar_sesion' %}">Iniciar Sesión</a>
+    onclick="location.href='usuarios/iniciar_sesion'"
+  >Iniciar Sesión
   </button>
   {% endif %} {% if user.is_staff %}
   <button
     class="btn btn-primary centerObjects botones"
     type="button"
     style="width: 50%"
-  >
-    <a href="{% url 'registrar_usuario' %}">Registrar Usuario</a>
+    onclick="location.href='usuarios/nuevo'"
+  >Registrar Usuario</button>
   <button
     class="btn btn-primary centerObjects botones"
     type="button"
     style="width: 50%"
-  >
-    <a href="{% url 'ver_turnos_solicitados' %}">Turnos Solicitados</a>
-  </button>
+    onclick="location.href='turnos/ver_turnos_solicitados'"
+  >Turnos Solicitados</button>
   {% endif %}
 </div>
 

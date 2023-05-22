@@ -52,7 +52,7 @@
       >Cerrar publicación</a
     >
     {% elif adopcion.estado_publicacion == "A" %}
-    <a onclick="contestarAdopcion()" class="btn btn-primary botones"
+    <a onclick="contestarAdopcion({{adopcion.id}})" class="btn btn-primary botones"
       >Postularme para adoptar</a
     >
     {% endif %}
@@ -67,55 +67,32 @@
       {% endif %}
     </div>
   </div>
-  <dialog id="dialogo3">
+  <dialog id="dial_contestar_adopcion{{adopcion.id}}">
     <p></p>
     <form
       method="POST"
-      action="{% url 'contestar_adopcion' usuario_id=adopcion.usuario.id %}"
+      action="{% url 'contestar_adopcion' usuario_id=adopcion.usuario.id adopcion_id=adopcion.id %}"
     >
       {% csrf_token %} {{ form.as_p }}
       <div style="float=left">
         {% if not user.is_authenticated %}
         <label for="nombre">Nombre:</label>
-        <input
-          type="text"
-          id="nombre"
-          name="Nombre"
-          required="true"
-        /><br /><br />
+        <input type="text" id="nombre" name="Nombre" required="true"/><br /><br/>
         <label for="email">Email:</label>
-        <input
-          type="email"
-          id="email"
-          name="Email"
-          required="true"
-        /><br /><br />
+        <input type="email" id="email" name="Email" required="true"/><br /><br/>
         {% endif %}
         <label for="mensaje">Mensaje:</label>
-        <textarea
-          id="mensaje"
-          name="Mensaje"
-          cols="40"
-          rows="5"
-          placeholder="Mensaje de su parte que recibirá el dueño de la publicación"
-        ></textarea
-        ><br /><br />
+        <textarea id="mensaje" name="Mensaje" cols="40" rows="5" placeholder="Mensaje de su parte que recibirá el dueño de la publicación"></textarea><br /><br />
         {% if user.is_authenticated %}
         <p>Se enviarán además su nombre y su email</p>
         {% endif %}
-        <button
-          type="button submit"
-          class="btn btn-primary botones"
-          style="float: right; margin-right: 0.2cm"
-        >
-          Enviar mail de solicitud
-        </button>
+        <button type="button submit" class="btn btn-primary botones" style="float: right; margin-right: 0.2cm">Enviar mail de solicitud</button>
       </div>
     </form>
   </dialog>
   <script>
-    function contestarAdopcion() {
-      const element = document.getElementById("dialogo3");
+    function contestarAdopcion(adopcion_id) {
+      const element = document.getElementById("dial_contestar_adopcion"+adopcion_id);
       element.showModal();
     }
   </script>
