@@ -55,7 +55,7 @@ def iniciar_sesion(request):
         user = authenticate(request, username=email, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, "Bienvenidx!")
+            messages.success(request, "Te damos la bienvenida a ¡Oh my dog!")
             return redirect('index')
         else:
             try:
@@ -71,7 +71,7 @@ def iniciar_sesion(request):
 
 def cerrar_sesion(request):
     logout(request)
-    messages.success(request, ("Se cerró la sesión"))
+    messages.success(request, "Se cerró la sesión")
     return redirect('index')
 
 
