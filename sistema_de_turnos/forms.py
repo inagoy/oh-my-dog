@@ -11,8 +11,8 @@ def dias(fecha_anterior, fecha_actual): # se podría llevar a Turno
 
 
 def año_transcurrido(fecha_anterior, fecha_actual): # se podría llevar a Turno
-    fecha = date(fecha_actual.year-1, fecha_actual.month, fecha_actual.day)
-    return fecha_anterior <= fecha
+    fecha_esperada = date(fecha_anterior.year+1, fecha_anterior.month, fecha_anterior.day)
+    return fecha_actual >= fecha_esperada
 
 
 class SacarTurnoForm(forms.ModelForm):
@@ -38,7 +38,6 @@ class SacarTurnoForm(forms.ModelForm):
             raise ValidationError("La fecha elegida no puede ser anterior al día de hoy")
         return fecha_form
 
-    # then for co-dependant fields that rely on each other, you can overwrite the forms clean() method which is run after all the fields have been validated individually
     def clean(self):
         super().clean()
         form_data = self.cleaned_data
@@ -46,32 +45,34 @@ class SacarTurnoForm(forms.ModelForm):
             return form_data
         perro_form = form_data["perro"]
         # raise ValidationError(f'{form_data} {perro_form.dueño}')
-        edad = perro_form.edad_en_meses(form_data["fecha_turno"])
+        edad = perro_form.edad_en_meses(form_data['fecha_turno'])
         if form_data["motivo"] == "VACA":
+            # VACUNA TIPO A Y EDAD ACTUAL MENOR A 2 MESES
             if edad in (0, 1):
                 raise ValidationError("El perro no alcanza la edad mínima para recibir la vacuna")
             else:
-                turnos = Turno.objects.filter(perro=perro_form.id, estado_turno="CONC",
-                                              motivo="VACA")  # Turno.objects.filter(perro=perro_form, estado_turno="CONC", motivo="VACA")
+                turnos = Turno.objects.filter(perro=perro_form.id, estado_turno="CONC", motivo="VACA")
                 cant_turnos = turnos.count()
-                # habría que recalcular edad según la que tenía en la última dosis??
-                # raise ValidationError(f'{list(turnos.order_by("fecha_turno"))[-1]}')
-                if (edad in (2, 3, 4)) and cant_turnos == 1 and dias(turnos[0].fecha_turno,
-                                                                     form_data["fecha_turno"]) < 21:
-                    raise ValidationError("Deben pasar 21 días desde la primera dosis")
-                elif cant_turnos > 0 and año_transcurrido(list(turnos.order_by("fecha_turno"))[-1].fecha_turno,
-                                                          form_data[
-                                                              "fecha_turno"]):  # casteo porque Django no acepta -1, tmb pordría order_by("-fecha-turno") para descendente y tomer [0]
-                    raise ValidationError("Todavía no se ha cumplido un año desde la anterior dosis")
+                if cant_turnos > 0:
+                    cumple_año = año_transcurrido(list(turnos.order_by("fecha_turno"))[-1].fecha_turno, form_data["fecha_turno"])  # casteo porque Django no acepta -1, tmb pordría ser order_by("-fecha_turno") para descendente y tomar [0]
+                    if cant_turnos == 1:
+                        edad = perro_form.edad_en_meses(turnos[0].fecha_turno)
+                        # VACUNA TIPO A Y EDAD ENTRE 2 Y 4 MESES EN ÚNICO TURNO ANTERIOR
+                        if (edad in (2, 3, 4)) and dias(turnos[0].fecha_turno, form_data["fecha_turno"]) < 21:
+                            raise ValidationError("Deben pasar 21 días desde la primera dosis")
+                        # VACUNA TIPO A Y EDAD MAYOR A 4 MESES EN ÚNICO TURNO ANTERIOR SIN AÑO CUMPLIDO DESDE EL ÚLTIMO
+                        elif edad > 4 and not cumple_año:
+                            raise ValidationError("Todavía no se ha cumplido un año desde la anterior dosis")
+                    # VACUNA TIPO A Y MÁS DE UN TURNO ANTERIOR SIN AÑO CUMPLIDO DESDE EL ÚLTIMO
+                    elif not cumple_año:
+                        raise ValidationError("Todavía no se ha cumplido un año desde la anterior dosis")
         if form_data["motivo"] == "VACB":
             if edad < 4:
                 raise ValidationError("El perro no alcanza la edad mínima para recibir la vacuna")
             else:
-                turnos = Turno.objects.filter(perro=perro_form.id,
-                                              motivo="VACA")  # Turno.objects.filter(perro=perro_form, estado_turno="CONC", motivo="VACA")
+                turnos = Turno.objects.filter(perro=perro_form.id, estado_turno="CONC", motivo="VACB")  # Turno.objects.filter(perro=perro_form, estado_turno="CONC", motivo="VACB")
                 cant_turnos = turnos.count()
-                if cant_turnos > 0 and año_transcurrido(list(turnos.order_by("fecha_turno"))[-1].fecha_turno, form_data[
-                    "fecha_turno"]):  # casteo porque Django no acepta -1, tmb pordría order_by("-fecha-turno") para descendente y tomer [0]
+                if cant_turnos > 0 and not año_transcurrido(list(turnos.order_by("fecha_turno"))[-1].fecha_turno, form_data["fecha_turno"]):  # casteo porque Django no acepta -1, tmb pordría order_by("-fecha-turno") para descendente y tomer [0]
                     raise ValidationError("Todavía no se ha cumplido un año desde la anterior dosis")
         return form_data
 
