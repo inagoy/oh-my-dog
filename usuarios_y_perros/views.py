@@ -34,6 +34,11 @@ def cargar_perro(request, user_id=None):
                 form.instance.dueño = request.user
             else:
                 form.instance.dueño = Usuario.objects.get(pk=user_id)
+
+            nombre_perro = form.cleaned_data['nombre']
+            if Perro.objects.filter(dueño=form.instance.dueño, nombre=nombre_perro).exists():
+                messages.error(request, "Ya tienes un perro con este nombre.")
+                return redirect('cargar_perro')
             form.save()
             messages.success(
                 request, "La carga del perro fue exitosa!")
@@ -42,10 +47,6 @@ def cargar_perro(request, user_id=None):
         form = CargarPerroForm()
 
     return render(request, "usuarios_y_perros/cargar_perro.html", {'form': form})
-
-
-def carga_exitosa(request):
-    return render(request, "usuarios_y_perros/carga_exitosa.html")
 
 
 def iniciar_sesion(request):
@@ -61,7 +62,8 @@ def iniciar_sesion(request):
             try:
                 Usuario.objects.get(email=email)
             except Usuario.DoesNotExist:
-                messages.error(request, "El mail ingresado no se encuentra registrado en el sistema")
+                messages.error(
+                    request, "El mail ingresado no se encuentra registrado en el sistema")
             else:
                 messages.error(request, "La contraseña es inválida")
             return redirect('iniciar_sesion')
