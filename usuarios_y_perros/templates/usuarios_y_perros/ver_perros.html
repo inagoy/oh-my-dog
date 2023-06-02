@@ -1,0 +1,32 @@
+{% extends 'base.html' %} {% block content %}
+<div class="row row-cols-1 row-cols-md-5 g-4 m-5">
+  {% for perro in perros %}
+  <div class="col">
+    <div class="card">
+      <!-- Card image -->
+      <div class="view overlay">
+        <img
+          style="max-height: 200px; object-fit: cover"
+          class="card-img-top"
+          src="{{ perro.foto_url }}"
+          alt="Card image cap"
+        />
+        <a href="#!">
+          <div class="mask rgba-white-slight"></div>
+        </a>
+      </div>
+
+      <!-- Card content -->
+      <div class="card-body">
+        <!-- Title -->
+        <h4 class="card-title">{{ perro.nombre }}</h4>
+        <!-- Button -->
+        <a href="#" class="btn btn-primary">Historia</a>
+        <a href="#" class="btn btn-primary">Libreta</a>
+      </div>
+    </div>
+  </div>
+  <!-- Card -->
+  {% endfor %}
+</div>
+{% endblock %}

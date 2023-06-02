@@ -1,8 +1,7 @@
 {% extends 'base.html' %} {% block content %}
 <h2> Cargar Perro </h2>
-<form method="POST" class="forms">
+<form method="POST" enctype="multipart/form-data">
   {% csrf_token %} {{ form.as_p }}
-  <ul>Foto: - </ul>
   <button type="submit">Cargar Perro</button>
 </form>
 {% endblock %}

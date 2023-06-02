@@ -28,7 +28,7 @@ def registrar_usuario(request):
 
 def cargar_perro(request, user_id=None):
     if request.method == 'POST':
-        form = CargarPerroForm(request.POST)
+        form = CargarPerroForm(request.POST, request.FILES)
         if form.is_valid():
             if user_id == None:
                 form.instance.dueño = request.user
@@ -93,3 +93,11 @@ def perro(request, perro_id):
         return JsonResponse(data)
     except Perro.DoesNotExist:
         return JsonResponse({'error': 'Perro not found'}, status=404)
+
+
+def ver_perros(request):
+    context = {
+        'usuario': request.user,
+        'perros': Perro.objects.filter(dueño=request.user, activo=True)
+    }
+    return render(request, 'usuarios_y_perros/ver_perros.html', context)

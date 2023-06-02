@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'usuarios_y_perros',
     'publicaciones',
     'servicio_vinculacion',
-    'sistema_de_turnos'
+    'sistema_de_turnos',
 ]
 
 MIDDLEWARE = [
@@ -127,20 +127,21 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-#STATIC_URL =  os.path.join(BASE_DIR, "staticfiles/")
+# STATIC_URL =  os.path.join(BASE_DIR, "staticfiles/")
 
 STATIC_ROOT = PurePosixPath(BASE_DIR, "static")
 
 STATICFILES_DIRS = (
     PurePosixPath(BASE_DIR, "staticfiles"),
 )
-
+MEDIA_ROOT = PurePosixPath(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-ALLOWED_HOSTS = ['127.0.0.1', '<tu-usuario>.pythonanywhere.com'] 
+ALLOWED_HOSTS = ['127.0.0.1', '<tu-usuario>.pythonanywhere.com']
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = env('EMAIL_HOST')

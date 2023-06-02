@@ -18,7 +18,8 @@ from django.contrib import admin
 from django.urls import include, path
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.views.generic.base import RedirectView
-
+from django.conf import settings
+from django.conf.urls.static import static
 urlpatterns = [
     path('usuarios/', include('usuarios_y_perros.urls')),
     path('usuarios/', include('django.contrib.auth.urls')),
@@ -28,4 +29,4 @@ urlpatterns = [
         url=staticfiles_storage.url('favicon.ico'))),
     path('admin/', admin.site.urls),
     path('publicaciones/', include('publicaciones.urls'))
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
