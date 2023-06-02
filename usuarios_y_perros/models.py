@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from datetime import date
+
+from django.forms import ValidationError
 from .managers import CustomUserManager
 from django.templatetags.static import static
 
@@ -57,6 +59,21 @@ class Perro(models.Model):
         max_length=4,
         choices=Raza.choices,
     )
+
+    def clean(self):
+        super().clean()
+        self.validate_nombre()
+        self.validate_fecha_nacimiento()
+
+    def validate_nombre(self):
+        if not any(char.isalpha() for char in self.nombre):
+            raise ValidationError(
+                "El nombre debe contener al menos una letra.")
+
+    def validate_fecha_nacimiento(self):
+        if self.fecha_nacimiento and self.fecha_nacimiento > date.today():
+            raise ValidationError(
+                "La fecha de nacimiento no puede estar en el futuro.")
 
     def edad_en_meses(self, fecha):
         f_nac = self.fecha_nacimiento
