@@ -1,7 +1,33 @@
-{% extends 'base.html' %} {% block content %}
-<h2> Cargar Perro </h2>
-<form method="POST" enctype="multipart/form-data">
-  {% csrf_token %} {{ form.as_p }}
-  <button type="submit">Cargar Perro</button>
+{% extends 'base.html' %}
+{% load static %} 
+{% block content %}
+<h2 class="centerObjects">Cargar perro</h2>
+<link href="{% static 'css/form.css' %}" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {% if form.non_field_errors %}
+    <div class="form-group">
+      <ul class="errorlist">
+        {% for error in form.non_field_errors %}
+          <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+  {% for field in form %}
+    <div class="form-group">
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {{ field }}
+      {% if field.errors %}
+        <ul class="errorlist">
+          {% for error in field.errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  {% endfor %}
+  <button type="submit" class="btn btn-primary">Cargar Perro</button>
 </form>
 {% endblock %}

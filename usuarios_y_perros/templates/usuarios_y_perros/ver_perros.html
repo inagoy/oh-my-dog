@@ -1,28 +1,37 @@
 {% extends 'base.html' %} {% block content %}
-<div class="row row-cols-1 row-cols-md-5 g-4 m-5">
+<a
+  class="btn btn-primary centerObjects w-25"
+  href="{% url 'cargar_perro' %}"
+  role="button"
+>
+  Cargar Perro
+</a>
+<div class="row row-cols-5 row-cols-md-7 g-4 m-5">
   {% for perro in perros %}
   <div class="col">
-    <div class="card">
-      <!-- Card image -->
-      <div class="view overlay">
-        <img
-          style="max-height: 200px; object-fit: cover"
-          class="card-img-top"
-          src="{{ perro.foto_url }}"
-          alt="Card image cap"
-        />
-        <a href="#!">
-          <div class="mask rgba-white-slight"></div>
-        </a>
-      </div>
-
-      <!-- Card content -->
-      <div class="card-body">
-        <!-- Title -->
-        <h4 class="card-title">{{ perro.nombre }}</h4>
-        <!-- Button -->
-        <a href="#" class="btn btn-primary">Historia</a>
-        <a href="#" class="btn btn-primary">Libreta</a>
+    <div class="card" style="border-radius: 15px">
+      <div class="card-body p-4">
+        <div class="d-flex text-black">
+          <div class="flex-shrink-0">
+            <img
+              src="{{ perro.foto_url}}"
+              alt="Generic placeholder image"
+              class="img-fluid"
+              style="width: 50px; border-radius: 10px"
+            />
+          </div>
+          <div class="flex-grow-1 ms-3">
+            <h5 class="mb-1">{{ perro.nombre }}</h5>
+            <div class="d-flex pt-1">
+              <a
+                href="{% url 'ver_perro' perro.pk %}"
+                class="btn btn-primary btn-sm"
+                role="button"
+                >Ver Perro</a
+              >
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

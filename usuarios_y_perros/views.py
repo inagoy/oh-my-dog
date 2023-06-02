@@ -1,5 +1,5 @@
-from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import get_object_or_404, render, redirect
 from .forms import CargarPerroForm, RegistrarUsuarioForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -96,8 +96,17 @@ def perro(request, perro_id):
 
 
 def ver_perros(request):
-    context = {
-        'usuario': request.user,
+    return render(request, 'usuarios_y_perros/ver_perros.html', {
         'perros': Perro.objects.filter(dueño=request.user, activo=True)
-    }
-    return render(request, 'usuarios_y_perros/ver_perros.html', context)
+    })
+
+
+def ver_perro(request, perro_id):
+    perro = get_object_or_404(Perro, id=perro_id)
+    if perro.dueño == request.user:
+        return render(request, 'usuarios_y_perros/ver_perro.html', {'perro': perro})
+    else:
+        messages.error(request, "You are not the owner of this dog.")
+        return render(request, 'usuarios_y_perros/ver_perros.html', {
+            'perros': Perro.objects.filter(dueño=request.user, activo=True)
+        })
