@@ -2,69 +2,65 @@
 <link href="{% static 'css/ver_perro.css' %}" rel="stylesheet" />
 
 <section>
-  <div class="container py-5">
+  <div class="container py-5" style="font-size: 2 rem">
     <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col col-lg-6 mb-4 mb-lg-0">
-        <div class="card mb-3" style="border-radius: 0.5rem">
-          <div class="row g-0">
-            <div
-              class="col-md-4 gradient-custom text-center text-white"
-              style="
-                border-top-left-radius: 0.5rem;
-                border-bottom-left-radius: 0.5rem;
-              "
-            >
-              <img
-                src="{{ perro.foto_url }}"
-                alt="Avatar"
-                class="img-fluid my-4"
-                style="width: 200px; min-height: 200px;border-radius: 300px" 
-              />
-              <h5>{{ perro.nombre }}</h5>
-              <p>Perro de {{perro.dueño.nombre }}</p>
-              <a href="#" class="btn btn-secondary btn-sm">Editar</a>
-              <i class="far fa-edit mb-5"></i>
-            </div>
-            <div class="col-md-8">
-              <div class="card-body p-4">
-                <h6>Información</h6>
-                <hr class="mt-0 mb-4" />
-                <div class="row pt-1">
-                  <div class="col-6 mb-3">
-                    <h6>Raza</h6>
-                    <p class="text-muted">{{ perro.get_raza_display }}</p>
-                  </div>
-                  <div class="col-6 mb-3">
-                    <h6>Color</h6>
-                    <p class="text-muted">
-                      {% if perro.color %} {{ perro.color}} {% else %} - {% endif %}
-                    </p>
-                  </div>
+      <div class="card mb-3" style="border-radius: 0.5rem">
+        <div class="row">
+          <div
+            class="col-md-4 gradient-custom text-center text-white"
+            style="
+              border-top-left-radius: 0.5rem;
+              border-bottom-left-radius: 0.5rem;
+            "
+          >
+            <img
+              src="{{ perro.foto_url }}"
+              alt="Avatar"
+              class="img-fluid my-4"
+              style="width: 300px; height: 300px; border-radius: 320px; object-fit: cover;"
+            />
+            <h1>{{ perro.nombre }}</h1>
+            <p>Perro de {{ perro.dueño.nombre }}</p>
+            <a href="#" class="btn btn-secondary btn-sm mb-2">Editar</a>
+            <i class="far fa-edit mb-5"></i>
+          </div>
+          <div class="col-md-8" >
+            <div class="card-body p-4" >
+              <h6>Información</h6>
+              <hr class="mt-0 mb-4" />
+              <div class="row pt-1">
+                <div class="col-6 mb-3">
+                  <h6>Raza</h6>
+                  <p class="text-muted">{{ perro.get_raza_display }}</p>
                 </div>
-                <div class="row pt-1">
-                  <div class="col-6 mb-3">
-                    <h6>Edad</h6>
-                    <p class="text-muted">{{ perro.edad_meses}} meses</p>
-                  </div>
-                  <div class="col-6 mb-3">
-                    <h6>Sexo</h6>
-                    <p class="text-muted">
-                      {% if perro.sexo %} {{ perro.sexo}} {% else %} Indefinido
-                      
-                      {% endif %}
-                    </p>
-                  </div>
+                <div class="col-6 mb-3">
+                  <h6>Color</h6>
+                  <p class="text-muted">
+                    {% if perro.color %} {{ perro.color}} {% else %} - {% endif %}
+                  </p>
                 </div>
-                <h6>Observaciones</h6>
-                <hr class="mt-0 mb-4" />
-                <p class="text-muted">
-                  {% if perro.observaciones %} {{ perro.observaciones}} {% else %} - {% endif %}
-                </p>
-                <div class="d-flex justify-content-start">
-                  <a href="#!"><i class="fab fa-facebook-f fa-lg me-3"></i></a>
-                  <a href="#!"><i class="fab fa-twitter fa-lg me-3"></i></a>
-                  <a href="#!"><i class="fab fa-instagram fa-lg"></i></a>
+              </div>
+              <div class="row pt-1">
+                <div class="col-6 mb-3">
+                  <h6>Edad</h6>
+                  <p class="text-muted">{{ perro.edad_meses }} meses</p>
                 </div>
+                <div class="col-6 mb-3">
+                  <h6>Sexo</h6>
+                  <p class="text-muted">
+                    {% if perro.sexo %} {{ perro.sexo }} {% else %} Indefinido {% endif %}
+                  </p>
+                </div>
+              </div>
+              <h6>Observaciones</h6>
+              <hr class="mt-0 mb-4" />
+              <p class="text-muted">
+                {% if perro.observaciones %} {{ perro.observaciones}} {% else %} - {% endif %}
+              </p>
+              <div class="d-flex justify-content-start">
+                <a href="#!"><i class="fab fa-facebook-f fa-lg me-3"></i></a>
+                <a href="#!"><i class="fab fa-twitter fa-lg me-3"></i></a>
+                <a href="#!"><i class="fab fa-instagram fa-lg"></i></a>
               </div>
             </div>
           </div>

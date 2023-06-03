@@ -1,6 +1,9 @@
+
+
+import os
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from datetime import date
+from datetime import date, datetime
 
 from django.forms import ValidationError
 from .managers import CustomUserManager
@@ -26,12 +29,20 @@ class Usuario(AbstractUser):
         return self.email
 
 
+def generate_unique_filename(instance, filename):
+    base_filename, extension = os.path.splitext(filename)
+    timestamp = datetime.now().strftime("%m%d%Y%H%M%S")
+    unique_filename = f'{base_filename}_{timestamp}{extension}'
+    return os.path.join('images/', unique_filename)
+
+
 class Perro(models.Model):
     nombre = models.CharField(max_length=15)
     fecha_nacimiento = models.DateField(
         verbose_name="Fecha de nacimiento", default=date.today)
-    color = models.CharField(max_length=20, blank=True)  # poner opciones?
-    foto = models.ImageField(upload_to='images/', blank=True, null=True,)
+    color = models.CharField(max_length=20, blank=True)
+    foto = models.ImageField(
+        upload_to=generate_unique_filename, blank=True, null=True,)
     observaciones = models.TextField(blank=True)
 
     class Sexo(models.TextChoices):
