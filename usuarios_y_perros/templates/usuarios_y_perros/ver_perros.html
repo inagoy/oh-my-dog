@@ -1,0 +1,33 @@
+{% extends 'base.html' %} {% block content %}
+<a
+  class="btn btn-primary centerObjects w-25"
+  href="{% url 'cargar_perro' %}"
+  role="button"
+>
+  Cargar Perro
+</a>
+<div class="row row-cols-6 row-cols-md-7 g-4 m-2">
+  {% if perros %} {% for perro in perros %}
+  <div class="col">
+    <a href="{% url 'ver_perro' perro.pk %}" class="card-link">
+      <div class="card" style="border-radius: 10px; height: 100%">
+        <div class="card-body p-1">
+          <div class="d-flex flex-column align-items-center text-black">
+            <img
+              src="{{ perro.foto_url }}"
+              alt="Generic placeholder image"
+              class="img-fluid mb-2"
+              style="width: 100px; height: 100px; border-radius: 320px"
+            />
+            <h5 class="mb-1" style="font-size: 18px">{{ perro.nombre }}</h5>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+  {% endfor %} {% else %}
+  <h1 class="centerObjects">No tenes perros registrados</h1>
+  {% endif %}
+</div>
+
+{% endblock %}

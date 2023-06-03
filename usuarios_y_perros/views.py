@@ -1,5 +1,5 @@
-from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import get_object_or_404, render, redirect
 from .forms import CargarPerroForm, RegistrarUsuarioForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -28,7 +28,7 @@ def registrar_usuario(request):
 
 def cargar_perro(request, user_id=None):
     if request.method == 'POST':
-        form = CargarPerroForm(request.POST)
+        form = CargarPerroForm(request.POST, request.FILES)
         if form.is_valid():
             if user_id == None:
                 form.instance.dueño = request.user
@@ -93,3 +93,20 @@ def perro(request, perro_id):
         return JsonResponse(data)
     except Perro.DoesNotExist:
         return JsonResponse({'error': 'Perro not found'}, status=404)
+
+
+def ver_perros(request):
+    return render(request, 'usuarios_y_perros/ver_perros.html', {
+        'perros': Perro.objects.filter(dueño=request.user, activo=True)
+    })
+
+
+def ver_perro(request, perro_id):
+    perro = get_object_or_404(Perro, id=perro_id)
+    if perro.dueño == request.user:
+        return render(request, 'usuarios_y_perros/ver_perro.html', {'perro': perro})
+    else:
+        messages.error(request, "You are not the owner of this dog.")
+        return render(request, 'usuarios_y_perros/ver_perros.html', {
+            'perros': Perro.objects.filter(dueño=request.user, activo=True)
+        })
