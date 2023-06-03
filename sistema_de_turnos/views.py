@@ -45,7 +45,11 @@ def rechazar_turno(request, nroTurno=None, sugerencia=None):
         messages.success(request, "El turno fue rechazado")
         return redirect('ver_turnos_solicitados')
 
-
+def ver_turnos(request):
+    form.fields["perro"].queryset = Perro.objects.filter(dueño=request.user, activo=True)
+    
+    turnos = Turno.objects.filter(perro=request.user)
+    return render(request, 'sistema_de_turnos/ver_turnos.html', {'turnos': turnos})
 
 
 
