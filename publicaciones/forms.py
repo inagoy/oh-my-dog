@@ -1,7 +1,17 @@
 from datetime import date
 from django import forms
 from usuarios_y_perros.models import Perro
-from .models import Adopcion
+from .models import Adopcion, CampaniaDonacion
+
+
+class CampaniaDonacionForm(forms.ModelForm):
+    fecha_limite = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y', attrs={'type': 'date',
+                                                                                    'placeholder': 'dd-mm-yyyy (DOB)',
+                                                                                    'class': 'form-control'}))
+
+    class Meta:
+        model = CampaniaDonacion
+        fields = ['nombre', 'descripcion', 'fecha_limite']
 
 
 class AdopcionForm(forms.ModelForm):

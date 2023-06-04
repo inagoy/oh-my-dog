@@ -12,6 +12,7 @@ def sacar_turno(request):
         form.fields["perro"].queryset = Perro.objects.filter(dueño=request.user, activo=True)
         if form.is_valid():
             form.save()
+            messages.success(request, "Se generó la solicitud de turno")
             return redirect('index')
     else:
         form = SacarTurnoForm()

@@ -16,7 +16,14 @@
 </div>
 
 <div>
-  {% if user.is_authenticated and not user.is_staff %}
+  {% if user.is_authenticated %}
+  <button
+    class="btn btn-primary centerObjects botones"
+    type="button"
+    style="width: 50%"
+    onclick="location.href='publicaciones/campanias'"
+  >Campañas de donación</button>
+  {% if not user.is_staff %}
   <button
     class="btn btn-primary centerObjects botones"
     type="button"
@@ -59,6 +66,7 @@
     style="width: 50%"
     onclick="location.href='turnos/ver_turnos_solicitados'"
   >Turnos Solicitados</button>
+  {% endif %}
   {% endif %}
 </div>
 

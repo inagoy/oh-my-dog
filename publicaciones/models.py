@@ -4,6 +4,16 @@ from oh_my_dog import settings
 from usuarios_y_perros.models import Perro
 
 
+class CampaniaDonacion(models.Model):
+    nombre = models.CharField(max_length=30, verbose_name="Nombre de la campaña")
+    descripcion = models.CharField(max_length=50, verbose_name="Descripcion")
+    fecha_limite = models.DateField(verbose_name="Fecha límite para donar")
+    monto_recaudado = models.DecimalField(max_digits=11, decimal_places=2, verbose_name="Monto recaudado hasta el momento")
+
+    def __str__(self):
+        return self.nombre
+
+
 class Publicacion(models.Model):
     descripcion = models.CharField(
         verbose_name="Descripción", max_length=255, blank=True, null=True)

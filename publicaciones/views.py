@@ -2,9 +2,14 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from .forms import AdopcionForm
 from .models import Perro
-from publicaciones.models import Adopcion
+from publicaciones.models import Adopcion, CampaniaDonacion
 from publicaciones.helpers import enviar_mail_contestar_adopcion
 from usuarios_y_perros.models import Usuario
+
+
+def campanias(request):
+    campanias = CampaniaDonacion.objects.all()
+    return render(request, 'publicaciones/campanias.html', {'campanias': campanias})
 
 
 def crear_adopcion(request):

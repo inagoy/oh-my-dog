@@ -22,7 +22,7 @@ class Turno(models.Model):
 
     class Motivo(models.TextChoices):
         VACUNA_TIPOA = "VACA", "Vacunación para enfermedades"
-        VACUNA_TIPOB = "VACB", "Vacunación antiirrábica"
+        VACUNA_TIPOB = "VACB", "Vacunación antirrábica"
         DESPARASITACION = "DESP", "Desparasitación"
         CONSULTA = "CONS", "Consulta general"
         URGENCIA = "URGE", "Urgencia"
