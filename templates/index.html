@@ -45,7 +45,9 @@
     onclick="location.href='turnos/ver_turnos'"
   >Cargar perro
   </button>
-  {% endif %} {% if not user.is_authenticated %}
+  {% endif %}
+  {% endif %}
+  {% if not user.is_authenticated %}
   <button
     class="btn btn-primary centerObjects botones"
     type="button"
@@ -53,7 +55,8 @@
     onclick="location.href='usuarios/iniciar_sesion'"
   >Iniciar Sesión
   </button>
-  {% endif %} {% if user.is_staff %}
+  {% endif %}
+  {% if user.is_staff %}
   <button
     class="btn btn-primary centerObjects botones"
     type="button"
@@ -66,7 +69,6 @@
     style="width: 50%"
     onclick="location.href='turnos/ver_turnos_solicitados'"
   >Turnos Solicitados</button>
-  {% endif %}
   {% endif %}
 </div>
 
