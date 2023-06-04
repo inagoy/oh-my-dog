@@ -1,4 +1,5 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} {% load static %} {% block content %}
+<link href="{% static 'css/ver_perros.css' %}" rel="stylesheet" />
 <a
   class="btn btn-primary centerObjects w-25"
   href="{% url 'cargar_perro' %}"
@@ -10,24 +11,29 @@
   {% if perros %} {% for perro in perros %}
   <div class="col">
     <a href="{% url 'ver_perro' perro.pk %}" class="card-link">
-      <div class="card" style="border-radius: 10px; height: 100%">
-        <div class="card-body p-1">
-          <div class="d-flex flex-column align-items-center text-black">
+      <div class="card">
+        <!-- Card image -->
+        <div class="view overlay">
+          <div class="image-container">
             <img
+              class="card-img-top"
               src="{{ perro.foto_url }}"
-              alt="Generic placeholder image"
-              class="img-fluid mb-2"
-              style="width: 100px; height: 100px; border-radius: 320px"
+              alt="{{ perro.nombre }}"
             />
-            <h5 class="mb-1" style="font-size: 18px">{{ perro.nombre }}</h5>
           </div>
         </div>
+        <!-- Card content -->
+        <div class="card-body">
+          <!-- Title -->
+          <h4 class="card-title">{{ perro.nombre }}</h4>
+          <!-- Button -->
+        </div>
       </div>
+      <!-- Card -->
     </a>
   </div>
   {% endfor %} {% else %}
   <h1 class="centerObjects">No tenes perros registrados</h1>
   {% endif %}
 </div>
-
 {% endblock %}
