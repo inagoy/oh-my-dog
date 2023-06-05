@@ -1,0 +1,15 @@
+{% extends 'base.html' %}{% block content %}
+
+<h1>Historia clínica de {{ perro.nombre }}</h1>
+
+{% if atenciones %}
+<ul class="container">
+  {% for atencion in atenciones %}
+  <li>{{ atencion }}</li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>{{ perro.nombre }} no tiene atenciones registradas.</p>
+{% endif %}
+
+{% endblock %}

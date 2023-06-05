@@ -59,3 +59,9 @@ class Turno(models.Model):
 
     def __str__(self):
         return f'{self.perro.nombre} {self.fecha_turno}'
+
+
+class Atencion(models.Model):
+    turno = models.OneToOneField(Turno, on_delete=models.CASCADE)
+    precio = models.DecimalField(max_digits=8, decimal_places=2)
+    observaciones = models.CharField(max_length=50)

@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from .forms import SacarTurnoForm, HorarioForm, SugerenciaForm
 from usuarios_y_perros.models import Perro
-from sistema_de_turnos.models import Turno
+from sistema_de_turnos.models import Turno, Atencion
 from sistema_de_turnos.helpers import enviar_mail_turno_aceptado, enviar_mail_turno_rechazado
 
 
@@ -46,14 +46,20 @@ def rechazar_turno(request, nroTurno=None, sugerencia=None):
         messages.success(request, "El turno fue rechazado")
         return redirect('ver_turnos_solicitados')
 
+def ver_historia_clinica(request, perro_id):
+    perro = Perro.objects.get(id=perro_id)
+    atenciones = Atencion.objects.filter(turno__perro=perro)
+    context = {
+        'perro': perro,
+        'atenciones': atenciones
+    }
+    return render(request, 'sistema_de_turnos/historia_clinica.html', context)
+
 def ver_turnos(request):
     form.fields["perro"].queryset = Perro.objects.filter(dueño=request.user, activo=True)
     
     turnos = Turno.objects.filter(perro=request.user)
     return render(request, 'sistema_de_turnos/ver_turnos.html', {'turnos': turnos})
-
-
-
 
 
                 
