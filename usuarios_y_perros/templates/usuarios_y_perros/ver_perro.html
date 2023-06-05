@@ -21,7 +21,7 @@
             />
             <h1>{{ perro.nombre }}</h1>
             <p>Perro de {{ perro.dueño.nombre }}</p>
-            <a href="#" class="btn btn-secondary btn-sm mb-2">Editar</a>
+            <a href="{% url 'edit_perro' perro.pk %}" class="btn btn-secondary btn-sm mb-2">Editar</a>
             <i class="far fa-edit mb-5"></i>
           </div>
           <div class="col-md-8" >

@@ -1,9 +1,11 @@
 
 
 import os
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from datetime import date, datetime
+from django.dispatch import receiver
 
 from django.forms import ValidationError
 from .managers import CustomUserManager

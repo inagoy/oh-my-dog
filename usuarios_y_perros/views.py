@@ -1,3 +1,4 @@
+import os
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from .forms import CargarPerroForm, RegistrarUsuarioForm
@@ -110,3 +111,18 @@ def ver_perro(request, perro_id):
         return render(request, 'usuarios_y_perros/ver_perros.html', {
             'perros': Perro.objects.filter(dueño=request.user, activo=True)
         })
+
+
+def edit_perro(request, perro_id):
+
+    perro = get_object_or_404(Perro, id=perro_id)
+    print(perro.foto, '1')
+    if request.method == 'POST':
+        form = CargarPerroForm(request.POST, request.FILES, instance=perro)
+        if form.is_valid():
+            form.save()
+            return render(request, 'usuarios_y_perros/ver_perro.html', {'perro': perro})
+    else:
+        perro.fecha_nacimiento = perro.fecha_nacimiento.strftime('%Y-%m-%d')
+        form = CargarPerroForm(instance=perro)
+    return render(request, "usuarios_y_perros/editar_perro.html", {'form': form, 'perro': perro})

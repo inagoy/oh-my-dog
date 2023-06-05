@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'publicaciones',
     'servicio_vinculacion',
     'sistema_de_turnos',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [
