@@ -6,9 +6,12 @@ from usuarios_y_perros.models import Perro
 
 class CampaniaDonacion(models.Model):
     nombre = models.CharField(max_length=30, verbose_name="Nombre de la campaña")
-    descripcion = models.CharField(max_length=50, verbose_name="Descripcion")
-    fecha_limite = models.DateField(verbose_name="Fecha límite para donar")
-    monto_recaudado = models.DecimalField(max_digits=11, decimal_places=2, verbose_name="Monto recaudado hasta el momento")
+    descripcion = models.CharField(max_length=150, verbose_name="Descripcion", blank=True, null=True)
+    fecha_limite = models.DateField(verbose_name="Fecha límite para donar", blank=True, null=True)
+    monto_recaudado = models.DecimalField(max_digits=11, decimal_places=2, default=0.00, verbose_name="Monto recaudado hasta el momento", blank=True, null=True)
+
+    def activa(self):
+        return self.fecha_limite is None or (self.fecha_limite is not None and self.fecha_limite >= date.today())
 
     def __str__(self):
         return self.nombre

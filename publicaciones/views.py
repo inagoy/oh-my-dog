@@ -7,6 +7,14 @@ from publicaciones.helpers import enviar_mail_contestar_adopcion
 from usuarios_y_perros.models import Usuario
 
 
+def donar(request, campania_id=None):
+    return redirect("campanias")
+
+
+def crear_campania(request):
+    return redirect("campanias")
+
+
 def campanias(request):
     campanias = CampaniaDonacion.objects.all()
     return render(request, 'publicaciones/campanias.html', {'campanias': campanias})

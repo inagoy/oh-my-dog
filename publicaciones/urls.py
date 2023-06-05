@@ -7,4 +7,6 @@ urlpatterns = [
     path('contestar_adopcion/<int:usuario_id>/<int:adopcion_id>', views.contestar_adopcion, name='contestar_adopcion'),
     path('marcar_adopcion_resuelta/<int:nroAdopcion>', views.marcar_adopcion_resuelta, name='marcar_adopcion_resuelta'),
     path('campanias', views.campanias, name='campanias'),
+    path('donar/<int:campania_id>', views.donar, name='donar'),
+    path('crear_campania', views.crear_campania, name='crear_campania'),
 ]

@@ -5,7 +5,7 @@
 {% if user.is_staff %}
 <a
   class="btn btn-primary centerObjects w-50 botones"
-  href="{% url 'crear_adopcion' %}"
+  onclick="crear_campania()"
   role="button"
 >
   Cargar campaña de donación
@@ -22,90 +22,82 @@
 {% if campanias %}
 {% for campania in campanias %}
 
-<div class="card text-center card-s centerObjects">
-  <div class="card-header">
+<div class="card text-center card-s centerObjects" style="width:45rem;">
+<!--  border: 2px solid #2699b1;-->
+  <div class="card-header" style="font-size: 1.4rem; font-weight: bold;">
     {{ campania.nombre }}
   </div>
   <div class="card-body">
-    <p class="card-text">
-      Foto: - 
-    </p>
-    <p class="card-text">
-     Descripción: {% if campania.descripcion %} {{ campania.descripcion }} {% else %} - {% endif %}
+    <p class="card-text" style="font-size: 1.2rem; padding: 1.5rem">
+     {% if campania.descripcion %} {{ campania.descripcion }} {% else %} - {% endif %}
     </p>
     {% if user.is_authenticated %}
 <!--    and adopcion.estado_publicacion == "A"-->
     <a
-      onclick=""
+      onclick="donar({{campania.id}})"
       class="btn btn-primary botones"
       >Donar</a
     >
     {% endif %}
 
   </div>
-  <dialog id="dial_contestar_adopcion{{adopcion.id}}">
+  <dialog id="dial_donar{{campania.id}}">
     <p></p>
     <form
       method="POST"
-      action="{% url 'contestar_adopcion' usuario_id=adopcion.usuario.id adopcion_id=adopcion.id %}"
+      action="{% url 'donar' campania_id=campania.id %}"
     >
       {% csrf_token %} {{ form.as_p }}
-      <div style="float=left">
-        {% if not user.is_authenticated %}
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="Nombre" required="true"/><br /><br/>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="Email" required="true"/><br /><br/>
-        {% endif %}
-        <label for="mensaje">Mensaje:</label>
-        <textarea id="mensaje" name="Mensaje" cols="40" rows="5" placeholder="Mensaje de su parte que recibirá el dueño de la publicación"></textarea><br /><br />
-        {% if user.is_authenticated %}
-        <p>Se enviarán además su nombre y su email</p>
-        {% endif %}
-        <button type="button submit" class="btn btn-primary botones" style="float: right; margin-right: 0.2cm">Enviar mail de solicitud</button>
+      <div align="left">
+        <label for="monto">Monto a donar:</label>
+        <input type="number" id="monto" name="Monto" required min="0" step="any"/><br/><br/><br/>
+        <p align="center" style="text-decoration: underline"> Datos de la tarjeta </p>
+        <label for="nro_tarjeta">Número:</label>
+        <input type="number" id="nro_tarjeta" name="NroTarjeta" required min="0"/><br/><br/>
+        <label for="clave_tarjeta">Clave:</label>
+        <input type="number" id="clave_tarjeta" name="ClaveTarjeta" required min="0" max="999"/><br/><br/>
+        <label for="venc_tarjeta">Fecha de vencimiento:</label>
+        <input type="month" id="venc_tarjeta" name="VencimientoTarjeta" required /><br/><br/><br/>
+        <button type="button submit" class="btn btn-primary botones" style="float: right; margin-right: 0.2cm">Donar</button>
       </div>
     </form>
   </dialog>
   <script>
-    function contestarAdopcion(adopcion_id) {
-      const element = document.getElementById("dial_contestar_adopcion"+adopcion_id);
+    function donar(campania_id) {
+      const element = document.getElementById("dial_donar"+campania_id);
       element.showModal();
-    }
-  </script>
-
-  <dialog id="dialogoAdopcion{{adopcion.id}}">
-    <p>¿La adopción ya ha sido llevada a cabo?</p>
-    <div>
-      <input
-        type="button"
-        class="special_link"
-        value="No"
-        onclick="cerrarAdopcion({{adopcion.id}})"
-      />
-      <a
-        type="button"
-        class="special_link"
-        href="{% url 'marcar_adopcion_resuelta' nroAdopcion=adopcion.id %}"
-      >
-        Si
-      </a>
-    </div>
-  </dialog>
-
-  <script>
-    function confirmarAdopcion(idAdopcion) {
-      const element = document.getElementById("dialogoAdopcion" + idAdopcion);
-      element.showModal();
-    }
-  </script>
-  <script>
-    function cerrarAdopcion(idAdopcion) {
-      const element = document.getElementById("dialogoAdopcion" + idAdopcion);
-      element.close();
     }
   </script>
 </div>
-<br />
+
+</div>
+  <dialog id="dial_crear_campania">
+    <p></p>
+    <form
+      method="POST"
+      action="{% url 'crear_campania' %}"
+    >
+      {% csrf_token %} {{ form.as_p }}
+      <div align="left">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="Nombre" required="true"/><br/><br/><br/>
+        <label for="descripcion">Descripción:</label>
+        <input type="text" id="descripcion" name="Descripcion" required="true"/><br/><br/>
+        <label for="fecha_limite">Fecha límite para donaciones:</label>
+        <input type="date" id="fecha_limite" name="FechaLimite" required /><br/><br/><br/>
+        <button type="button submit" class="btn btn-primary botones" style="float: right; margin-right: 0.2cm">Donar</button>
+      </div>
+    </form>
+  </dialog>
+  <script>
+    function crear_campania() {
+      const element = document.getElementById("dial_crear_campania");
+      element.showModal();
+    }
+  </script>
+</div>
+
+<br/>
 {% endfor %} 
 {% else %}
 <h2 class="centerObjects"> Cargar campaña Refugio!!</h2>
