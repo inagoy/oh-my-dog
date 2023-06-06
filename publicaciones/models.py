@@ -2,16 +2,27 @@ from datetime import date
 from django.db import models
 from oh_my_dog import settings
 from usuarios_y_perros.models import Perro
+from .managers import CampaniaDonacionManager
 
 
 class CampaniaDonacion(models.Model):
-    nombre = models.CharField(max_length=30, verbose_name="Nombre de la campaña")
+    nombre = models.CharField(max_length=30, verbose_name="Nombre de la campaña", unique=True)
     descripcion = models.CharField(max_length=150, verbose_name="Descripcion", blank=True, null=True)
     fecha_limite = models.DateField(verbose_name="Fecha límite para donar", blank=True, null=True)
     monto_recaudado = models.DecimalField(max_digits=11, decimal_places=2, default=0.00, verbose_name="Monto recaudado hasta el momento", blank=True, null=True)
 
+    objects = CampaniaDonacionManager()
+
     def activa(self):
         return self.fecha_limite is None or (self.fecha_limite is not None and self.fecha_limite >= date.today())
+
+    def dias_restantes(self):
+        if self.fecha_limite is not None:
+            return (date(self.fecha_limite.year, self.fecha_limite.month, self.fecha_limite.day) - date.today()).days
+        return -1
+
+    def actualizar_monto_recaudado(self, donacion):
+        self.monto_recaudado += donacion
 
     def __str__(self):
         return self.nombre

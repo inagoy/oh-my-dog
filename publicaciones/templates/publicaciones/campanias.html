@@ -29,16 +29,22 @@
   </div>
   <div class="card-body">
     <p class="card-text" style="font-size: 1.2rem; padding: 1.5rem">
-     {% if campania.descripcion %} {{ campania.descripcion }} {% else %} - {% endif %}
+     {% if campania.descripcion %} {{ campania.descripcion }} {% else %} "" {% endif %}
     </p>
-    {% if user.is_authenticated %}
-<!--    and adopcion.estado_publicacion == "A"-->
+    <label for="monto_recaudado" style="font-weight: bold;">Monto recaudado hasta el momento:</label>
+    <p id="monto_recaudado">
+      {{ campania.monto_recaudado }}
+    </p><br/><br/>
+    {% if campania.dias_restantes == -1 %}
+    <p style="font-weight: bold;">Esta campaña es permanente</p>
+    {% else %}
+    <p style="font-weight: bold;">En {{ campania.dias_restantes }} días cierra la campaña</p>
+    {% endif %}
     <a
       onclick="donar({{campania.id}})"
       class="btn btn-primary botones"
       >Donar</a
     >
-    {% endif %}
 
   </div>
   <dialog id="dial_donar{{campania.id}}">
@@ -49,6 +55,7 @@
     >
       {% csrf_token %} {{ form.as_p }}
       <div align="left">
+        <p align="center" style="font-size: 1.4rem; font-weight: bold"> Donar a "{{ campania.nombre }}"</p><br/>
         <label for="monto">Monto a donar:</label>
         <input type="number" id="monto" name="Monto" required min="0" step="any"/><br/><br/><br/>
         <p align="center" style="text-decoration: underline"> Datos de la tarjeta </p>
@@ -70,6 +77,12 @@
   </script>
 </div>
 
+<br/>
+{% endfor %} 
+{% else %}
+<h2 class="centerObjects"> Cargar campaña Refugio!!</h2>
+{% endif %}
+
 </div>
   <dialog id="dial_crear_campania">
     <p></p>
@@ -79,14 +92,32 @@
     >
       {% csrf_token %} {{ form.as_p }}
       <div align="left">
+        <p align="center" style="font-size: 1.4rem; font-weight: bold"> Nueva campaña de donación </p><br/>
         <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="Nombre" required="true"/><br/><br/><br/>
+        <input type="text" id="nombre" name="Nombre" required="true"/><br/><br/>
         <label for="descripcion">Descripción:</label>
         <input type="text" id="descripcion" name="Descripcion" required="true"/><br/><br/>
-        <label for="fecha_limite">Fecha límite para donaciones:</label>
+        <label for="fecha_limite">Fecha límite para donar:</label>
         <input type="date" id="fecha_limite" name="FechaLimite" required /><br/><br/><br/>
-        <button type="button submit" class="btn btn-primary botones" style="float: right; margin-right: 0.2cm">Donar</button>
+        <button type="button submit" class="btn btn-primary botones" style="float: right; margin-right: 0.2cm">Crear campaña</button>
       </div>
+      <script>
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if (dd < 10) {
+           dd = '0' + dd;
+        }
+
+        if (mm < 10) {
+           mm = '0' + mm;
+        }
+
+        today = yyyy + '-' + mm + '-' + dd;
+        document.getElementById("fecha_limite").setAttribute("min", today);
+      </script>
     </form>
   </dialog>
   <script>
@@ -97,9 +128,4 @@
   </script>
 </div>
 
-<br/>
-{% endfor %} 
-{% else %}
-<h2 class="centerObjects"> Cargar campaña Refugio!!</h2>
-{% endif %}
 {% endblock %}

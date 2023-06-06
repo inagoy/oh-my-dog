@@ -12,6 +12,14 @@ def donar(request, campania_id=None):
 
 
 def crear_campania(request):
+    if request.method == 'POST':
+        try:
+            CampaniaDonacion.objects.get(nombre=request.POST['Nombre'])
+            messages.error(request, "La campaña ingresada ya se encuentra en el sistema")
+        except CampaniaDonacion.DoesNotExist:
+            campania = CampaniaDonacion.objects.create_campania(request.POST['Nombre'], request.POST['Descripcion'], request.POST['FechaLimite'])
+            campania.save()
+            messages.success(request, "Se ha creado la campaña de donación")
     return redirect("campanias")
 
 
