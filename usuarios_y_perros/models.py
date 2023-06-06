@@ -87,7 +87,12 @@ class Perro(models.Model):
         if self.fecha_nacimiento and self.fecha_nacimiento > date.today():
             raise ValidationError(
                 "La fecha de nacimiento no puede estar en el futuro.")
-
+    
+    def edad_en_meses(self, fecha):
+        f_nac = self.fecha_nacimiento
+        dias = -1 if (fecha.day - f_nac.day) < 0 else 0
+        return (fecha.year - f_nac.year) * 12 + (fecha.month - f_nac.month) + dias
+    
     def edad_meses(self):
         today = date.today()
         age_months = (today.year - self.fecha_nacimiento.year) * \
