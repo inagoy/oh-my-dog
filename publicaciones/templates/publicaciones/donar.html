@@ -3,6 +3,8 @@
 <link href="{% static 'css/index.css' %}" rel="stylesheet" />
 <link href="{% static 'css/global.css' %}" rel="stylesheet" />
 
+
+
 <div style="padding-left: 20rem; padding-right: 20rem;">
 <div align="center" style="border: solid 0.2rem #2699b1;">
 <br/>
@@ -11,7 +13,7 @@
   <h1 >Donar a campaña {{campania.nombre}}</h1>
   <br/>
 
-  <form method="POST" >
+  <form method="POST" id="donar">
   {% csrf_token %}
 
     {% for field in form_donacion %}
@@ -30,23 +32,28 @@
 
 <!--    <a type="submit" class="btn btn-primary botones" href="{% url 'donar' campania_id=campania.id %}">Donar</a>-->
 
-    <button type="submit" class="btn btn-primary botones" >Hacer donación</button>
+    <button type="submit" class="btn btn-primary botones" id="hacer_donacion">Hacer donación</button>
 
   </form>
 </div>
 <br/>
 </div>
-  </div>
+</div>
+
 <div>
+
         <dialog id="conexion_servidor">
-          <p style="text-transform:uppercase;">Conectando con el servidor</p>
+            <div align="center">
+                <p style="text-transform:uppercase; font-size: 1.5rem; font-weight: bold">Conectando con el servidor</p>
+                <img class="animated-gif" id="img" src="{% static 'conexion_servidor2.gif' %}" style="width: 350px; height: 350px;">
+            </div>
         </dialog>
 
         <script>
           function abrir() {
             const element = document.getElementById("conexion_servidor");
             element.showModal();
-            setTimeout(cerrar, 2500);
+            setTimeout(cerrar, 4000);
           }
         </script>
 
@@ -56,6 +63,27 @@
             element.close();
           }
         </script>
+
+    <script>
+    const element = document.getElementById("hacer_donacion")
+    element.addEventListener("click", function(){ chequear(event); });
+    </script>
+
+    <script>
+        function chequear(ev){
+            event.preventDefault();
+            const form = document.getElementById("donar")
+            if (form.checkValidity() === false){
+                form.reportValidity();
+                return;
+            }
+            else{
+                abrir();
+                form.submit();
+            }
+        }
+    </script>
+
 </div>
 {% endblock %}
 

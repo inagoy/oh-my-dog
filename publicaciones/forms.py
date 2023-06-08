@@ -15,7 +15,7 @@ class TarjetaForm(forms.ModelForm):
         widgets = {
             "numero": forms.NumberInput(attrs={"class": "form-control", "name": "Numero", "required": "True", }),
             "clave": forms.NumberInput(attrs={"class": "form-control", "name": "Clave", "required": "True", }),
-            "fecha_vencimiento": MonthYearWidget(months={"01": "01", "02": "02", "03": "03", "04": "04", "05": "05", "06": "06", "07": "07", "08": "08", "09": "09", "10": "10", "11": "11", "12": "12"}),
+            "fecha_vencimiento": MonthYearWidget(empty_label="---", months={"None": "---", "01": "01", "02": "02", "03": "03", "04": "04", "05": "05", "06": "06", "07": "07", "08": "08", "09": "09", "10": "10", "11": "11", "12": "12"}),
         }
 
 
