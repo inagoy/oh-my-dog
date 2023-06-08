@@ -1,14 +1,31 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from .forms import AdopcionForm
+from .forms import AdopcionForm, TarjetaForm, DonacionForm
 from .models import Perro
 from publicaciones.models import Adopcion, CampaniaDonacion
 from publicaciones.helpers import enviar_mail_contestar_adopcion
 from usuarios_y_perros.models import Usuario
+from django.core.exceptions import ValidationError
 
 
 def donar(request, campania_id=None):
-    return redirect("campanias")
+    # return redirect("campanias")
+    if request.method == 'POST':
+        form_donacion = DonacionForm(request.POST)
+        form_tarjeta = TarjetaForm(request.POST)
+        # raise ValidationError(f'{request.POST["fecha_vencimiento_month"]}')
+        if form_donacion.is_valid() and form_tarjeta.is_valid():
+            # raise ValidationError(f'{form_tarjeta.cleaned_data["fecha_vencimiento"]}')
+            donacion = form_donacion.save(commit=False)
+            donacion.campania = CampaniaDonacion.objects.get(id=campania_id)
+            donacion.usuario = request.user
+            donacion.save()
+            messages.success(request, "Se concretó la donación")
+            return redirect('index')
+    form_donacion = DonacionForm()
+    form_tarjeta = TarjetaForm()
+    campania = CampaniaDonacion.objects.get(id=campania_id)
+    return render(request, 'publicaciones/donar.html', {'form_donacion': form_donacion, 'form_tarjeta': form_tarjeta, 'campania': campania})
 
 
 def crear_campania(request):

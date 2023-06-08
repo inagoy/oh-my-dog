@@ -1,0 +1,62 @@
+{% extends 'base.html' %}{% load static %}
+{% block content %}
+<link href="{% static 'css/index.css' %}" rel="stylesheet" />
+<link href="{% static 'css/global.css' %}" rel="stylesheet" />
+
+<div style="padding-left: 20rem; padding-right: 20rem;">
+<div align="center" style="border: solid 0.2rem #2699b1;">
+<br/>
+<div align="left" style="padding-left: 10px; width: 85%" >
+  <br/>
+  <h1 >Donar a campaña {{campania.nombre}}</h1>
+  <br/>
+
+  <form method="POST" >
+  {% csrf_token %}
+
+    {% for field in form_donacion %}
+      <label for="{{ field.id_for_label }}" class="form-label" style="font-size: 1.2rem; font-weight: 600">{{ field.label }}</label>
+      {{ field }}
+      <br/>
+    {% endfor %}
+
+    {% for field in form_tarjeta %}
+      <label for="{{ field.id_for_label }}" class="form-label" style="font-size: 1.2rem; font-weight: 600">{{ field.label }}</label>
+      {{ field }}
+      <br/>
+    {% endfor %}
+
+    <br/><br/>
+
+<!--    <a type="submit" class="btn btn-primary botones" href="{% url 'donar' campania_id=campania.id %}">Donar</a>-->
+
+    <button type="submit" class="btn btn-primary botones" >Hacer donación</button>
+
+  </form>
+</div>
+<br/>
+</div>
+  </div>
+<div>
+        <dialog id="conexion_servidor">
+          <p style="text-transform:uppercase;">Conectando con el servidor</p>
+        </dialog>
+
+        <script>
+          function abrir() {
+            const element = document.getElementById("conexion_servidor");
+            element.showModal();
+            setTimeout(cerrar, 2500);
+          }
+        </script>
+
+        <script>
+          function cerrar() {
+            const element = document.getElementById("conexion_servidor");
+            element.close();
+          }
+        </script>
+</div>
+{% endblock %}
+
+

@@ -1,7 +1,7 @@
 from datetime import date
 from django.db import models
 from oh_my_dog import settings
-from usuarios_y_perros.models import Perro
+from usuarios_y_perros.models import Perro, Usuario
 from .managers import CampaniaDonacionManager
 
 
@@ -26,6 +26,19 @@ class CampaniaDonacion(models.Model):
 
     def __str__(self):
         return self.nombre
+
+
+class Tarjeta(models.Model):
+    numero = models.IntegerField(verbose_name="Número de la tarjeta de crédito",)
+    clave = models.CharField(max_length=15, verbose_name="Clave de la tarjeta de crédito",)
+    fecha_vencimiento = models.DateField(verbose_name="Fecha de vencimiento de la tarjeta de crédito",)
+    saldo = models.DecimalField(max_digits=11, decimal_places=2,)
+
+
+class Donacion(models.Model):
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    campania = models.ForeignKey(CampaniaDonacion, on_delete=models.CASCADE)
+    monto = models.DecimalField(max_digits=11, decimal_places=2,)
 
 
 class Publicacion(models.Model):

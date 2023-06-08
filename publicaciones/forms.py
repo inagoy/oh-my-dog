@@ -1,17 +1,46 @@
 from datetime import date
 from django import forms
+from django.forms import SelectDateWidget
 from usuarios_y_perros.models import Perro
-from .models import Adopcion, CampaniaDonacion
+from .models import Adopcion, CampaniaDonacion, Donacion, Tarjeta
+from .widgets import MonthYearWidget
+from django_yearmonth_widget.widgets import DjangoYearMonthWidget
+
+
+class TarjetaForm(forms.ModelForm):
+
+    class Meta:
+        model = Tarjeta
+        fields = ['numero', 'clave', 'fecha_vencimiento', ]
+        widgets = {
+            "numero": forms.NumberInput(attrs={"class": "form-control", "name": "Numero", "required": "True", }),
+            "clave": forms.NumberInput(attrs={"class": "form-control", "name": "Clave", "required": "True", }),
+            "fecha_vencimiento": MonthYearWidget(months={"01": "01", "02": "02", "03": "03", "04": "04", "05": "05", "06": "06", "07": "07", "08": "08", "09": "09", "10": "10", "11": "11", "12": "12"}),
+        }
+
+
+class DonacionForm(forms.ModelForm):
+    monto = forms.IntegerField(widget=forms.NumberInput(attrs={
+                "class": "form-control",
+                "step": 0.01,
+                "placeholder": "",
+                "name": "Monto",
+                "required": "True",
+            }))
+
+    class Meta:
+        model = Donacion
+        fields = ['monto', ]
 
 
 class CampaniaDonacionForm(forms.ModelForm):
-    fecha_limite = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y', attrs={'type': 'date',
-                                                                                    'placeholder': 'dd-mm-yyyy (DOB)',
-                                                                                    'class': 'form-control'}))
 
     class Meta:
         model = CampaniaDonacion
         fields = ['nombre', 'descripcion', 'fecha_limite']
+        widgets = {
+            "fecha_limite": forms.DateInput(format='%d/%m/%Y', attrs={'type': 'date', 'placeholder': 'dd-mm-yyyy (DOB)', 'class': 'form-control'})
+        }
 
 
 class AdopcionForm(forms.ModelForm):
