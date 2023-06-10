@@ -6,6 +6,7 @@ class Turno(models.Model):
     perro = models.ForeignKey(
         "usuarios_y_perros.Perro", on_delete=models.CASCADE,)
     sugerencia_turno = models.CharField(max_length=50)
+    horario = models.TimeField(blank=True, null=True)
 
     class Estado(models.TextChoices):
         SOLICITADO = "SOLI", "Solicitado"

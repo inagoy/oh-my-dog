@@ -14,7 +14,7 @@ def ver_turnos_del_dia(request):
         delta = date.today() - fecha
         return delta.days == 0
 
-    turnos_aceptados = Turno.objects.filter(estado_turno=Turno.Estado.ACEPTADO)
+    turnos_aceptados = Turno.objects.filter(estado_turno=Turno.Estado.ACEPTADO).order_by('horario')
     turnos_hoy = [obj for obj in turnos_aceptados if es_hoy(obj.fecha_turno)]
     return render(request, 'sistema_de_turnos/turnos_del_dia.html', {'turnos': turnos_hoy})
 
@@ -46,6 +46,7 @@ def aceptar_turno(request, nroTurno=None, horario=None):
         turno.estado_turno = "ACEP"
         form = HorarioForm(request.POST)
         horario = request.POST['Horario']
+        turno.horario = request.POST['Horario']
         turno.save()
         enviar_mail_turno_aceptado(turno, horario)
         messages.success(request, "El turno fue aceptado")

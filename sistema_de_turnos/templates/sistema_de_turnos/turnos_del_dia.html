@@ -40,8 +40,8 @@
      {{ turno.get_motivo_display }}
     </p>
     <label for="horario" style="font-weight: bold;">Horario</label>
-    <p id="horario" style="font-size: 1.4rem; font-weight: bold; color: green">
-      {{ turno.sugerencia_turno }}
+    <p id="horario" style="font-size: 1.4rem; font-weight: bold">
+      {% if turno.horario %} {{ turno.horario }} {% else%} {{ '-' }} {% endif %}
     </p>
     <a
       class="btn btn-primary botones"
