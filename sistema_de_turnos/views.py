@@ -1,9 +1,24 @@
+from datetime import date
+
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from .forms import SacarTurnoForm, HorarioForm, SugerenciaForm
 from usuarios_y_perros.models import Perro
 from sistema_de_turnos.models import Turno, Atencion
 from sistema_de_turnos.helpers import enviar_mail_turno_aceptado, enviar_mail_turno_rechazado
+
+
+def ver_turnos_del_dia(request):
+
+    def es_hoy(fecha):  # se podría llevar a Turno
+        delta = date.today() - fecha
+        return delta.days == 0
+
+    turnos_aceptados = Turno.objects.filter(estado_turno=Turno.Estado.ACEPTADO)
+    turnos_hoy = [obj for obj in turnos_aceptados if es_hoy(obj.fecha_turno)]
+    return render(request, 'sistema_de_turnos/turnos_del_dia.html', {'turnos': turnos_hoy})
+
+
 
 
 def sacar_turno(request):
@@ -23,6 +38,7 @@ def sacar_turno(request):
 def ver_turnos_solicitados(request):
     turnos = Turno.objects.filter(estado_turno=Turno.Estado.SOLICITADO)
     return render(request, 'sistema_de_turnos/ver_turnos_solicitados.html', {'turnos': turnos})
+
 
 def aceptar_turno(request, nroTurno=None, horario=None):
         #cambiar el estado a aceptado y guardar
@@ -46,6 +62,7 @@ def rechazar_turno(request, nroTurno=None, sugerencia=None):
         messages.success(request, "El turno fue rechazado")
         return redirect('ver_turnos_solicitados')
 
+
 def ver_historia_clinica(request, perro_id):
     perro = Perro.objects.get(id=perro_id)
     atenciones = Atencion.objects.filter(turno__perro=perro)
@@ -54,6 +71,7 @@ def ver_historia_clinica(request, perro_id):
         'atenciones': atenciones
     }
     return render(request, 'sistema_de_turnos/historia_clinica.html', context)
+
 
 def ver_turnos(request):
     form.fields["perro"].queryset = Perro.objects.filter(dueño=request.user, activo=True)

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}{% load static %} {% block content %}
+<link href="{% static 'css/index.css' %}" rel="stylesheet" />
+<link href="{% static 'css/global.css' %}" rel="stylesheet" />
+
+
+<div class="banner centerObjects" style="height: 4rem">
+  <div class="vertical_align" style="font-weight: bold">
+    Estos son los turnos de hoy <p id="current_date"></p>
+  </div>
+</div>
+
+<script>
+  var today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth() + 1; //January is 0!
+  var yyyy = today.getFullYear();
+
+  if (dd < 10) {
+     dd = '0' + dd;
+  }
+
+  if (mm < 10) {
+     mm = '0' + mm;
+  }
+  document.getElementById("current_date").innerHTML = dd + "/" + mm + "/" + yyyy;
+</script>
+
+
+{% if turnos %}
+{% for turno in turnos %}
+
+<div class="card text-center card-s centerObjects" style="width:45rem;">  <!--  border: 2px solid #2699b1;-->
+
+  <div class="card-header" style="font-size: 1.4rem; font-weight: bold;">
+    {{ turno.perro.nombre }}
+  </div>
+
+  <div class="card-body">
+    <p class="card-text" style="font-size: 1.2rem; padding: 1.5rem">
+     {{ turno.get_motivo_display }}
+    </p>
+    <label for="horario" style="font-weight: bold;">Horario</label>
+    <p id="horario" style="font-size: 1.4rem; font-weight: bold; color: green">
+      {{ turno.sugerencia_turno }}
+    </p>
+    <a
+      class="btn btn-primary botones"
+      >Completar atención</a
+    >
+  </div>
+
+</div>
+<br/><br/>
+
+{% endfor %}
+
+{% else %}
+<h2 class="centerObjects"> No hay turnos para el día de hoy</h2>
+{% endif %}
+
+
+{% endblock %}
