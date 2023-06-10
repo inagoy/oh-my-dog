@@ -9,9 +9,11 @@
 <div align="center" style="border: solid 0.2rem #2699b1;">
 <br/>
 <div align="left" style="padding-left: 10px; width: 85%" >
-  <br/>
-  <h1 >Donar a campaña {{campania.nombre}}</h1>
-  <br/>
+    <br/>
+    <h1 >Donar a campaña {{campania.nombre}}</h1>
+    <br/>
+    <p>El 20% de lo que dones se suma al descuento para la próxima atención con un tope de $3000.</p>
+    <p>Tu descuento actual es de ${{ user.descuento_atencion }}. {% if user.descuento_atencion == 3000%} Alcanzaste el tope de descuento!</p> {% endif %}
 
   <form method="POST" id="donar">
   {% csrf_token %}
@@ -42,27 +44,27 @@
 
 <div>
 
-        <dialog id="conexion_servidor">
-            <div align="center">
-                <p style="text-transform:uppercase; font-size: 1.5rem; font-weight: bold">Conectando con el servidor</p>
-                <img class="animated-gif" id="img" src="{% static 'conexion_servidor2.gif' %}" style="width: 350px; height: 350px;">
-            </div>
-        </dialog>
+    <dialog id="conexion_servidor">
+        <div align="center">
+            <p style="text-transform:uppercase; font-size: 1.5rem; font-weight: bold">Conectando con</br>el sistema de pagos</p>
+            <img class="animated-gif" id="img" src="{% static 'conexion_servidor.gif' %}" style="width: 300px; height: 300px;">
+        </div>
+    </dialog>
 
-        <script>
-          function abrir() {
-            const element = document.getElementById("conexion_servidor");
-            element.showModal();
-            setTimeout(cerrar, 4000);
-          }
-        </script>
+    <script>
+      function abrir() {
+        const element = document.getElementById("conexion_servidor");
+        element.showModal();
+        setTimeout(cerrar, 6000);
+      }
+    </script>
 
-        <script>
-          function cerrar() {
-            const element = document.getElementById("conexion_servidor");
-            element.close();
-          }
-        </script>
+    <script>
+      function cerrar() {
+        const element = document.getElementById("conexion_servidor");
+        element.close();
+      }
+    </script>
 
     <script>
     const element = document.getElementById("hacer_donacion")

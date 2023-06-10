@@ -20,7 +20,7 @@ class TarjetaForm(forms.ModelForm):
 
 
 class DonacionForm(forms.ModelForm):
-    monto = forms.IntegerField(widget=forms.NumberInput(attrs={
+    monto = forms.DecimalField(widget=forms.NumberInput(attrs={
                 "class": "form-control",
                 "step": 0.01,
                 "placeholder": "",

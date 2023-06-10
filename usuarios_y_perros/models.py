@@ -1,6 +1,8 @@
 
 
 import os
+from decimal import Decimal
+
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -22,10 +24,18 @@ class Usuario(AbstractUser):
     fecha_nacimiento = models.DateField(
         verbose_name="Fecha de nacimiento", default=date.today)
     domicilio = models.CharField(max_length=30)
+    descuento_atencion = models.DecimalField(max_digits=6, decimal_places=2, default=0.00, verbose_name="Descuento", blank=True, null=True)
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ['dni', 'apellido', 'nombre', 'fecha_nacimiento']
 
     objects = CustomUserManager()
+
+    def aplicar_descuento(self, monto_donacion):
+        descuento = monto_donacion * Decimal(0.2)
+        if(self.descuento_atencion + descuento) >= 3000:
+            self.descuento_atencion = 3000
+        else:
+            self.descuento_atencion += descuento
 
     def __str__(self):
         return self.email

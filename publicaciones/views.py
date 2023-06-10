@@ -10,7 +10,6 @@ from usuarios_y_perros.models import Usuario
 
 
 def donar(request, campania_id=None):
-    # return redirect("campanias")
     try:
         campania = CampaniaDonacion.objects.get(id=campania_id)
     except CampaniaDonacion.DoesNotExist:
@@ -19,16 +18,19 @@ def donar(request, campania_id=None):
     if request.method == 'POST':
         form_donacion = DonacionForm(request.POST)
         form_tarjeta = TarjetaForm(request.POST)
+        time.sleep(6)
         if form_donacion.is_valid() and form_tarjeta.is_valid():
             donacion = form_donacion.save(commit=False)
             donacion.campania = campania
             donacion.usuario = request.user
             donacion.save()
-            time.sleep(4)
+            donacion.campania.actualizar_monto_recaudado(donacion.monto)
+            donacion.campania.save()
+            donacion.usuario.aplicar_descuento(donacion.monto)
+            donacion.usuario.save()
             messages.success(request, "Se concretó la donación")
             return redirect(f"/publicaciones/campanias/donar/{campania.id}")
         else:
-            time.sleep(4)
             messages.error(request, "Algo falló")
             return redirect(f"/publicaciones/campanias/donar/{campania.id}")
     else:
