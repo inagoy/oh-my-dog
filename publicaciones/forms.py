@@ -39,7 +39,7 @@ class CampaniaDonacionForm(forms.ModelForm):
         model = CampaniaDonacion
         fields = ['nombre', 'descripcion', 'fecha_limite']
         widgets = {
-            "fecha_limite": forms.DateInput(format='%d/%m/%Y', attrs={'type': 'date', 'placeholder': 'dd-mm-yyyy (DOB)', 'class': 'form-control'})
+            "fecha_limite": forms.DateInput(format='%d/%m/%Y', attrs={'type': 'date', 'placeholder': 'dd-mm-yyyy (DOB)', 'class': 'date', })
         }
 
 

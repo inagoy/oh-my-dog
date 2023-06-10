@@ -1,8 +1,9 @@
 import time
+from datetime import date
 
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from .forms import AdopcionForm, TarjetaForm, DonacionForm
+from .forms import AdopcionForm, TarjetaForm, DonacionForm, CampaniaDonacionForm
 from .models import Perro
 from publicaciones.models import Adopcion, CampaniaDonacion
 from publicaciones.helpers import enviar_mail_contestar_adopcion
@@ -40,19 +41,25 @@ def donar(request, campania_id=None):
 
 
 def crear_campania(request):
+    form = CampaniaDonacionForm()
     if request.method == 'POST':
         try:
-            CampaniaDonacion.objects.get(nombre=request.POST['Nombre'])
+            CampaniaDonacion.objects.get(nombre=request.POST['nombre'])
             messages.error(request, "La campaña ingresada ya se encuentra en el sistema")
         except CampaniaDonacion.DoesNotExist:
-            campania = CampaniaDonacion.objects.create_campania(request.POST['Nombre'], request.POST['Descripcion'], request.POST['FechaLimite'])
-            campania.save()
-            messages.success(request, "Se ha creado la campaña de donación")
-    return redirect("campanias")
+            form = CampaniaDonacionForm(request.POST)
+            if form.is_valid():
+                campania = CampaniaDonacion.objects.create_campania(form.cleaned_data['nombre'], form.cleaned_data['descripcion'], form.cleaned_data['fecha_limite'])
+                campania.save()
+                messages.success(request, "Se ha creado la campaña de donación")
+    return redirect('campanias')
 
 
 def campanias(request):
-    campanias = CampaniaDonacion.objects.all()
+    campanias_sin_limite = CampaniaDonacion.objects.filter(fecha_limite__isnull=True).order_by("id")
+    campanias_con_limite = CampaniaDonacion.objects.filter(fecha_limite__isnull=False).order_by("-id")
+    campanias_cumplen = [obj for obj in campanias_con_limite if obj.dias_restantes() >= 0]
+    campanias = list(campanias_sin_limite) + list(campanias_cumplen)
     return render(request, 'publicaciones/campanias.html', {'campanias': campanias})
 
 

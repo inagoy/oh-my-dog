@@ -3,13 +3,7 @@
 <link href="{% static 'css/global.css' %}" rel="stylesheet" />
 
 {% if user.is_staff %}
-<a
-  class="btn btn-primary centerObjects w-50 botones"
-  onclick="crear_campania()"
-  role="button"
->
-  Cargar campaña de donación
-</a>
+<a class="btn btn-primary centerObjects w-50 botones" onclick="crear_campania()" role="button">Cargar campaña de donación</a>
 <br />
 {% else %}
 <div class="banner centerObjects" style="height: 4rem">
@@ -19,14 +13,16 @@
 </div>
 {% endif %}
 
+
 {% if campanias %}
 {% for campania in campanias %}
 
-<div class="card text-center card-s centerObjects" style="width:45rem;">
-<!--  border: 2px solid #2699b1;-->
+<div class="card text-center card-s centerObjects" style="width:45rem;">  <!--  border: 2px solid #2699b1;-->
+
   <div class="card-header" style="font-size: 1.4rem; font-weight: bold;">
     {{ campania.nombre }}
   </div>
+
   <div class="card-body">
     <p class="card-text" style="font-size: 1.2rem; padding: 1.5rem">
      {% if campania.descripcion %} {{ campania.descripcion }} {% else %} "" {% endif %}
@@ -37,6 +33,8 @@
     </p>
     {% if campania.dias_restantes == -1 %}
     <p style="font-weight: bold;">Esta campaña es permanente</p>
+    {% elif campania.dias_restantes == 0 %}
+    <p style="font-weight: bold;">La campaña cierra hoy</p>
     {% else %}
     <p style="font-weight: bold;">En {{ campania.dias_restantes }} días cierra la campaña</p>
     {% endif %}
@@ -45,46 +43,19 @@
       class="btn btn-primary botones"
       >Donar</a
     >
-
   </div>
-  <dialog id="dial_donar{{campania.id}}">
-    <p></p>
-    <form
-      method="POST"
-      action="{% url 'donar' campania_id=campania.id %}"
-    >
-      {% csrf_token %} {{ form.as_p }}
-      <div align="left">
-        <p align="center" style="font-size: 1.4rem; font-weight: bold"> Donar a "{{ campania.nombre }}"</p><br/>
-        <label for="monto">Monto a donar:</label>
-        <input type="number" id="monto" name="Monto" required min="0" step="any"/><br/><br/><br/>
-        <p align="center" style="text-decoration: underline"> Datos de la tarjeta </p>
-        <label for="nro_tarjeta">Número:</label>
-        <input type="number" id="nro_tarjeta" name="NroTarjeta" required min="0"/><br/><br/>
-        <label for="clave_tarjeta">Clave:</label>
-        <input type="number" id="clave_tarjeta" name="ClaveTarjeta" required min="0" max="999"/><br/><br/>
-        <label for="venc_tarjeta">Fecha de vencimiento:</label>
-        <input type="month" id="venc_tarjeta" name="VencimientoTarjeta" required /><br/><br/><br/>
-        <div>
-          <input type="number" id="mes" min="1" max="12" size="2rem" required> <p> / </p> <input type="number" id="año" min="2023" max="9999" size="4" required>
-        </div>
-        <button type="button submit" class="btn btn-primary botones" style="float: right; margin-right: 0.2cm">Donar</button>
-      </div>
-    </form>
-  </dialog>
-  <script>
-    function donar(campania_id) {
-      const element = document.getElementById("dial_donar"+campania_id);
-      element.showModal();
-    }
-  </script>
-</div>
 
-<br/>
-{% endfor %} 
+</div>
+<br/><br/>
+
+{% endfor %}
+
 {% else %}
 <h2 class="centerObjects"> Cargar campaña Refugio!!</h2>
 {% endif %}
+
+
+
 
 </div>
   <dialog id="dial_crear_campania">
@@ -97,11 +68,11 @@
       <div align="left">
         <p align="center" style="font-size: 1.4rem; font-weight: bold"> Nueva campaña de donación </p><br/>
         <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="Nombre" required="true"/><br/><br/>
+        <input type="text" id="nombre" name="nombre" required/><br/><br/>
         <label for="descripcion">Descripción:</label>
-        <input type="text" id="descripcion" name="Descripcion" required="true"/><br/><br/>
+        <input type="text" id="descripcion" name="descripcion" required/><br/><br/>
         <label for="fecha_limite">Fecha límite para donar:</label>
-        <input type="date" id="fecha_limite" name="FechaLimite" required /><br/><br/><br/>
+        <input type="date" id="fecha_limite" name="fecha_limite"/><br/><br/><br/>
         <button type="button submit" class="btn btn-primary botones" style="float: right; margin-right: 0.2cm">Crear campaña</button>
       </div>
       <script>
