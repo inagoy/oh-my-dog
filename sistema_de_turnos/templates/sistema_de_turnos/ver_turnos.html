@@ -1,0 +1,85 @@
+{% extends 'base.html' %}{% load static %} {% block content %}
+
+<div class="banner centerObjects" style="height: 4rem">
+  <div class="vertical_align" style="font-weight: bold">
+    Tus turnos
+  </div>
+</div>
+{% if turnos %}
+<link href="{% static 'css/ver_turnos_solicitados.css' %}" rel="stylesheet" />
+<link href="{% static 'css/index.css' %}" rel="stylesheet" /> 
+{% for turno in turnos %}
+
+<div class="card text-center card-s centerObjects">
+  <div class="card-header">
+    <span class="badge text-dark" style="background-color: #2699b1"
+      >{{ turno.get_estado_turno_display }}</span>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">{{ turno.perro.nombre }}</h5>
+    <p class="card-text">{{ turno.get_motivo }}</p>
+  
+  <div class="card-footer text-muted">
+    {{turno.fecha_turno}} {{turno.get_franja_horaria}}
+  </div>
+</div>
+</div>
+<dialog id="dialogo2{{turno.id}}">
+  <p>Ingrese el horario asignado para el turno</p>
+  <form method="post" action="{% url 'aceptar_turno' nroTurno=turno.id %}">
+    {% csrf_token %} {{ form.as_p }}
+    <button
+      type="button submit"
+      class="btn btn-primary"
+      style="float: right; margin-right: 0.2cm">
+      Confirmar
+    </button>
+      <input
+      id="horario"
+      name="Horario"
+      type="time"
+      style="float: right; margin-right:0.5cm"
+      required="true"
+    />
+  </form>
+</dialog>
+<script>
+
+  function mostrarHorarioSugerido(turno_id){
+    const element = document.getElementById("dialogo2"+turno_id);
+    element.showModal();
+  }
+</script>
+
+<dialog id="dialogo3{{turno.id}}">
+  <p>Ingrese sugerencia de turno</p>
+  <form method="post" action="{% url 'rechazar_turno' nroTurno=turno.id %}">
+    {% csrf_token %} {{ form.as_p }}
+    <button
+      type="button submit"
+      class="btn btn-primary"
+      style="float: right; margin-right: 0.2cm">
+      Confirmar
+    </button>
+      <input
+      id="sugerencia"
+      name="Sugerencia"
+      type="text"
+      style="float: right; margin-right:0.5cm"
+      required="true"
+    />
+  </form>
+</dialog>
+<script>
+
+  function mostrarSugerenciaTurno(turno_id){
+    const element = document.getElementById("dialogo3"+turno_id);
+    element.showModal();
+  }
+</script>
+<br>
+{% endfor %}
+{% else %}
+<h2 class="centerObjects"> Actualmente no hay turnos solicitados</h2>
+{% endif %}
+{% endblock %}

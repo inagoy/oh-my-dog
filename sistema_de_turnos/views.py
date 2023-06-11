@@ -75,9 +75,10 @@ def ver_historia_clinica(request, perro_id):
 
 
 def ver_turnos(request):
-    form.fields["perro"].queryset = Perro.objects.filter(dueño=request.user, activo=True)
-    
-    turnos = Turno.objects.filter(perro=request.user)
+    perros = Perro.objects.filter(dueño=request.user, activo=True)
+    turnos = []
+    for perro in perros:
+        turnos = turnos + list(Turno.objects.filter(perro=perro))
     return render(request, 'sistema_de_turnos/ver_turnos.html', {'turnos': turnos})
 
 
