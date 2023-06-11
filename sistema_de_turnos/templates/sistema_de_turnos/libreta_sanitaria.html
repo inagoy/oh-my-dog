@@ -1,0 +1,13 @@
+{% extends 'base.html' %}{% block content %}
+
+<h1>Libreta sanitaria de {{ perro.nombre }}</h1>
+
+{% if inyecciones %}
+<ul class="container">
+  {% for inyeccion in inyecciones %}
+  <li>{{ inyeccion }}</li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>{{ perro.nombre }} No tiene inyecciones aplicadas.</p>
+{% endif %} {% endblock %}

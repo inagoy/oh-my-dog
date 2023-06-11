@@ -2,9 +2,9 @@ from datetime import date
 
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from .forms import AtencionForm, SacarTurnoForm, HorarioForm, SugerenciaForm
+from .forms import AtencionForm, SacarTurnoForm, HorarioForm, SugerenciaForm, LibretaForm
 from usuarios_y_perros.models import Perro
-from sistema_de_turnos.models import Turno, Atencion
+from sistema_de_turnos.models import Turno, Atencion, Inyeccion
 from sistema_de_turnos.helpers import enviar_mail_turno_aceptado, enviar_mail_turno_rechazado, enviar_mail_turno_cancelado
 
 
@@ -81,17 +81,33 @@ def ver_historia_clinica(request, perro_id):
     }
     return render(request, 'sistema_de_turnos/historia_clinica.html', context)
 
-def llenar_libreta_sanitaria(request, perro_id):
-    return render(request,'index.html')
+def llenar_libreta_sanitaria(request, nroTurno):
+    turno = Turno.objects.get(id=nroTurno)
+    if request.method == 'POST':
+        form = LibretaForm(request.POST)
+        if form.is_valid():
+            inyeccion = form.save(commit=False)
+            inyeccion.turno = turno
+            inyeccion.save()
+            return redirect('index')
+    else:
+        form = LibretaForm()
+    
+    context = {
+            'form': form,
+            'turno': turno,
+        }
+    return render(request, 'sistema_de_turnos/llenar_libreta_sanitaria.html', context)
 
 def ver_libreta_sanitaria(request, perro_id):
     perro = Perro.objects.get(id=perro_id)
-    atenciones = Atencion.objects.filter(turno__perro=perro)
+    inyecciones = Inyeccion.objects.filter(turno__perro=perro)
     context = {
         'perro': perro,
-        'atenciones': atenciones
+        'inyecciones': inyecciones
     }
-    return render(request, 'sistema_de_turnos/historia_clinica.html', context)
+    
+    return render(request, 'sistema_de_turnos/libreta_sanitaria.html', context)
 
 
 def ver_turnos(request):

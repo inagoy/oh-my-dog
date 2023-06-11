@@ -1,5 +1,5 @@
 from django import forms
-from .models import Atencion, Turno
+from .models import Atencion, Turno, Inyeccion
 from django.core.exceptions import ValidationError
 from django.db.models import Q
 from datetime import date
@@ -94,3 +94,9 @@ class AtencionForm(forms.ModelForm):
     class Meta:
         model = Atencion
         fields = ['precio', 'observaciones']
+
+
+class LibretaForm(forms.ModelForm):
+    class Meta:
+        model = Inyeccion
+        fields = ['peso', 'tipo_inyeccion', 'cantidad_de_desparasitante']
