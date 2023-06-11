@@ -20,7 +20,13 @@
     <p class="card-text">{{ turno.get_motivo }}</p>
   
   <div class="card-footer text-muted">
+    {% if turno.estado_turno == "ACEP" or turno.estado_turno == "CANC" or turno.estado_turno == "CONC" %}
+      {{turno.fecha_turno}} {% if turno.horario %}{{turno.horario}}{% endif %}
+    {% elif turno.estado_turno == "RECH" %}
+      {{turno.sugerencia_turno}}
+    {% else %}
     {{turno.fecha_turno}} {{turno.get_franja_horaria}}
+    {% endif %}
   </div>
 </div>
 </div>

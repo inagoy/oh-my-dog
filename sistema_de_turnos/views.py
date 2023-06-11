@@ -58,6 +58,7 @@ def rechazar_turno(request, nroTurno=None, sugerencia=None):
         turno.estado_turno = "RECH"
         form = SugerenciaForm(request.POST)
         sugerencia = request.POST['Sugerencia']
+        turno.sugerencia_turno = sugerencia
         turno.save()
         enviar_mail_turno_rechazado(turno, sugerencia)
         messages.success(request, "El turno fue rechazado")
