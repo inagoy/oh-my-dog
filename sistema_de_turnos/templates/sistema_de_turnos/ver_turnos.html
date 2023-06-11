@@ -20,14 +20,21 @@
     <p class="card-text">{{ turno.get_motivo }}</p>
   
   <div class="card-footer text-muted">
-    {% if turno.estado_turno == "ACEP" or turno.estado_turno == "CANC" or turno.estado_turno == "CONC" %}
+    <div>
+      {% if turno.estado_turno == "ACEP" or turno.estado_turno == "CANC" or turno.estado_turno == "CONC" %}
       {{turno.fecha_turno}} {% if turno.horario %}{{turno.horario}}{% endif %}
-    {% elif turno.estado_turno == "RECH" %}
-      Intentá sacar otro turno para el día {{turno.sugerencia_turno}}
-    {% else %}
-    Pediste tu turno para el día {{turno.fecha_turno}} en turno {{turno.get_franja_horaria}} 
-    y está siendo evaluado por la veterinaria
-    {% endif %}
+      {% elif turno.estado_turno == "RECH" %}
+        Intentá sacar otro turno para el día {{turno.sugerencia_turno}}
+      {% else %}
+      Pediste tu turno para el día {{turno.fecha_turno}} en turno {{turno.get_franja_horaria}} 
+      y está siendo evaluado por la veterinaria
+      {% endif %}
+    </div>
+    <div>
+      {% if turno.estado_turno == "ACEP" %}
+      <a onclick="mostrarConfirmacionCancelarTurno({{turno.id}})" class="btn btn-primary botones">Cancelar Turno</a>
+      {% endif %}
+    </div>
   </div>
 </div>
 </div>
@@ -82,6 +89,40 @@
   function mostrarSugerenciaTurno(turno_id){
     const element = document.getElementById("dialogo3"+turno_id);
     element.showModal();
+  }
+</script>
+
+<dialog id="dialogo4{{turno.id}}">
+  <p>¿Quiere cancelar este turno? No podrá deshacer esta acción</p>
+  <form method="post" action="{% url 'cancelar_turno' nroTurno=turno.id %}">
+    {% csrf_token %} {{ form.as_p }}
+    <button
+      type="button submit"
+      class="btn btn-primary"
+      style="float: right; margin-right: 0.2cm">
+      Cancelar turno
+    </button>
+  </form>
+    <button
+    type="button submit"
+    class="btn btn-primary"
+    style="float: right; margin-right: 0.2cm"
+    onclick="cerrar({{turno.id}})">
+    No, deseo conservar mi turno
+  </button>
+</dialog>
+<script>
+
+  function mostrarConfirmacionCancelarTurno(turno_id){
+    const element = document.getElementById("dialogo4"+turno_id);
+    element.showModal();
+  }
+</script>
+
+<script>
+  function cerrar(turno_id) {
+    const element = document.getElementById("dialogo4"+turno_id);
+    element.close();
   }
 </script>
 <br>

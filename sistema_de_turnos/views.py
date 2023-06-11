@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from .forms import SacarTurnoForm, HorarioForm, SugerenciaForm
 from usuarios_y_perros.models import Perro
 from sistema_de_turnos.models import Turno, Atencion
-from sistema_de_turnos.helpers import enviar_mail_turno_aceptado, enviar_mail_turno_rechazado
+from sistema_de_turnos.helpers import enviar_mail_turno_aceptado, enviar_mail_turno_rechazado, enviar_mail_turno_cancelado
 
 
 def ver_turnos_del_dia(request):
@@ -64,6 +64,13 @@ def rechazar_turno(request, nroTurno=None, sugerencia=None):
         messages.success(request, "El turno fue rechazado")
         return redirect('ver_turnos_solicitados')
 
+def cancelar_turno(request, nroTurno=None):
+    turno = Turno.objects.get(id=nroTurno)
+    turno.estado_turno = "CANC"
+    turno.save()
+    enviar_mail_turno_cancelado(turno)
+    messages.success(request, "El turno fue cancelado")
+    return redirect('ver_turnos_solicitados')
 
 def ver_historia_clinica(request, perro_id):
     perro = Perro.objects.get(id=perro_id)

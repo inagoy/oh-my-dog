@@ -23,3 +23,14 @@ def enviar_mail_turno_rechazado(turno,sugerencia):
                     ["alive.soluciones.software@gmail.com"],
                     fail_silently=False,
                 )
+
+def enviar_mail_turno_cancelado(turno):
+    send_mail(
+                    "Cancelaste un turno",
+                    "Hola! Acabás de cancelar un turno que ya había sido aceptado por ¡Oh my dog!"+
+                    "\nEste turno era para el perro "+turno.perro.nombre+
+                    ". Podés solicitar un turno para otro momento.",
+                    settings.EMAIL_HOST_USER,
+                    ["alive.soluciones.software@gmail.com"],
+                    fail_silently=False,
+                )
