@@ -81,6 +81,18 @@ def ver_historia_clinica(request, perro_id):
     }
     return render(request, 'sistema_de_turnos/historia_clinica.html', context)
 
+def llenar_libreta_sanitaria(request, perro_id):
+    return render(request,'index.html')
+
+def ver_libreta_sanitaria(request, perro_id):
+    perro = Perro.objects.get(id=perro_id)
+    atenciones = Atencion.objects.filter(turno__perro=perro)
+    context = {
+        'perro': perro,
+        'atenciones': atenciones
+    }
+    return render(request, 'sistema_de_turnos/historia_clinica.html', context)
+
 
 def ver_turnos(request):
     perros = Perro.objects.filter(dueño=request.user, activo=True)
@@ -106,4 +118,3 @@ def agregar_atencion(request, nroTurno):
         'turno': turno,
     }
     return render(request, 'sistema_de_turnos/agregar_atencion.html', context)
-                
