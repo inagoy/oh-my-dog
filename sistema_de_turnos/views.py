@@ -2,7 +2,7 @@ from datetime import date
 
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from .forms import SacarTurnoForm, HorarioForm, SugerenciaForm
+from .forms import AtencionForm, SacarTurnoForm, HorarioForm, SugerenciaForm
 from usuarios_y_perros.models import Perro
 from sistema_de_turnos.models import Turno, Atencion
 from sistema_de_turnos.helpers import enviar_mail_turno_aceptado, enviar_mail_turno_rechazado, enviar_mail_turno_cancelado
@@ -89,5 +89,21 @@ def ver_turnos(request):
         turnos = turnos + list(Turno.objects.filter(perro=perro))
     return render(request, 'sistema_de_turnos/ver_turnos.html', {'turnos': turnos})
 
+def agregar_atencion(request, nroTurno):
+    turno = Turno.objects.get(id=nroTurno)
+    if request.method == 'POST':
+        form = AtencionForm(request.POST)
+        if form.is_valid():
+            atencion = form.save(commit=False)
+            atencion.turno = turno
+            atencion.save()
+            return redirect('index.html')
+    else:
+        form = AtencionForm()
 
+    context = {
+        'form': form,
+        'turno': turno,
+    }
+    return render(request, 'sistema_de_turnos/agregar_atencion.html', context)
                 

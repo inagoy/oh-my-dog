@@ -1,5 +1,5 @@
 from django import forms
-from .models import Turno
+from .models import Atencion, Turno
 from django.core.exceptions import ValidationError
 from django.db.models import Q
 from datetime import date
@@ -89,3 +89,8 @@ class HorarioForm(forms.Form):
 class SugerenciaForm(forms.Form):
     sugerencia = forms.CharField(
     )
+
+class AtencionForm(forms.ModelForm):
+    class Meta:
+        model = Atencion
+        fields = ['precio', 'observaciones']
