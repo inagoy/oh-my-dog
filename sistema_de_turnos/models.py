@@ -27,6 +27,7 @@ class Turno(models.Model):
         DESPARASITACION = "DESP", "Desparasitación"
         CONSULTA = "CONS", "Consulta general"
         URGENCIA = "URGE", "Urgencia"
+        CASTRACION = "CAST", "Castración"
 
     motivo = models.CharField(
         max_length=4,
