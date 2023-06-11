@@ -29,9 +29,9 @@ class CampaniaDonacion(models.Model):
 
 
 class Tarjeta(models.Model):
-    numero = models.IntegerField(verbose_name="Número de la tarjeta de crédito",)
-    clave = models.CharField(max_length=15, verbose_name="Clave de la tarjeta de crédito",)
-    fecha_vencimiento = models.DateField(verbose_name="Fecha de vencimiento de la tarjeta de crédito",)
+    numero = models.IntegerField(verbose_name="Número",)
+    clave = models.CharField(max_length=15, verbose_name="Clave",)
+    fecha_vencimiento = models.DateField(verbose_name="Fecha de vencimiento",)
     saldo = models.DecimalField(max_digits=11, decimal_places=2,)
 
 

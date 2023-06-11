@@ -4,7 +4,7 @@ from datetime import date
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from .forms import AdopcionForm, TarjetaForm, DonacionForm, CampaniaDonacionForm
-from .models import Perro
+from .models import Perro, Tarjeta
 from publicaciones.models import Adopcion, CampaniaDonacion
 from publicaciones.helpers import enviar_mail_contestar_adopcion
 from usuarios_y_perros.models import Usuario
@@ -17,10 +17,14 @@ def donar(request, campania_id=None):
         messages.error(request, "La campaña a la que intenta acceder no existe")
         return redirect("campanias")
     if request.method == 'POST':
-        form_donacion = DonacionForm(request.POST)
         form_tarjeta = TarjetaForm(request.POST)
+        form_donacion = DonacionForm(request.POST)
         time.sleep(6)
-        if form_donacion.is_valid() and form_tarjeta.is_valid():
+        if form_tarjeta.is_valid() and form_donacion.is_valid():
+            tarjeta = Tarjeta.objects.get(numero=int(form_tarjeta.cleaned_data['numero']))
+            if tarjeta.saldo < form_donacion.cleaned_data['monto']:
+                form_donacion.add_error('monto', 'El saldo de la tarjeta es insuficiente')
+                return render(request, 'publicaciones/donar.html', {'form_donacion': form_donacion, 'form_tarjeta': form_tarjeta, 'campania': campania})
             donacion = form_donacion.save(commit=False)
             donacion.campania = campania
             donacion.usuario = request.user
@@ -31,9 +35,7 @@ def donar(request, campania_id=None):
             donacion.usuario.save()
             messages.success(request, "Se concretó la donación")
             return redirect(f"/publicaciones/campanias/donar/{campania.id}")
-        else:
-            messages.error(request, "Algo falló")
-            return redirect(f"/publicaciones/campanias/donar/{campania.id}")
+        return render(request, 'publicaciones/donar.html', {'form_donacion': form_donacion, 'form_tarjeta': form_tarjeta, 'campania': campania})
     else:
         form_donacion = DonacionForm()
         form_tarjeta = TarjetaForm()
