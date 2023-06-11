@@ -44,6 +44,7 @@
       {% if turno.horario %} {{ turno.horario }} {% else%} {{ '-' }} {% endif %}
     </p>
     <a
+      href= "{% url 'completar_atencion' turno.pk %}"
       class="btn btn-primary botones"
       >Completar atención</a
     >

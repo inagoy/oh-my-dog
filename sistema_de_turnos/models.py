@@ -66,7 +66,7 @@ class Turno(models.Model):
 class Atencion(models.Model):
     turno = models.OneToOneField(Turno, on_delete=models.CASCADE)
     precio = models.DecimalField(max_digits=8, decimal_places=2)
-    observaciones = models.CharField(max_length=50)
+    observaciones = models.TextField(blank=True)
 
 
 class Inyeccion(models.Model):
