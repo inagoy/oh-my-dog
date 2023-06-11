@@ -94,3 +94,9 @@ class AtencionForm(forms.ModelForm):
     class Meta:
         model = Atencion
         fields = ['precio', 'observaciones']
+        
+    def clean_precio(self):
+        precio = self.cleaned_data.get('precio')
+        if precio <= 0:
+            raise forms.ValidationError("Precio must be greater than zero.")
+        return precio

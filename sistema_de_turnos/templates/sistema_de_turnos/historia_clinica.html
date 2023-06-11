@@ -1,13 +1,27 @@
 {% extends 'base.html' %}{% block content %}
 
-<h1>Historia clínica de {{ perro.nombre }}</h1>
+<div class="container">
+  <h1>Historia clínica de {{ perro.nombre }}</h1>
 
-{% if atenciones %}
-<ul class="container">
-  {% for atencion in atenciones %}
-  <li>{{ atencion }}</li>
-  {% endfor %}
-</ul>
+  {% if atenciones %}
+  <ul class="container">
+    {% for atencion in atenciones %}
+    <div class="card text-center">
+      <div class="card-header">
+        Atención del día {{atencion.turno.fecha_turno }} <br>
+        Horario: {{atencion.turno.horario }}
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">{{ atencion.turno.get_motivo }}</h5>
+        <p class="card-text">
+          {{ atencion.observaciones }}
+        </p>
+      </div>
+      <div class="card-footer text-muted">Costo: {{ atencion.precio }} $ </div>
+    </div>
+    {% endfor %}
+  </ul>
+</div>
 {% else %}
-<p>{{ perro.nombre }} no tiene atenciones registradas.</p>
+<p>{{ perro.nombre }} No tiene atenciones registradas.</p>
 {% endif %} {% endblock %}

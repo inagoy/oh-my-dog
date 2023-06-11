@@ -14,11 +14,10 @@ def ver_turnos_del_dia(request):
         delta = date.today() - fecha
         return delta.days == 0
 
-    turnos_aceptados = Turno.objects.filter(estado_turno=Turno.Estado.ACEPTADO).order_by('horario')
+    turnos_aceptados = Turno.objects.filter(
+        estado_turno=Turno.Estado.ACEPTADO).order_by('horario')
     turnos_hoy = [obj for obj in turnos_aceptados if es_hoy(obj.fecha_turno)]
     return render(request, 'sistema_de_turnos/turnos_del_dia.html', {'turnos': turnos_hoy})
-
-
 
 
 def sacar_turno(request):
@@ -41,28 +40,29 @@ def ver_turnos_solicitados(request):
 
 
 def aceptar_turno(request, nroTurno=None, horario=None):
-        #cambiar el estado a aceptado y guardar
-        turno = Turno.objects.get(id=nroTurno)
-        turno.estado_turno = "ACEP"
-        form = HorarioForm(request.POST)
-        horario = request.POST['Horario']
-        turno.horario = request.POST['Horario']
-        turno.save()
-        enviar_mail_turno_aceptado(turno, horario)
-        messages.success(request, "El turno fue aceptado")
-        return redirect('ver_turnos_solicitados')
+    # cambiar el estado a aceptado y guardar
+    turno = Turno.objects.get(id=nroTurno)
+    turno.estado_turno = "ACEP"
+    form = HorarioForm(request.POST)
+    horario = request.POST['Horario']
+    turno.horario = request.POST['Horario']
+    turno.save()
+    enviar_mail_turno_aceptado(turno, horario)
+    messages.success(request, "El turno fue aceptado")
+    return redirect('ver_turnos_solicitados')
 
 
 def rechazar_turno(request, nroTurno=None, sugerencia=None):
-        turno = Turno.objects.get(id=nroTurno)
-        turno.estado_turno = "RECH"
-        form = SugerenciaForm(request.POST)
-        sugerencia = request.POST['Sugerencia']
-        turno.sugerencia_turno = sugerencia
-        turno.save()
-        enviar_mail_turno_rechazado(turno, sugerencia)
-        messages.success(request, "El turno fue rechazado")
-        return redirect('ver_turnos_solicitados')
+    turno = Turno.objects.get(id=nroTurno)
+    turno.estado_turno = "RECH"
+    form = SugerenciaForm(request.POST)
+    sugerencia = request.POST['Sugerencia']
+    turno.sugerencia_turno = sugerencia
+    turno.save()
+    enviar_mail_turno_rechazado(turno, sugerencia)
+    messages.success(request, "El turno fue rechazado")
+    return redirect('ver_turnos_solicitados')
+
 
 def cancelar_turno(request, nroTurno=None):
     turno = Turno.objects.get(id=nroTurno)
@@ -71,6 +71,7 @@ def cancelar_turno(request, nroTurno=None):
     enviar_mail_turno_cancelado(turno)
     messages.success(request, "El turno fue cancelado")
     return redirect('ver_turnos_solicitados')
+
 
 def ver_historia_clinica(request, perro_id):
     perro = Perro.objects.get(id=perro_id)
@@ -89,15 +90,22 @@ def ver_turnos(request):
         turnos = turnos + list(Turno.objects.filter(perro=perro))
     return render(request, 'sistema_de_turnos/ver_turnos.html', {'turnos': turnos})
 
-def agregar_atencion(request, nroTurno):
+
+def completar_atencion(request, nroTurno):
     turno = Turno.objects.get(id=nroTurno)
     if request.method == 'POST':
         form = AtencionForm(request.POST)
         if form.is_valid():
-            atencion = form.save(commit=False)
-            atencion.turno = turno
-            atencion.save()
-            return redirect('index.html')
+            form.instance.turno = turno
+            form.save()
+            turno.estado_turno = 'CONC'
+            turno.save()
+            messages.success(request, 'Atencion guardada correctamente.')
+            submit_action = request.POST.get('submit_action')
+            if submit_action == 'agregar_atencion':
+                return redirect('ver_historia_clinica', turno.perro.pk)
+            elif submit_action == 'completar_libreta':
+                return redirect('index')
     else:
         form = AtencionForm()
 
@@ -105,5 +113,4 @@ def agregar_atencion(request, nroTurno):
         'form': form,
         'turno': turno,
     }
-    return render(request, 'sistema_de_turnos/agregar_atencion.html', context)
-                
+    return render(request, 'sistema_de_turnos/completar_atencion.html', context)
