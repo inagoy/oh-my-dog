@@ -1,0 +1,41 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+//ARREGLAR
+<link href="{% static 'css/ver_perros.css' %}" rel="stylesheet" />
+<a
+  class="btn btn-primary centerObjects w-25"
+  href="{% url 'cargar_perro' %}"
+  role="button"
+>
+  Cargar Perro
+</a>
+<div class="row row-cols-6 row-cols-md-7 g-4 m-2">
+  {% if perros %} {% for perro in perros %}
+  <div class="col">
+    <a href="{% url 'ver_perro' perro.pk %}" class="card-link">
+      <div class="card">
+        <!-- Card image -->
+        <div class="view overlay">
+          <div class="image-container">
+            <img
+              class="card-img-top"
+              src="{{ perro.foto_url }}"
+              alt="{{ perro.nombre }}"
+            />
+          </div>
+        </div>
+        <!-- Card content -->
+        <div class="card-body">
+          <!-- Title -->
+          <h4 class="card-title">{{ perro.nombre }}</h4>
+          <!-- Button -->
+        </div>
+      </div>
+      <!-- Card -->
+    </a>
+  </div>
+  {% endfor %} {% else %}
+  <h1 class="centerObjects">No tenes perros registrados</h1>
+  {% endif %}
+</div>
+{% endblock %}

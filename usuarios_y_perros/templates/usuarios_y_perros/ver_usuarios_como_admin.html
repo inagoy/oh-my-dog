@@ -1,0 +1,46 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+{% if user.is_staff %}
+<link href="{% static 'css/ver_perros.css' %}" rel="stylesheet" />
+
+<div class="row row-cols-6 row-cols-md-7 g-4 m-2">
+  {% if usuarios %} {% for usuario in usuarios %}
+  <div class="col">
+    <a href="{% url 'ver_perros_como_admin' usuario.pk %}" class="card-link">
+      <div class="card">
+        <!-- Card image -->
+        <div class="view overlay">
+          <div class="image-container">
+            <img
+              class="card-img-top"
+              src="{% static 'usuario_default.png' %}"
+              alt="imagen representando a una persona"
+            />
+          </div>
+        </div>
+        <!-- Card content -->
+        <div class="card-body">
+          <!-- Title -->
+          <h4 class="card-title">{{ usuario.nombre }} {{ usuario.apellido }}</h4>
+          <!-- Button -->
+        </div>
+      </div>
+      <!-- Card -->
+    </a>
+  </div>
+  {% endfor %} {% else %}
+  <div class="banner centerObjects" style="height: 4rem">
+    <div class="vertical_align" style="font-weight: bold">
+      No hay usuarios registrados en el sistema <p id="current_date"></p>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% else %}
+<div class="banner centerObjects" style="height: 4rem">
+  <div class="vertical_align" style="font-weight: bold">
+    No tienes permisos de administrador <p id="current_date"></p>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

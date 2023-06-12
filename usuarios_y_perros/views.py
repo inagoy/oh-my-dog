@@ -119,6 +119,15 @@ def ver_perro(request, perro_id):
             'perros': Perro.objects.filter(dueño=request.user, activo=True)
         })
 
+def ver_perros_como_admin(request, usuario_id):
+    return render(request, 'usuarios_y_perros/ver_perros.html', {
+        'perros': Perro.objects.filter(dueño=usuario_id, activo=True)
+    })
+
+def ver_usuarios_como_admin(request):
+        return render(request, 'usuarios_y_perros/ver_usuarios_como_admin.html', {
+        'usuarios': Usuario.objects.all()
+    })
 
 def edit_perro(request, perro_id):
 
