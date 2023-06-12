@@ -1,13 +1,43 @@
 {% extends 'base.html' %}{% block content %}
 
-<h1>Libreta sanitaria de {{ perro.nombre }}</h1>
+<div class="banner centerObjects" style="height: 4rem">
+  <div class="vertical_align" style="font-weight: bold">
+    Libreta sanitaria de {{ perro.nombre }}
+  </div>
+</div>
 
 {% if inyecciones %}
-<ul class="container">
-  {% for inyeccion in inyecciones %}
-  <li>{{ inyeccion }}</li>
-  {% endfor %}
-</ul>
-{% else %}
-<p>{{ perro.nombre }} No tiene inyecciones aplicadas.</p>
+{% for inyeccion in inyecciones %}
+<div class="card text-center card-s centerObjects">
+  <dl>
+    <dt>{{ inyeccion.turno.get_motivo_display }}</dt>
+    <dd>FECHA: {{ inyeccion.turno.fecha_turno }}</dd>
+    <dd>PESO DEL PERRO: {{ inyeccion.peso }} kilogramos</dd>
+  </dl>
+</div>
+<br>
+{% endfor %}
+{% endif %}
+
+
+
+
+{% if desparasitantes %}
+{% for desparasitante in desparasitantes %}
+<div class="card text-center card-s centerObjects">
+  <dl>
+    <dt>{{ desparasitante.turno.get_motivo_display }}</dt>
+    <dd>FECHA: {{ desparasitante.turno.fecha_turno }}</dd>
+    <dd>PESO DEL PERRO: {{ desparasitante.peso }} kilogramos</dd>
+    <dd>CANTIDAD DE DESPARASITANTE APLICADO: {{ desparasitante.cantidad_de_desparasitante }} mililitros</dd>
+
+  </dl>
+</div>
+<br>
+{% endfor %}
+{% endif %}
+
+
+{% if not inyecciones and not desparasitantes %}
+<p>{{ perro.nombre }} no tiene vacunas ni desparasitantes aplicados.</p>
 {% endif %} {% endblock %}

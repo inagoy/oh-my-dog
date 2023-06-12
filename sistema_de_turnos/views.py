@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from .forms import AtencionForm, SacarTurnoForm, HorarioForm, SugerenciaForm, InyeccionForm, DesparasitanteForm
 from usuarios_y_perros.models import Perro
-from sistema_de_turnos.models import Turno, Atencion, Inyeccion
+from sistema_de_turnos.models import Turno, Atencion, Inyeccion, Desparasitante
 from sistema_de_turnos.helpers import enviar_mail_turno_aceptado, enviar_mail_turno_rechazado, enviar_mail_turno_cancelado
 
 
@@ -113,9 +113,11 @@ def llenar_libreta_sanitaria(request, nroTurno):
 def ver_libreta_sanitaria(request, perro_id):
     perro = Perro.objects.get(id=perro_id)
     inyecciones = Inyeccion.objects.filter(turno__perro=perro)
+    desparasitantes = Desparasitante.objects.filter(turno__perro=perro)
     context = {
         'perro': perro,
-        'inyecciones': inyecciones
+        'inyecciones': inyecciones,
+        'desparasitantes': desparasitantes
     }
     
     return render(request, 'sistema_de_turnos/libreta_sanitaria.html', context)
