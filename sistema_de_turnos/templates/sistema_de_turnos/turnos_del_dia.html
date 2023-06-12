@@ -44,6 +44,10 @@
     <p id="horario" style="font-size: 1.4rem; font-weight: bold">
       {% if turno.horario %} {{ turno.horario }} {% else%} {{ '-' }} {% endif %}
     </p>
+
+  </div>
+
+  <div class="card-footer">
     <a
       href= "{% url 'completar_atencion' turno.pk %}"
       class="btn btn-primary botones"

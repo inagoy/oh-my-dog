@@ -1,0 +1,48 @@
+{% extends 'base.html' %}{% load static %} {% block content %}
+<link href="{% static 'css/index.css' %}" rel="stylesheet" />
+<link href="{% static 'css/global.css' %}" rel="stylesheet" />
+
+
+
+<div style="padding-left: 15rem; padding-right: 15rem;">
+<div align="center" style="border: solid 0.2rem #2699b1;">
+<br/>
+<div align="left" style="padding-left: 10px; width: 85%; font-size: 1.2rem; font-weight: 600">
+    <br/>
+    <h1>Postulantes de adopción para {{adopcion.nombre}}</h1>
+    <br/>
+
+    {% if postulantes %}
+
+    <table style="width:60%">
+    <tr>
+        <th>Nombre</th>
+        <th>Email</th>
+    </tr>
+
+    {% for postulante in postulantes %}
+    {% if postulante.nombre %}
+    <tr>
+        <td>{{ postulante.nombre }}</td>
+        <td>{{ postulante.email }}</td>
+    </tr>
+
+    {% else %}
+    <tr>
+        <td>{{ postulante.usuario.nombre }}</td>
+        <td>{{ postulante.usuario.email }}</td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+
+    </table>
+
+    {% endif %}
+
+</div>
+<br/>
+</div>
+</div>
+
+{% endblock %}
+

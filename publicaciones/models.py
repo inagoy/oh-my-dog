@@ -87,6 +87,13 @@ class Adopcion(Publicacion):
     perro = models.ForeignKey(Perro, on_delete=models.CASCADE, null=True)
 
 
+class Postulante(models.Model):
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, blank=True, null=True)
+    adopcion = models.ForeignKey(Adopcion, on_delete=models.CASCADE)
+    nombre = models.CharField(max_length=50, blank=True, null=True)
+    email = models.EmailField(max_length=20, blank=True, null=True)
+
+
 """ 
     def descripcion(self):
         return self.perro.descipcion if self.perro else self.descripcion

@@ -4,10 +4,20 @@ from datetime import date
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from .forms import AdopcionForm, TarjetaForm, DonacionForm, CampaniaDonacionForm
-from .models import Perro, Tarjeta
+from .models import Perro, Tarjeta, Postulante
 from publicaciones.models import Adopcion, CampaniaDonacion
 from publicaciones.helpers import enviar_mail_contestar_adopcion
 from usuarios_y_perros.models import Usuario
+
+
+def postulantes(request, adopcion_id):
+    try:
+        adopcion = Adopcion.objects.get(id=adopcion_id)
+    except Adopcion.DoesNotExist:
+        messages.error(request, "La adopción a la que intenta acceder no existe")
+        return redirect("adopciones")
+    postulantes = Postulante.objects.filter(adopcion=adopcion_id)
+    return render(request, 'publicaciones/postulantes.html', {'postulantes': postulantes, 'adopcion': adopcion})
 
 
 def donar(request, campania_id=None):
@@ -102,10 +112,14 @@ def contestar_adopcion(request, usuario_id=None, adopcion_id=None):
         if request.user.is_authenticated:
             usuario = Usuario.objects.get(id=request.user.id)
             enviar_mail_contestar_adopcion(usuario.email, usuario.nombre, mensaje, nombre_perro)
+            postulante = Postulante(usuario=usuario, adopcion=adopcion)
+            postulante.save()
         else:
             nombre = request.POST['Nombre']
             email = request.POST['Email']
             enviar_mail_contestar_adopcion(email, nombre, mensaje, nombre_perro)
+            postulante = Postulante(nombre=nombre, email=email, adopcion=adopcion)
+            postulante.save()
         messages.success(request, "Se envío mail de solicitud de adopción")
         return redirect('adopciones')
 

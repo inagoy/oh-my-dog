@@ -30,8 +30,8 @@
 
 <div class="card text-center card-s centerObjects">
   <div class="card-header">
-    {% if adopcion.nombre %} {{ adopcion.nombre }} {% else %} {{ "Este perro
-    todavía no tiene nombre" }} {% endif %}
+    <div style="text-align: right"><a href= "{% url 'postulantes' adopcion.id %}"  class="btn btn-primary botones">Postulantes</a></div>
+    <div style="font-size: 1.4rem; font-weight: bold;">{% if adopcion.nombre %} {{ adopcion.nombre }} {% else %} {{ "Este perro todavía no tiene nombre" }} {% endif %}</div>
   </div>
   <div class="card-body">
     <p class="card-text">
