@@ -23,7 +23,7 @@ def donar(request, campania_id=None):
         if form_tarjeta.is_valid() and form_donacion.is_valid():
             tarjeta = Tarjeta.objects.get(numero=int(form_tarjeta.cleaned_data['numero']))
             if tarjeta.saldo < form_donacion.cleaned_data['monto']:
-                form_donacion.add_error('monto', 'El saldo de la tarjeta es insuficiente')
+                form_donacion.add_error('monto', 'El monto ingresado excede el límite de la tarjeta')
                 return render(request, 'publicaciones/donar.html', {'form_donacion': form_donacion, 'form_tarjeta': form_tarjeta, 'campania': campania})
             donacion = form_donacion.save(commit=False)
             donacion.campania = campania
