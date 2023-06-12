@@ -38,16 +38,18 @@ def cargar_perro(request, user_id=None):
 
             nombre_perro = form.cleaned_data['nombre']
             if Perro.objects.filter(dueño=form.instance.dueño, nombre=nombre_perro).exists():
-                if user_id == None: 
-                    messages.error(request, "Ya tenes un perro con este nombre.")
+                if user_id == None:
+                    messages.error(
+                        request, "Ya tenes un perro con este nombre.")
                     return redirect('cargar_perro')
                 else:
-                    messages.error(request, "El usuario  ya tiene un perro con este nombre")
+                    messages.error(
+                        request, "El usuario  ya tiene un perro con este nombre")
                     return redirect('cargar_perro', user_id)
             form.save()
             messages.success(
                 request, "La carga del perro fue exitosa!")
-            if user_id == None: 
+            if user_id == None:
                 return redirect('cargar_perro')
             else:
                 return redirect('cargar_perro', user_id)
@@ -111,7 +113,7 @@ def ver_perros(request):
 
 def ver_perro(request, perro_id):
     perro = get_object_or_404(Perro, id=perro_id)
-    if perro.dueño == request.user:
+    if (perro.dueño == request.user) or request.user.is_staff:
         return render(request, 'usuarios_y_perros/ver_perro.html', {'perro': perro})
     else:
         messages.error(request, "No sos dueño de este perro.")
@@ -119,15 +121,18 @@ def ver_perro(request, perro_id):
             'perros': Perro.objects.filter(dueño=request.user, activo=True)
         })
 
+
 def ver_perros_como_admin(request, usuario_id):
     return render(request, 'usuarios_y_perros/ver_perros.html', {
         'perros': Perro.objects.filter(dueño=usuario_id, activo=True)
     })
 
+
 def ver_usuarios_como_admin(request):
-        return render(request, 'usuarios_y_perros/ver_usuarios_como_admin.html', {
+    return render(request, 'usuarios_y_perros/ver_usuarios_como_admin.html', {
         'usuarios': Usuario.objects.all()
     })
+
 
 def edit_perro(request, perro_id):
 
