@@ -105,9 +105,25 @@ class InyeccionForm(forms.ModelForm):
     class Meta:
         model = Inyeccion
         fields = ['peso']
+    def clean_peso(self):
+        peso = self.cleaned_data.get('peso')
+        if peso <= 0:
+            raise forms.ValidationError("El peso debe ser mayor a cero.")
+        return peso
 
 class DesparasitanteForm(forms.ModelForm):
     class Meta:
         model = Desparasitante
         fields = ['peso','cantidad_de_desparasitante']
+    
+    def clean_peso(self):
+        peso = self.cleaned_data.get('peso')
+        if peso <= 0:
+            raise forms.ValidationError("El peso debe ser mayor a cero.")
+        return peso
+    def clean_cantidad_de_desparasitante(self):
+        cantidad_de_desparasitante = self.cleaned_data.get('cantidad_de_desparasitante')
+        if cantidad_de_desparasitante <= 0:
+            raise forms.ValidationError("La cantidad de desperasitante debe ser mayor a cero.")
+        return cantidad_de_desparasitante
         
