@@ -1,5 +1,10 @@
 {% extends 'base.html' %} {% load static %} {% block content %}
 <link href="{% static 'css/ver_perros.css' %}" rel="stylesheet" />
+
+<form method="POST" class="forms">
+  {% csrf_token %} {{ form.as_p }}
+  <button onclick="location.href='usuario/ver_perros'" class="list-group-item list-group-item-action">Eliminar</button>
+</form>
 <a
   class="btn btn-primary centerObjects w-25"
   href="{% url 'cargar_perro' %}"
