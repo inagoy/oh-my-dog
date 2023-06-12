@@ -40,7 +40,7 @@
     </div>
     <div>
       {% if turno.estado_turno == "ACEP" %}
-      <a onclick="mostrarConfirmacionCancelarTurno({{turno.id}})" class="btn btn-primary botones">Cancelar Turno</a>
+      <a onclick="mostrarConfirmacionCancelarTurnoNOHACENADA({{turno.id}})" class="btn btn-primary botones">Cancelar Turno</a>
       {% endif %}
     </div>
   </div>
@@ -124,6 +124,12 @@
   function mostrarConfirmacionCancelarTurno(turno_id){
     const element = document.getElementById("dialogo4"+turno_id);
     element.showModal();
+  }
+</script>
+
+<script>
+
+  function mostrarConfirmacionCancelarTurnoNOHACENADA(turno_id){
   }
 </script>
 
