@@ -5,6 +5,7 @@ urlpatterns = [
     path('sacar_turno', views.sacar_turno, name='sacar_turno'),
     path('ver_turnos_solicitados', views.ver_turnos_solicitados,
          name='ver_turnos_solicitados'),
+    path('ver_proximos_turnos', views.ver_proximos_turnos, name='ver_proximos_turnos'),
     path('aceptar_turno/<int:nroTurno>', views.aceptar_turno, name='aceptar_turno'),
     path('rechazar_turno/<int:nroTurno>', views.rechazar_turno, name='rechazar_turno'),
     path('cancelar_turno/<int:nroTurno>', views.cancelar_turno, name='cancelar_turno'),

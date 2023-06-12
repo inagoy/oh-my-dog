@@ -5,14 +5,7 @@
     Tus turnos
   </div>
 </div>
-<a
-  class="btn btn-primary centerObjects w-25"
-  href="{% url 'ver_proximos_turnos' %}"
-  role="button"
->
-  Ver próximos turnos
-</a>
-<br>
+
 {% if turnos %}
 <link href="{% static 'css/ver_turnos_solicitados.css' %}" rel="stylesheet" />
 <link href="{% static 'css/index.css' %}" rel="stylesheet" /> 
@@ -136,6 +129,6 @@
 <br>
 {% endfor %}
 {% else %}
-<h2 class="centerObjects"> Actualmente no tenés ningún turno</h2>
+<h2 class="centerObjects"> No tenés turnos próximos</h2>
 {% endif %}
 {% endblock %}

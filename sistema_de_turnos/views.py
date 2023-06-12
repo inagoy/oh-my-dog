@@ -122,7 +122,7 @@ def ver_libreta_sanitaria(request, perro_id):
     
     return render(request, 'sistema_de_turnos/libreta_sanitaria.html', context)
 
-
+#se muestran TODOS los turnos del usuario, con todos los estados y todas las fechas
 def ver_turnos(request):
     perros = Perro.objects.filter(dueño=request.user, activo=True)
     turnos = []
@@ -130,6 +130,13 @@ def ver_turnos(request):
         turnos = turnos + list(Turno.objects.filter(perro=perro))
     return render(request, 'sistema_de_turnos/ver_turnos.html', {'turnos': turnos})
 
+def ver_proximos_turnos(request):
+    perros = Perro.objects.filter(dueño=request.user, activo=True)
+    turnos = []
+    for perro in perros:
+        turnos = turnos + list(Turno.objects.filter(perro=perro, estado_turno='SOLI'))
+        turnos = turnos + list(Turno.objects.filter(perro=perro, estado_turno='ACEP'))
+    return render(request, 'sistema_de_turnos/ver_proximos_turnos.html', {'turnos': turnos})
 
 def completar_atencion(request, nroTurno):
     turno = Turno.objects.get(id=nroTurno)
