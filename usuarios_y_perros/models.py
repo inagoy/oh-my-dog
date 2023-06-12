@@ -77,6 +77,7 @@ class Perro(models.Model):
         BULLDOG = "BULL", "Bulldog"
         BEAGLE = "BEAG", "Beagle"
         BOXER = "BOXE", "Boxer"
+        GOLDEN = "GOLD", "Golden"
 
     raza = models.CharField(  # incluir default?
         max_length=4,
