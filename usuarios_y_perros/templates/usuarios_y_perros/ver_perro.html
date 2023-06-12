@@ -21,7 +21,7 @@
             />
             <h1>{{ perro.nombre }}</h1>
             <p>Perro de {{ perro.dueño.nombre }}</p>
-             {% if not user.is_staff %}
+            {% if not user.is_staff %}
             <a href="{% url 'edit_perro' perro.pk %}" class="btn btn-secondary btn-sm mb-2">Editar</a>
             <i class="far fa-edit mb-5"></i>
             {% endif %}
