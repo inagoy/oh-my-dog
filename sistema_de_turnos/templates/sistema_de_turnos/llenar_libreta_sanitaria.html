@@ -1,5 +1,7 @@
 {% extends 'base.html' %}{% block content %}
-<h1>Llenar Libreta Sanitaria</h1>
+<h1>Llenar Libreta Sanitaria de {{ turno.perro.nombre }}</h1>
+
+<a>Motivo: {{ turno.get_motivo_display }}</a>
 <form method="post">
   {% csrf_token %} {{ form.as_p }}
   <input type="submit" value="Guardar" />

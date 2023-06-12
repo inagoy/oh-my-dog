@@ -2,7 +2,7 @@ from datetime import date
 
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from .forms import AtencionForm, SacarTurnoForm, HorarioForm, SugerenciaForm, LibretaForm
+from .forms import AtencionForm, SacarTurnoForm, HorarioForm, SugerenciaForm, InyeccionForm, DesparasitanteForm
 from usuarios_y_perros.models import Perro
 from sistema_de_turnos.models import Turno, Atencion, Inyeccion
 from sistema_de_turnos.helpers import enviar_mail_turno_aceptado, enviar_mail_turno_rechazado, enviar_mail_turno_cancelado
@@ -84,16 +84,26 @@ def ver_historia_clinica(request, perro_id):
 
 def llenar_libreta_sanitaria(request, nroTurno):
     turno = Turno.objects.get(id=nroTurno)
-    if request.method == 'POST':
-        form = LibretaForm(request.POST)
-        if form.is_valid():
-            inyeccion = form.save(commit=False)
-            inyeccion.turno = turno
-            inyeccion.save()
-            return redirect('index')
+    if turno.motivo == 'DESP':
+        if request.method == 'POST':
+            form = DesparasitanteForm(request.POST)
+            if form.is_valid():
+                desparasitante = form.save(commit=False)
+                desparasitante.turno = turno
+                desparasitante.save()
+                return redirect('index')
+        else:
+            form = DesparasitanteForm()
     else:
-        form = LibretaForm()
-    
+        if request.method == 'POST':
+            form = InyeccionForm(request.POST)
+            if form.is_valid():
+                inyeccion = form.save(commit=False)
+                inyeccion.turno = turno
+                inyeccion.save()
+                return redirect('index')
+        else:
+            form = InyeccionForm()
     context = {
             'form': form,
             'turno': turno,
@@ -133,7 +143,7 @@ def completar_atencion(request, nroTurno):
             if submit_action == 'agregar_atencion':
                 return redirect('ver_historia_clinica', turno.perro.pk)
             elif submit_action == 'completar_libreta':
-                return redirect('index')
+                return redirect('llenar_libreta_sanitaria', nroTurno=nroTurno)
     else:
         form = AtencionForm()
 
