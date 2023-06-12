@@ -38,12 +38,19 @@ def cargar_perro(request, user_id=None):
 
             nombre_perro = form.cleaned_data['nombre']
             if Perro.objects.filter(dueño=form.instance.dueño, nombre=nombre_perro).exists():
-                messages.error(request, "Ya tienes un perro con este nombre.")
-                return redirect('cargar_perro')
+                if user_id == None: 
+                    messages.error(request, "Ya tenes un perro con este nombre.")
+                    return redirect('cargar_perro')
+                else:
+                    messages.error(request, "El usuario  ya tiene un perro con este nombre")
+                    return redirect('cargar_perro', user_id)
             form.save()
             messages.success(
                 request, "La carga del perro fue exitosa!")
-            return redirect('cargar_perro')
+            if user_id == None: 
+                return redirect('cargar_perro')
+            else:
+                return redirect('cargar_perro', user_id)
     else:
         form = CargarPerroForm()
 
