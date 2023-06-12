@@ -25,12 +25,20 @@
   >Campañas de donación</button>
   {% if not user.is_staff %}
   <button
+  class="btn btn-primary centerObjects botones"
+  type="button"
+  style="width: 50%"
+  onclick="location.href='turnos/ver_turnos'"
+>Ver mis turnos
+</button>
+  <button
     class="btn btn-primary centerObjects botones"
     type="button"
     style="width: 50%"
     onclick="location.href='turnos/sacar_turno'"
   >Solicitar turno
   </button>
+
   <button
     class="btn btn-primary centerObjects botones"
     type="button"
@@ -38,13 +46,7 @@
     onclick="location.href='usuarios/cargar_perro'"
   >Cargar perro
   </button>
-  <button
-    class="btn btn-primary centerObjects botones"
-    type="button"
-    style="width: 50%"
-    onclick="location.href='turnos/ver_turnos'"
-  >Ver mis turnos
-  </button>
+  
   {% endif %}
   {% endif %}
   {% if not user.is_authenticated %}
