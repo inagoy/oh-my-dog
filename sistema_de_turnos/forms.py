@@ -98,7 +98,7 @@ class AtencionForm(forms.ModelForm):
     def clean_precio(self):
         precio = self.cleaned_data.get('precio')
         if precio <= 0:
-            raise forms.ValidationError("Precio must be greater than zero.")
+            raise forms.ValidationError("El precio debe ser mayor a cero.")
         return precio
 
 class InyeccionForm(forms.ModelForm):

@@ -114,7 +114,7 @@ def ver_perro(request, perro_id):
     if perro.dueño == request.user:
         return render(request, 'usuarios_y_perros/ver_perro.html', {'perro': perro})
     else:
-        messages.error(request, "You are not the owner of this dog.")
+        messages.error(request, "No sos dueño de este perro.")
         return render(request, 'usuarios_y_perros/ver_perros.html', {
             'perros': Perro.objects.filter(dueño=request.user, activo=True)
         })
