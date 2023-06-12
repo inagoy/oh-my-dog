@@ -129,8 +129,12 @@ def ver_perros_como_admin(request, usuario_id):
 
 
 def ver_usuarios_como_admin(request):
+    if request.method == 'POST':
+        usuarios = None
+    else:
+        usuarios = Usuario.objects.all()
     return render(request, 'usuarios_y_perros/ver_usuarios_como_admin.html', {
-        'usuarios': Usuario.objects.all()
+        'usuarios': usuarios
     })
 
 

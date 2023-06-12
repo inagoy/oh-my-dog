@@ -2,7 +2,10 @@
 
 {% if user.is_staff %}
 <link href="{% static 'css/ver_perros.css' %}" rel="stylesheet" />
-
+<form method="POST" class="forms">
+  {% csrf_token %} {{ form.as_p }}
+  <button onclick="location.href='usuarios/ver_usuarios_como_admin'" class="list-group-item list-group-item-action">Eliminar</button>
+</form>
 <div class="row row-cols-6 row-cols-md-7 g-4 m-2">
   {% if usuarios %} {% for usuario in usuarios %}
   <div class="col">
