@@ -38,11 +38,18 @@
     {% else %}
     <p style="font-weight: bold;">En {{ campania.dias_restantes }} días cierra la campaña</p>
     {% endif %}
+    {% if user.is_staff %}
+    <a
+      class="btn btn-primary botones"
+      >Ver donaciones</a
+    >
+    {% else %}
     <a
       href="{% url 'donar' campania_id=campania.id %}"
       class="btn btn-primary botones"
       >Donar</a
     >
+    {% endif %}
   </div>
 
 </div>
