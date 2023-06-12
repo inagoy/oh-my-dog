@@ -91,6 +91,8 @@ def llenar_libreta_sanitaria(request, nroTurno):
                 desparasitante = form.save(commit=False)
                 desparasitante.turno = turno
                 desparasitante.save()
+                messages.success(
+                request, "La carga de la libreta sanitaria fue exitosa!")
                 return redirect('index')
         else:
             form = DesparasitanteForm()
@@ -101,6 +103,8 @@ def llenar_libreta_sanitaria(request, nroTurno):
                 inyeccion = form.save(commit=False)
                 inyeccion.turno = turno
                 inyeccion.save()
+                messages.success(
+                request, "La carga de la libreta sanitaria fue exitosa!")
                 return redirect('index')
         else:
             form = InyeccionForm()

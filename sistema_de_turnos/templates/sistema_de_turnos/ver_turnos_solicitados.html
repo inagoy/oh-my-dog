@@ -1,5 +1,5 @@
 {% extends 'base.html' %}{% load static %} {% block content %}
-//agregar if admin
+{% if user.is_staff %}
 {% if turnos %}
 <link href="{% static 'css/ver_turnos_solicitados.css' %}" rel="stylesheet" />
 <link href="{% static 'css/index.css' %}" rel="stylesheet" /> 
@@ -80,4 +80,14 @@
 {% else %}
 <h2 class="centerObjects"> Actualmente no hay turnos solicitados</h2>
 {% endif %}
+{% else %}
+
+<div class="banner centerObjects" style="height: 4rem">
+  <div class="vertical_align" style="font-weight: bold">
+    No tienes permisos de administrador <p id="current_date"></p>
+  </div>
+</div>
+
+{% endif %}
+
 {% endblock %}
