@@ -1,5 +1,5 @@
 from django import forms
-from .models import Atencion, Turno, Inyeccion
+from .models import Atencion, Turno, Inyeccion, Desparasitante
 from django.core.exceptions import ValidationError
 from django.db.models import Q
 from datetime import date
@@ -101,8 +101,13 @@ class AtencionForm(forms.ModelForm):
             raise forms.ValidationError("Precio must be greater than zero.")
         return precio
 
-class LibretaForm(forms.ModelForm):
+class InyeccionForm(forms.ModelForm):
     class Meta:
         model = Inyeccion
-        fields = ['peso', 'tipo_inyeccion', 'cantidad_de_desparasitante']
+        fields = ['peso']
+
+class DesparasitanteForm(forms.ModelForm):
+    class Meta:
+        model = Desparasitante
+        fields = ['peso','cantidad_de_desparasitante']
         

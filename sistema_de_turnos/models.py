@@ -76,21 +76,10 @@ class Atencion(models.Model):
 class Inyeccion(models.Model):
     turno = models.OneToOneField(Turno, on_delete=models.CASCADE)
     peso = models.DecimalField(max_digits=6, decimal_places=2,)
-    
-    VACUNA_A = "VACA"
-    VACUNA_B = "VACB"
-    DESPARASITANTE = "DESP"
-    INYECCION_OPCIONES = [
-        (VACUNA_A, "Vacuna Tipo A"),
-        (VACUNA_B, "Vacuna Tipo B"),
-        (DESPARASITANTE, "Desparasitante"),
-        (None, "Seleccione una opción")
-    ]
-    
-    tipo_inyeccion = models.CharField(
-        max_length=4, choices=INYECCION_OPCIONES)
-    
+    REQUIRED_FIELDS = ['peso']
+
+class Desparasitante(models.Model):
+    turno = models.OneToOneField(Turno, on_delete=models.CASCADE)
+    peso = models.DecimalField(max_digits=6, decimal_places=2,)
     cantidad_de_desparasitante = models.DecimalField(max_digits=6, decimal_places=2,)
-
-    REQUIRED_FIELDS = ['peso', 'tipo_inyeccion', 'cantidad_de_desparasitante']
-
+    REQUIRED_FIELDS = ['peso','cantidad_de_desparasitante']
