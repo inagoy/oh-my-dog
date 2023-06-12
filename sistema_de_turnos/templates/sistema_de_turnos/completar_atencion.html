@@ -2,7 +2,8 @@
 <link href="{% static 'css/form.css' %}" rel="stylesheet" />
 <form method="post">
   <h1>Agregar Atencion</h1>
-  {% csrf_token %} {{ form.as_p }} {% if turno.motivo == 'VACA' or turno.motivo == 'VACB' or turno.motivo == 'DESP' %}
+  {% csrf_token %} {{ form.as_p }} 
+  {% if turno.motivo == 'VACA' or turno.motivo == 'VACB' or turno.motivo == 'DESP' %}
   <input type="hidden" name="submit_action" value="completar_libreta" />
   <input class="btn btn-primary" type="submit" value="Ir a Completar Libreta" />
   {% else %}

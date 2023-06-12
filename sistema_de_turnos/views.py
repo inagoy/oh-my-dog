@@ -3,7 +3,7 @@ from datetime import date
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from .forms import AtencionForm, SacarTurnoForm, HorarioForm, SugerenciaForm, InyeccionForm, DesparasitanteForm
-from usuarios_y_perros.models import Perro
+from usuarios_y_perros.models import Perro,Usuario
 from sistema_de_turnos.models import Turno, Atencion, Inyeccion, Desparasitante
 from sistema_de_turnos.helpers import enviar_mail_turno_aceptado, enviar_mail_turno_rechazado, enviar_mail_turno_cancelado
 
@@ -137,10 +137,17 @@ def completar_atencion(request, nroTurno):
         form = AtencionForm(request.POST)
         if form.is_valid():
             form.instance.turno = turno
+            user = Usuario.objects.get(id=turno.perro.dueño.pk)
+            if form.instance.precio <= user.descuento_atencion:
+                form.instance.descuento = form.instance.precio
+            else:
+                form.instance.descuento = user.descuento_atencion
             form.save()
+            user.descuento_atencion = 0
+            user.save()
             turno.estado_turno = 'CONC'
             turno.save()
-            messages.success(request, 'Atencion guardada correctamente.')
+            messages.success(request, 'Atención guardada correctamente.')
             submit_action = request.POST.get('submit_action')
             if submit_action == 'agregar_atencion':
                 return redirect('ver_historia_clinica', turno.perro.pk)
