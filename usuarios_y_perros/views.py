@@ -126,26 +126,11 @@ def ver_perro(request, perro_id):
         })
 
 
-#{{{ eliminar
-
-#if request.method == 'POST':
-#        perros = None
-        
-#    perro = get_object_or_404(Perro, id=perro_id)
-#    if (perro.dueño == request.user) or request.user.is_staff:
-#        return render(request, 'usuarios_y_perros/ver_perro.html', {'perro': perro})
-#    else:
-#        messages.error(request, "No sos dueño de este perro.")
-#        return render(request, 'usuarios_y_perros/ver_perros.html', {
-#            'perros': Perro.objects.filter(dueño=request.user, activo=True)
-#        })
-
-
-#}}}
 
 def ver_perros_como_admin(request, usuario_id):
-    return render(request, 'usuarios_y_perros/ver_perros.html', {
-        'perros': Perro.objects.filter(dueño=usuario_id, activo=True)
+    usuario = Usuario.objects.get(id=usuario_id)
+    return render(request, 'usuarios_y_perros/ver_perros_como_admin.html', {
+        'perros': Perro.objects.filter(dueño=usuario_id, activo=True), 'usuario': usuario
     })
 
 
