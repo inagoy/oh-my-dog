@@ -1,3 +1,8 @@
+import os
 from django.shortcuts import render
 
-# Create your views here.
+def ver_mensaje_concientizacion(request):
+    return render(request, 'servicio_vinculacion/concientizacion.html')
+
+def ingresar_servicio_vinculacion(request):
+    return render(request, 'servicio_vinculacion/vinculacion.html')
