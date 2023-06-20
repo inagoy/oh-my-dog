@@ -64,9 +64,22 @@ class CampaniaDonacionForm(forms.ModelForm):
     class Meta:
         model = CampaniaDonacion
         fields = ['nombre', 'descripcion', 'fecha_limite']
-        widgets = {
-            "fecha_limite": forms.DateInput(format='%d/%m/%Y', attrs={'type': 'date', 'placeholder': 'dd-mm-yyyy (DOB)', 'class': 'date', })
+        labels = {
+            'nombre': 'Nombre de la campaña',
+            'descripcion': 'Descripción',
+            'fecha_limite': 'Último día para donar',
         }
+        widgets = {
+            "nombre": forms.TextInput(attrs={'class': 'form-control', 'id': 'nombre', 'name': 'nombre'}),
+            "descripcion": forms.TextInput(attrs={'class': 'form-control', 'id': 'descripcion', 'name': 'descripcion'}),
+            "fecha_limite": forms.DateInput(format='%d/%m/%Y', attrs={'type': 'date', 'placeholder': 'dd-mm-yyyy (DOB)', 'class': 'form-control', 'id': 'fecha_limite', 'name': 'fecha_limite'}),
+        }
+
+    def clean_nombre(self):
+        nombre_form = self.cleaned_data['nombre']
+        if CampaniaDonacion.objects.filter(nombre=nombre_form).exists():
+            raise ValidationError('No se pudo agregar, el nombre de campaña ya existe en el sistema.')
+        return nombre_form
 
 
 class AdopcionForm(forms.ModelForm):

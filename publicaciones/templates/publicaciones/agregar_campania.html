@@ -1,0 +1,73 @@
+{% extends 'base.html' %}{% load static %}
+{% block content %}
+<link href="{% static 'css/index.css' %}" rel="stylesheet" />
+<link href="{% static 'css/global.css' %}" rel="stylesheet" />
+
+
+
+<div style="padding-left: 25rem; padding-right: 25rem;">
+<div align="center" style="border: solid 0.15rem #2699b1; background-color: white">
+<br/>
+<div align="left" style="padding-left: 10px; width: 85%;">
+
+    {% if form.errors %}
+    {% for error in form.errors.values %}
+    <div style="background-color: #f8d7da; font-family: Arial, Helvetica, sans-serif; font-size: 1.3rem; font-weight: bold; color: #BB6464">
+        <p>{{ error }}</p>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <br/>
+    <h1>Agregar campaña de donación</h1>
+    <br/>
+    <br/>
+
+    <form method="POST" id="donar">
+    {% csrf_token %}
+
+        {% for field in form %}
+          <label for="{{ field.id_for_label }}" class="form-label" style="font-size: 1.2rem; font-weight: 600">{{ field.label }}</label>
+          <p>{{ field }}</p>
+          <br/>
+        {% endfor %}
+
+        </br>
+
+        <div align="right">
+        <button type="submit" class="btn btn-primary botones" id="hacer_donacion" name="agregar" style="font-size: 1.1rem">AGREGAR</button>
+        </div>
+
+        <script>
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+            var yyyy = today.getFullYear();
+
+            if (dd < 10) {
+               dd = '0' + dd;
+            }
+
+            if (mm < 10) {
+               mm = '0' + mm;
+            }
+
+            today = yyyy + '-' + mm + '-' + dd;
+            document.getElementById("fecha_limite").setAttribute("min", today);
+        </script>
+
+    </form>
+
+    <input align="left" type="image" name="volver" src="{% static 'logo_volver.png' %}" style="width: 100px" onclick="location.href='publicaciones/campañas'">
+    <br/>
+    <br/>
+    <br/>
+</div>
+<br/>
+</div>
+</div>
+
+
+{% endblock %}
+
+

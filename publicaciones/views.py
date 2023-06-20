@@ -10,6 +10,18 @@ from publicaciones.helpers import enviar_mail_contestar_adopcion
 from usuarios_y_perros.models import Usuario
 
 
+def agregar_campania(request, ):
+    if request.method == 'POST':
+        form = CampaniaDonacionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Se agregó la campaña de donación")
+            return redirect("campañas")
+    else:
+        form = CampaniaDonacionForm()
+    return render(request, 'publicaciones/agregar_campania.html', {'form': form})
+
+
 def postulantes(request, adopcion_id):
     try:
         adopcion = Adopcion.objects.get(id=adopcion_id)
@@ -25,7 +37,7 @@ def donar(request, campania_id=None):
         campania = CampaniaDonacion.objects.get(id=campania_id)
     except CampaniaDonacion.DoesNotExist:
         messages.error(request, "La campaña a la que intenta acceder no existe")
-        return redirect("campanias")
+        return redirect("campañas")
     if request.method == 'POST':
         form_tarjeta = TarjetaForm(request.POST)
         form_donacion = DonacionForm(request.POST)
@@ -44,7 +56,7 @@ def donar(request, campania_id=None):
             donacion.usuario.aplicar_descuento(donacion.monto)
             donacion.usuario.save()
             messages.success(request, "Se concretó la donación")
-            return redirect(f"/publicaciones/campanias/donar/{campania.id}")
+            return redirect(f"/publicaciones/campañas/donar/{campania.id}")
         return render(request, 'publicaciones/donar.html', {'form_donacion': form_donacion, 'form_tarjeta': form_tarjeta, 'campania': campania})
     else:
         form_donacion = DonacionForm()
@@ -52,19 +64,19 @@ def donar(request, campania_id=None):
     return render(request, 'publicaciones/donar.html', {'form_donacion': form_donacion, 'form_tarjeta': form_tarjeta, 'campania': campania})
 
 
-def crear_campania(request):
-    form = CampaniaDonacionForm()
-    if request.method == 'POST':
-        try:
-            CampaniaDonacion.objects.get(nombre=request.POST['nombre'])
-            messages.error(request, "La campaña ingresada ya se encuentra en el sistema")
-        except CampaniaDonacion.DoesNotExist:
-            form = CampaniaDonacionForm(request.POST)
-            if form.is_valid():
-                campania = CampaniaDonacion.objects.create_campania(form.cleaned_data['nombre'], form.cleaned_data['descripcion'], form.cleaned_data['fecha_limite'])
-                campania.save()
-                messages.success(request, "Se ha creado la campaña de donación")
-    return redirect('campanias')
+# def crear_campania(request):
+#     form = CampaniaDonacionForm()
+#     if request.method == 'POST':
+#         try:
+#             CampaniaDonacion.objects.get(nombre=request.POST['nombre'])
+#             messages.error(request, "La campaña ingresada ya se encuentra en el sistema")
+#         except CampaniaDonacion.DoesNotExist:
+#             form = CampaniaDonacionForm(request.POST)
+#             if form.is_valid():
+#                 campania = CampaniaDonacion.objects.create_campania(form.cleaned_data['nombre'], form.cleaned_data['descripcion'], form.cleaned_data['fecha_limite'])
+#                 campania.save()
+#                 messages.success(request, "Se ha creado la campaña de donación")
+#     return redirect('campanias')
 
 
 def campanias(request):

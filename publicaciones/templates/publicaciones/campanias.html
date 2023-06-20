@@ -3,7 +3,7 @@
 <link href="{% static 'css/global.css' %}" rel="stylesheet" />
 
 {% if user.is_staff %}
-<a class="btn btn-primary centerObjects w-50 botones" onclick="crear_campania()" role="button">Cargar campaña de donación</a>
+<a href="{% url 'agregar_campaña' %}" class="btn btn-primary centerObjects w-50 botones">Cargar campaña de donación</a>
 <br />
 {% else %}
 <div class="banner centerObjects" style="height: 4rem">
@@ -17,7 +17,7 @@
 {% if campanias %}
 {% for campania in campanias %}
 
-<div class="card text-center card-s centerObjects" style="width:45rem;">  <!--  border: 2px solid #2699b1;-->
+<div class="card text-center card-s centerObjects" style="width:45rem;">
 
   <div class="card-header" style="font-size: 1.4rem; font-weight: bold;">
     {{ campania.nombre }}
@@ -61,52 +61,5 @@
 <h2 class="centerObjects"> Cargar campaña Refugio!!</h2>
 {% endif %}
 
-
-
-
-</div>
-  <dialog id="dial_crear_campania">
-    <p></p>
-    <form
-      method="POST"
-      action="{% url 'crear_campania' %}"
-    >
-      {% csrf_token %} {{ form.as_p }}
-      <div align="left">
-        <p align="center" style="font-size: 1.4rem; font-weight: bold"> Nueva campaña de donación </p><br/>
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" required/><br/><br/>
-        <label for="descripcion">Descripción:</label>
-        <input type="text" id="descripcion" name="descripcion" required/><br/><br/>
-        <label for="fecha_limite">Fecha límite para donar:</label>
-        <input type="date" id="fecha_limite" name="fecha_limite"/><br/><br/><br/>
-        <button type="button submit" class="btn btn-primary botones" style="float: right; margin-right: 0.2cm">Crear campaña</button>
-      </div>
-      <script>
-        var today = new Date();
-        var dd = today.getDate();
-        var mm = today.getMonth() + 1; //January is 0!
-        var yyyy = today.getFullYear();
-
-        if (dd < 10) {
-           dd = '0' + dd;
-        }
-
-        if (mm < 10) {
-           mm = '0' + mm;
-        }
-
-        today = yyyy + '-' + mm + '-' + dd;
-        document.getElementById("fecha_limite").setAttribute("min", today);
-      </script>
-    </form>
-  </dialog>
-  <script>
-    function crear_campania() {
-      const element = document.getElementById("dial_crear_campania");
-      element.showModal();
-    }
-  </script>
-</div>
 
 {% endblock %}

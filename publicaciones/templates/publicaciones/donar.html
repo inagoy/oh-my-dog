@@ -64,7 +64,7 @@
     </dialog>
 
     <script>
-      function abrir() {
+      function abrir_conexion_servidor() {
         const element = document.getElementById("conexion_servidor");
         element.showModal();
       }
@@ -84,7 +84,7 @@
                 return;
             }
             else{
-                abrir();
+                abrir_conexion_servidor();
                 form.submit();
             }
         }
