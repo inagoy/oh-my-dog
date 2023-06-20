@@ -3,3 +3,5 @@ jinja2==3.1.2
 django-environ
 Pillow
 django-cleanup
+django-tables2==2.5.3
+django-filter==23.2

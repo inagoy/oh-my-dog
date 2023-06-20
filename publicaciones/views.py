@@ -3,11 +3,25 @@ from datetime import date
 
 from django.contrib import messages
 from django.shortcuts import render, redirect
+from django_filters.views import FilterView
+from django_tables2 import SingleTableMixin
 from .forms import AdopcionForm, TarjetaForm, DonacionForm, CampaniaDonacionForm
 from .models import Perro, Tarjeta, Postulante
 from publicaciones.models import Adopcion, CampaniaDonacion
 from publicaciones.helpers import enviar_mail_contestar_adopcion
 from usuarios_y_perros.models import Usuario
+from .tables import CampaniaDonacionTable, CampaniaDonacionFilter
+
+
+# def campanias_tabla(request):
+#     table = CampaniaDonacionTable(CampaniaDonacion.objects.all())
+#     return render(request, "publicaciones/campanias_tabla.html", {"table": table})
+
+class FilteredCampaniasTabla(SingleTableMixin, FilterView):
+    table_class = CampaniaDonacionTable
+    model = CampaniaDonacion
+    template_name = "publicaciones/campanias_tabla.html"
+    filterset_class = CampaniaDonacionFilter
 
 
 def agregar_campania(request, ):

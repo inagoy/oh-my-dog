@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'servicio_vinculacion',
     'sistema_de_turnos',
     'django_cleanup.apps.CleanupConfig',
+    'django_tables2',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
