@@ -12,5 +12,5 @@ urlpatterns = [
     path('adopciones/<int:adopcion_id>', views.postulantes, name='postulantes'),
     path('agregar_campaña', views.agregar_campania, name='agregar_campaña'),
     path('campañas_tabla', views.FilteredCampaniasTabla.as_view(), name='campañas_tabla'),
-    path('donaciones_tabla', views.FilteredDonacionesTabla.as_view(), name='donaciones_tabla'),
+    path('campañas/donaciones_tabla', views.FilteredDonacionesTabla.as_view(), name='donaciones_tabla'),
 ]

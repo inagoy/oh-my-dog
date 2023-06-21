@@ -1,3 +1,5 @@
+import itertools
+
 import django_tables2 as tables
 from .models import CampaniaDonacion, Donacion
 import django_filters
@@ -17,12 +19,21 @@ class CampaniaDonacionFilter(django_filters.FilterSet):
 
 
 class DonacionTable(tables.Table):
+    orden = tables.Column(empty_values=(), orderable=False)
     nombre_usuario = tables.Column(accessor='usuario.nombre')
     nombre_campania = tables.Column(accessor='campania.nombre')
 
+    def render_orden(self):
+        self.row_orden = getattr(self, 'row_orden', itertools.count(1))
+        return next(self.row_orden)
+
     class Meta:
         model = Donacion
+        # fields =
+        exclude = ("id",)
+        sequence = ('orden', 'campania', 'usuario', 'monto')
         attrs = {"class": "table table-hover table-bordered", "style": "font-size: 1.1rem"}
+        empty_text = "No existen donaciones"
 
 
 class DonacionFilter(django_filters.FilterSet):
