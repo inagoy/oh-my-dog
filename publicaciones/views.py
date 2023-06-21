@@ -6,11 +6,11 @@ from django.shortcuts import render, redirect
 from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
 from .forms import AdopcionForm, TarjetaForm, DonacionForm, CampaniaDonacionForm
-from .models import Perro, Tarjeta, Postulante
+from .models import Perro, Tarjeta, Postulante, Donacion
 from publicaciones.models import Adopcion, CampaniaDonacion
 from publicaciones.helpers import enviar_mail_contestar_adopcion
 from usuarios_y_perros.models import Usuario
-from .tables import CampaniaDonacionTable, CampaniaDonacionFilter
+from .tables import CampaniaDonacionTable, CampaniaDonacionFilter, DonacionTable, DonacionFilter
 
 
 # def campanias_tabla(request):
@@ -22,6 +22,13 @@ class FilteredCampaniasTabla(SingleTableMixin, FilterView):
     model = CampaniaDonacion
     template_name = "publicaciones/campanias_tabla.html"
     filterset_class = CampaniaDonacionFilter
+
+
+class FilteredDonacionesTabla(SingleTableMixin, FilterView):
+    table_class = DonacionTable
+    model = Donacion
+    template_name = "publicaciones/donaciones_tabla.html"
+    filterset_class = DonacionFilter
 
 
 def agregar_campania(request, ):
