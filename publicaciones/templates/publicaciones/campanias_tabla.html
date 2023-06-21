@@ -1,3 +1,5 @@
+<base href="http://127.0.0.1:8000/publicaciones/campañas_tabla" /> {# para usar este en vez del de base.html porque no tomaba el sort por columna #}
+
 {% extends 'base.html' %}{% load static %} {% load render_table from django_tables2 %}
 {% block content %}
     <link href="{% static 'css/index.css' %}" rel="stylesheet" />
@@ -17,7 +19,7 @@
     {% if filter %}
     <form action="" method="get">
         {% for field in filter.form %} <div style="display: inline-block;"><label for="{{ field.id_for_label }}" style="width: 180px; font-size: 1rem; font-weight: 600">{{ field.label }}</label> <fieldset >{{ field }}</fieldset></div> {% endfor %}
-        <button type="submit" class="btn btn-primary botones" id="hacer_donacion" name="agregar" style="display: inline-block; font-size: 1.1rem">FILTRAR</button>
+        <a style="display: inline-block;">&nbsp&nbsp&nbsp</a><button type="submit" class="btn btn-primary botones" id="hacer_donacion" name="agregar" style="display: inline-block; font-size: 1rem">FILTRAR</button>
         <br/>
         <br/>
     </form>
