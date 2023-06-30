@@ -147,11 +147,17 @@ def ver_usuarios_como_admin(request):
 def edit_perro(request, perro_id):
 
     perro = get_object_or_404(Perro, id=perro_id)
-    print(perro.foto, '1')
     if request.method == 'POST':
         form = CargarPerroForm(request.POST, request.FILES, instance=perro)
         if form.is_valid():
+            nombre_perro = form.cleaned_data['nombre']
+            if Perro.objects.filter(dueño=form.instance.dueño, nombre=nombre_perro).exists():
+                messages.error(
+                    request, "Ya tenes un perro con este nombre.")
+                return redirect('edit_perro', perro_id)
             form.save()
+            messages.success(
+                request, "La carga del perro fue exitosa!")
             return render(request, 'usuarios_y_perros/ver_perro.html', {'perro': perro})
     else:
         perro.fecha_nacimiento = perro.fecha_nacimiento.strftime('%Y-%m-%d')
