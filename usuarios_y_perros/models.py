@@ -111,7 +111,15 @@ class Perro(models.Model):
         if today.day < self.fecha_nacimiento.day:
             age_months -= 1
         return age_months
-
+    
+    def sexo_opuesto(self):
+        if self.sexo == self.Sexo.HEMBRA:
+            return self.Sexo.MACHO
+        elif self.sexo == self.Sexo.MACHO:
+            return self.Sexo.HEMBRA
+        else:
+            return None
+        
     def foto_url(self):
         if self.foto:
             return self.foto.url

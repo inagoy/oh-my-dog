@@ -1,9 +1,20 @@
 {% extends 'base.html' %} {% load static %}{% block content %}
 <link href="{% static 'css/index.css' %}" rel="stylesheet" />
 
-
 <div class="list-group centerObjects menu">
-  <button onclick="location.href='publicaciones/adopciones'" class="list-group-item list-group-item-action">Adopciones</button>
+  <button
+    onclick="location.href='publicaciones/adopciones'"
+    class="list-group-item list-group-item-action"
+  >
+    Adopciones
+  </button>
+
+  <button
+    onclick="location.href='servicio_vinculacion/ver_mensaje_concientizacion'"
+    class="list-group-item list-group-item-action"
+  >
+    Servicio de vinculación
+  </button>
   <a href="#" class="list-group-item list-group-item-action"
     >Encontrados y perdidos</a
   >
@@ -22,21 +33,25 @@
     type="button"
     style="width: 50%"
     onclick="location.href='publicaciones/campañas'"
-  >Campañas de donación</button>
+  >
+    Campañas de donación
+  </button>
   {% if not user.is_staff %}
   <button
-  class="btn btn-primary centerObjects botones"
-  type="button"
-  style="width: 50%"
-  onclick="location.href='turnos/ver_turnos'"
->Ver mis turnos
-</button>
+    class="btn btn-primary centerObjects botones"
+    type="button"
+    style="width: 50%"
+    onclick="location.href='turnos/ver_turnos'"
+  >
+    Ver mis turnos
+  </button>
   <button
     class="btn btn-primary centerObjects botones"
     type="button"
     style="width: 50%"
     onclick="location.href='turnos/sacar_turno'"
-  >Solicitar turno
+  >
+    Solicitar turno
   </button>
 
   <button
@@ -44,45 +59,52 @@
     type="button"
     style="width: 50%"
     onclick="location.href='usuarios/cargar_perro'"
-  >Cargar perro
+  >
+    Cargar perro
   </button>
-  
-  {% endif %}
-  {% endif %}
-  {% if not user.is_authenticated %}
+
+  {% endif %} {% endif %} {% if not user.is_authenticated %}
   <button
     class="btn btn-primary centerObjects botones"
     type="button"
     style="width: 50%"
     onclick="location.href='usuarios/iniciar_sesion'"
-  >Iniciar Sesión
+  >
+    Iniciar Sesión
   </button>
-  {% endif %}
-  {% if user.is_staff %}
+  {% endif %} {% if user.is_staff %}
   <button
     class="btn btn-primary centerObjects botones"
     type="button"
     style="width: 50%"
     onclick="location.href='usuarios/ver_usuarios_como_admin'"
-  >Ver todos los usuarios</button>
+  >
+    Ver todos los usuarios
+  </button>
   <button
     class="btn btn-primary centerObjects botones"
     type="button"
     style="width: 50%"
     onclick="location.href='usuarios/nuevo'"
-  >Registrar Usuario</button>
+  >
+    Registrar Usuario
+  </button>
   <button
     class="btn btn-primary centerObjects botones"
     type="button"
     style="width: 50%"
     onclick="location.href='turnos/ver_turnos_solicitados'"
-  >Turnos Solicitados</button>
+  >
+    Turnos Solicitados
+  </button>
   <button
     class="btn btn-primary centerObjects botones"
     type="button"
     style="width: 50%"
     onclick="location.href='turnos/turnos_del_dia'"
-  >Turnos de hoy</button>
+  >
+    Turnos de hoy
+  </button>
   {% endif %}
 </div>
 

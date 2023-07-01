@@ -1,65 +1,134 @@
 {% extends 'base.html' %} {% load static %}{% block content %}
 
-<body>
-  <div id="carouselExampleControls" class="carousel carousel-dark slide" data-bs-ride="carousel">
-    <div class="carousel-indicators" style="padding-bottom: 1.2%;">
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
-    </div>  
-<div class="carousel-inner" style="padding-bottom: 1%;">
-  <div class="carousel-item active" data-bs-interval="3000" >
-    <div class="card-wrapper container-sm d-flex  justify-content-around">
-    <div>
-      <img src="{% static 'carrusel_imagen_1.png' %}" class="card-img-top" alt="¿Por qué adoptar en vez de cruzar?">
-    </div>
-    </div>
+<div
+  id="carouselExampleControls"
+  class="carousel carousel-dark slide"
+  data-bs-ride="carousel"
+>
+  <div class="carousel-indicators">
+    <button
+      type="button"
+      data-bs-target="#carouselExampleIndicators"
+      data-bs-slide-to="0"
+      class="active"
+      aria-current="true"
+      aria-label="Slide 1"
+    ></button>
+    <button
+      type="button"
+      data-bs-target="#carouselExampleIndicators"
+      data-bs-slide-to="1"
+      aria-label="Slide 2"
+    ></button>
+    <button
+      type="button"
+      data-bs-target="#carouselExampleIndicators"
+      data-bs-slide-to="2"
+      aria-label="Slide 3"
+    ></button>
+    <button
+      type="button"
+      data-bs-target="#carouselExampleIndicators"
+      data-bs-slide-to="3"
+      aria-label="Slide 4"
+    ></button>
+    <button
+      type="button"
+      data-bs-target="#carouselExampleIndicators"
+      data-bs-slide-to="4"
+      aria-label="Slide 5"
+    ></button>
   </div>
-  <div class="carousel-item" data-bs-interval="9000">
-    <div class="card-wrapper container-sm d-flex  justify-content-around">
-    <div>
-      <img src="{% static 'carrusel_imagen_2.png' %}" class="card-img-top" alt="Texto sobre estadísticas de animales callejeros">
+  <div class="carousel-inner" style="padding-bottom: 1%">
+    <div class="carousel-item active" data-bs-interval="3000">
+      <div class="card-wrapper container-sm d-flex justify-content-around">
+        <div>
+          <img
+            src="{% static 'carrusel_imagen_1.png' %}"
+            class="card-img-top"
+            alt="¿Por qué adoptar en vez de cruzar?"
+          />
+        </div>
+      </div>
     </div>
+    <div class="carousel-item" data-bs-interval="9000">
+      <div class="card-wrapper container-sm d-flex justify-content-around">
+        <div>
+          <img
+            src="{% static 'carrusel_imagen_2.png' %}"
+            class="card-img-top"
+            alt="Texto sobre estadísticas de animales callejeros"
+          />
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="carousel-item" data-bs-interval="9000">
-    <div class="card-wrapper container-sm d-flex  justify-content-around">
-    <div>
-      <img src="{% static 'carrusel_imagen_3.png' %}" class="card-img-top" alt="Texto indicando que es mejor dar un hogar a un perro callejero que cruzar">
+    <div class="carousel-item" data-bs-interval="9000">
+      <div class="card-wrapper container-sm d-flex justify-content-around">
+        <div>
+          <img
+            src="{% static 'carrusel_imagen_3.png' %}"
+            class="card-img-top"
+            alt="Texto indicando que es mejor dar un hogar a un perro callejero que cruzar"
+          />
+        </div>
+      </div>
     </div>
+    <div class="carousel-item" data-bs-interval="9000">
+      <div class="card-wrapper container-sm d-flex justify-content-around">
+        <div>
+          <img
+            src="{% static 'carrusel_imagen_4.png' %}"
+            class="card-img-top"
+            alt="Texto contando desventajas y problemas asociados a la cruza de perros"
+          />
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="carousel-item" data-bs-interval="9000">
-    <div class="card-wrapper container-sm d-flex  justify-content-around">
-    <div>
-      <img src="{% static 'carrusel_imagen_4.png' %}" class="card-img-top" alt="Texto contando desventajas y problemas asociados a la cruza de perros">
+    <div class="carousel-item" data-bs-interval="9000">
+      <div class="card-wrapper container-sm d-flex justify-content-around">
+        <div>
+          <img
+            src="{% static 'carrusel_imagen_5.png' %}"
+            class="card-img-top"
+            alt="Texto invitando a la adopción"
+          />
+        </div>
+      </div>
     </div>
-    </div>
-  </div>
-  <div class="carousel-item" data-bs-interval="9000">
-    <div class="card-wrapper container-sm d-flex  justify-content-around">
-    <div>
-      <img src="{% static 'carrusel_imagen_5.png' %}" class="card-img-top" alt="Texto invitando a la adopción">
-    </div>
-    </div>
-  </div>
 
-<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-  <span class="visually-hidden">Anterior</span>
-</button>
-<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-  <span class="visually-hidden">Siguiente</span>
-</button>
+    <button
+      class="carousel-control-prev"
+      type="button"
+      data-bs-target="#carouselExampleControls"
+      data-bs-slide="prev"
+    >
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Anterior</span>
+    </button>
+    <button
+      class="carousel-control-next"
+      type="button"
+      data-bs-target="#carouselExampleControls"
+      data-bs-slide="next"
+    >
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Siguiente</span>
+    </button>
+  </div>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+    crossorigin="anonymous"
+  ></script>
 </div>
-  
-  
-  
-  
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
-</body>
+
+<a
+  href="{% url 'ingresar_servicio_vinculacion' %}"
+  class="btn btn-warning btn-lg centerObjects w-25"
+  role="button"
+  aria-pressed="true"
+>
+  Ingresar de todas formas
+</a>
 
 {% endblock %}
