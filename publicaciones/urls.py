@@ -13,4 +13,7 @@ urlpatterns = [
     path('agregar_campaña', views.agregar_campania, name='agregar_campaña'),
     path('campañas_tabla', views.FilteredCampaniasTabla.as_view(), name='campañas_tabla'),
     path('campañas/donaciones_tabla', views.FilteredDonacionesTabla.as_view(), name='donaciones_tabla'),
+    path('perdidos_encontrados', views.perdidos_encontrados, name='perdidos_encontrados'),
+    path('crear_perdido', views.crear_perdido, name='crear_perdido'),
+    path('crear_encontrado', views.crear_encontrado, name='crear_encontrado'),
 ]

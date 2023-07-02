@@ -1,11 +1,9 @@
 {% extends 'base.html' %} {% load static %}{% block content %}
 <link href="{% static 'css/form.css' %}" rel="stylesheet" />
 <div class="centerObjects" style="padding-bottom: 1%">
-  <img
-    class="mw-100"
-    src="{% static 'mensaje_concientizacion_banner.png' %}"
-    alt="Foto invitando a adoptar en lugar de cruzar"
-  />
+  <a href="{% url 'adopciones' %}">
+    <img class="mw-100" src="{% static 'mensaje_concientizacion_banner.png' %}" alt="Foto invitando a adoptar en lugar de cruzar" />
+  </a>
 </div>
 
 <form method="post" class="form">

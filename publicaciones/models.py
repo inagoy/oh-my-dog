@@ -1,15 +1,19 @@
 from datetime import date
 from django.db import models
 from oh_my_dog import settings
-from usuarios_y_perros.models import Perro, Usuario
+from usuarios_y_perros.models import Perro, Usuario, generate_unique_filename
 from .managers import CampaniaDonacionManager
 
 
 class CampaniaDonacion(models.Model):
-    nombre = models.CharField(max_length=30, verbose_name="Nombre de la campaña", unique=True)
-    descripcion = models.CharField(max_length=150, verbose_name="Descripcion", blank=True, null=True)
-    fecha_limite = models.DateField(verbose_name="Fecha límite para donar", blank=True, null=True)
-    monto_recaudado = models.DecimalField(max_digits=11, decimal_places=2, default=0.00, verbose_name="Monto recaudado hasta el momento", blank=True, null=True)
+    nombre = models.CharField(
+        max_length=30, verbose_name="Nombre de la campaña", unique=True)
+    descripcion = models.CharField(
+        max_length=150, verbose_name="Descripcion", blank=True, null=True)
+    fecha_limite = models.DateField(
+        verbose_name="Fecha límite para donar", blank=True, null=True)
+    monto_recaudado = models.DecimalField(max_digits=11, decimal_places=2, default=0.00,
+                                          verbose_name="Monto recaudado hasta el momento", blank=True, null=True)
 
     objects = CampaniaDonacionManager()
 
@@ -42,6 +46,8 @@ class Donacion(models.Model):
 
 
 class Publicacion(models.Model):
+    foto = models.ImageField(
+        upload_to=generate_unique_filename, blank=True, null=True,)
     descripcion = models.CharField(
         verbose_name="Descripción", max_length=255, blank=True, null=True)
     nombre = models.CharField(max_length=255, blank=True, null=True)
@@ -82,13 +88,24 @@ class Publicacion(models.Model):
             age_months -= 1
         return age_months
 
+class PerdidoEncontrado(Publicacion):
+    perro = models.ForeignKey(Perro, on_delete=models.CASCADE, null=True)
+    esPerdido = models.BooleanField()
+    donde = models.CharField(
+        verbose_name="Dónde", max_length=255)
+    cuando = models.DateField(
+        verbose_name="Cuándo")
+    edadAproximada = models.IntegerField(verbose_name='Edad Aproximada (en meses)',blank=True, null=True)
+    caracteristica = models.CharField(
+        verbose_name="Característica distintiva", max_length=255, blank=True, null=True)    
 
 class Adopcion(Publicacion):
     perro = models.ForeignKey(Perro, on_delete=models.CASCADE, null=True)
 
 
 class Postulante(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, blank=True, null=True)
+    usuario = models.ForeignKey(
+        Usuario, on_delete=models.CASCADE, blank=True, null=True)
     adopcion = models.ForeignKey(Adopcion, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=50, blank=True, null=True)
     email = models.EmailField(max_length=20, blank=True, null=True)

@@ -2,7 +2,7 @@ from datetime import date
 from django import forms
 from django.core.exceptions import ValidationError
 from usuarios_y_perros.models import Perro
-from .models import Adopcion, CampaniaDonacion, Donacion, Tarjeta
+from .models import Adopcion, CampaniaDonacion, Donacion, PerdidoEncontrado, Tarjeta
 from .widgets import MonthYearWidget
 
 
@@ -32,7 +32,8 @@ class TarjetaForm(forms.ModelForm):
         super().clean()
         form_data = self.cleaned_data
         if not Tarjeta.objects.filter(numero=form_data['numero']).exists():
-            raise ValidationError('El número de tarjeta ingresado es inválido')
+            raise ValidationError(
+                'El número de tarjeta ingresado es inválido')
         else:
             tarjeta = Tarjeta.objects.get(numero=form_data['numero'])
             if tarjeta.clave != form_data['clave']:
@@ -50,13 +51,13 @@ class DonacionForm(forms.ModelForm):
         fields = ['monto', ]
         labels = {'monto': 'Monto a donar', }
         widgets = {'monto': forms.NumberInput(attrs={
-                "class": "form-control",
-                "step": 0.01,
-                "max": 999999999.99,
-                "placeholder": "",
-                "name": "monto",
-                "required": "True",
-            })}
+            "class": "form-control",
+            "step": 0.01,
+            "max": 999999999.99,
+            "placeholder": "",
+            "name": "monto",
+            "required": "True",
+        })}
 
 
 class CampaniaDonacionForm(forms.ModelForm):
@@ -78,7 +79,8 @@ class CampaniaDonacionForm(forms.ModelForm):
     def clean_nombre(self):
         nombre_form = self.cleaned_data['nombre']
         if CampaniaDonacion.objects.filter(nombre=nombre_form).exists():
-            raise ValidationError('No se pudo agregar, el nombre de campaña ya existe en el sistema.')
+            raise ValidationError(
+                'No se pudo agregar, el nombre de campaña ya existe en el sistema.')
         return nombre_form
 
 
@@ -120,3 +122,124 @@ class AdopcionForm(forms.ModelForm):
         model = Adopcion
         fields = ['perro', 'descripcion', 'nombre',
                   'fecha_nacimiento', 'color', 'raza']
+
+
+class PerdidoForm(forms.ModelForm):
+    perro = forms.ModelChoiceField(
+        queryset=Perro.objects.all(),
+        required=False,
+        empty_label='Perro no registrado',
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    fecha_nacimiento = forms.DateField(
+        label='Fecha de Nacimiento',
+        required=False,
+        widget=forms.DateInput(
+            attrs={'type': 'date',
+                   'placeholder': 'aaaa-mm-dd (DOB)', 'class': 'date'}
+        )
+    )
+    cuando = forms.DateField(
+        label='Cuándo',
+        widget=forms.DateInput(
+            attrs={'type': 'date',
+                   'placeholder': 'aaaa-mm-dd (DOB)', 'class': 'date'}
+        )
+    )
+    donde = forms.CharField(
+        label='Dónde',
+        widget=forms.TextInput(
+            attrs={'class': 'form-control'}))
+    foto = forms.ImageField(
+        required=True,
+        label='Foto',
+        widget=forms.FileInput(attrs={'class': 'form-control'})
+    )
+    nombre = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control'}))
+    color = forms.CharField(
+        required=False,
+        widget=forms.TextInput(
+            attrs={'class': 'form-control'}))
+    caracteristica = forms.CharField(
+        label='Característica distintiva',
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+    def clean_fecha_nacimiento(self):
+        fecha_form = self.cleaned_data["fecha_nacimiento"]
+        hoy = date.today()
+        if fecha_form is not None and fecha_form > hoy:
+            raise forms.ValidationError(
+                "La fecha elegida no puede ser posterior al día de hoy")
+        return fecha_form
+
+    def clean_cuando(self):
+        fecha_form = self.cleaned_data["cuando"]
+        hoy = date.today()
+        if fecha_form is not None and fecha_form > hoy:
+            raise forms.ValidationError(
+                "La fecha elegida no puede ser posterior al día de hoy")
+        return fecha_form
+
+    class Meta:
+        model = PerdidoEncontrado
+        fields = ['perro', 'nombre', 'color', 'fecha_nacimiento',
+                  'raza', 'donde', 'cuando', 'caracteristica', 'foto']
+        widgets = {'esPerdido': forms.HiddenInput}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.instance.esPerdido = True
+
+
+class EncontradoForm(forms.ModelForm):
+    cuando = forms.DateField(
+        label='Cuándo',
+        widget=forms.DateInput(
+            attrs={'type': 'date',
+                   'placeholder': 'aaaa-mm-dd (DOB)', 'class': 'date'}
+        )
+    )
+    donde = forms.CharField(
+        label='Dónde',
+        widget=forms.TextInput(
+            attrs={'class': 'form-control'}))
+    foto = forms.ImageField(
+        required=True,
+        label='Foto',
+        widget=forms.FileInput(attrs={'class': 'form-control'})
+    )
+    color = forms.CharField(
+        required=False,
+        widget=forms.TextInput(
+            attrs={'class': 'form-control'}))
+    caracteristica = forms.CharField(
+        label='Característica distintiva',
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+    def clean_edadAproximada(self):
+        edadAproximada = self.cleaned_data.get('edadAproximada')
+        if edadAproximada is not None and edadAproximada < 0:
+            raise forms.ValidationError(
+                'La edad aproximada no puede ser menor a 0 meses.')
+        return edadAproximada
+
+    def clean_cuando(self):
+        fecha_form = self.cleaned_data["cuando"]
+        hoy = date.today()
+        if fecha_form is not None and fecha_form > hoy:
+            raise forms.ValidationError(
+                "La fecha elegida no puede ser posterior al día de hoy")
+        return fecha_form
+
+    class Meta:
+        model = PerdidoEncontrado
+        fields = ['color', 'raza', 'donde', 'cuando',
+                  'edadAproximada', 'caracteristica', 'foto']
+        widgets = {'esPerdido': forms.HiddenInput}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.instance.esPerdido = False

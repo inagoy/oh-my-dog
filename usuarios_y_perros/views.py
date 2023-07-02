@@ -98,7 +98,7 @@ def perro(request, perro_id):
             'sexo': perro.sexo,
             'fecha_ultimo_celo': perro.fecha_ultimo_celo,
             'raza': perro.raza,
-            'dueño': perro.dueño.id
+            'dueño': perro.dueño.id,
         }
         return JsonResponse(data)
     except Perro.DoesNotExist:

@@ -1,0 +1,136 @@
+{% extends 'base.html' %}{% load static %} {% block content %}
+<link href="{% static 'css/index.css' %}" rel="stylesheet" />
+<link href="{% static 'css/global.css' %}" rel="stylesheet" />
+<link href="{% static 'css/ver_turnos_solicitados.css' %}" rel="stylesheet" />
+
+<div class="container text-center mb-5">
+  <a class="btn btn-primary w-25" href="{% url 'crear_perdido' %}" role="button">
+    Nuevo Perdido
+  </a>
+  <a class="btn btn-primary w-25" href="{% url 'crear_encontrado' %}" role="button">
+    Nuevo Encontrado
+  </a>
+</div>
+
+<div class="centerObjects container" style="height: 4rem">
+  <h1 class="vertical_align" style="font-weight: bold">
+    Estos son los perros perdidos y encontrados
+  </h1>
+</div>
+
+
+{% if publicaciones %}
+{% for publicacion in publicaciones %}
+
+<div class="card text-center card-s centerObjects">
+  <div class="card-header">
+    <div style="font-size: 1.4rem; font-weight: bold;">{% if publicacion.nombre %} {{ publicacion.nombre }} {% endif %}</div>
+    {% if publicacion.esPerdido %} 
+    <div style="font-size: 1.4rem; font-weight: bold; color:orangered">Perdido</div> {% else %} 
+    <div style="font-size: 1.4rem; font-weight: bold; color:green">Encontrado</div>{% endif %}
+  </div>
+  <div class="card-body">
+    <p class="card-text">
+      Foto: - 
+    </p>
+    <p class="card-text">
+      Raza: {% if publicacion.raza %} {{ publicacion.get_raza_display }} {% else %} - {% endif %}
+    </p>
+    <p class="card-text">
+     Edad: {% if publicacion.fecha_nacimiento %} {{ publicacion.edad_meses }} meses {% else %} - 
+      {% endif %}
+    </p>
+    <p class="card-text">
+      Color: {% if publicacion.color %} {{ publicacion.color }} {% else %} - {% endif %}
+    </p>
+    <p class="card-text">
+     Descripción: {% if publicacion.descripcion %} {{ publicacion.descripcion }} {% else %} - {% endif %}
+    </p>
+
+    {% if publicacion.estado_publicacion == "A" %}
+    <a 
+      {% comment %}
+      onclick="contestarAdopcion({{adopcion.id}})" 
+      {% endcomment %}
+      class="btn btn-primary botones"
+      >Contactar</a
+    >
+    {% endif %}
+
+    <div class="card-footer text-muted">
+      {% if publicacion.estado_publicacion == "I" %}
+      <span class="badge text-bg-secondary">Publicación cerrada</span>
+      {% endif %}
+    </div>
+  </div>
+  {% comment %}
+  <dialog id="dial_contestar_adopcion{{adopcion.id}}">
+    <p></p>
+    <form
+      method="POST"
+      action="{% url 'contestar_adopcion' usuario_id=adopcion.usuario.id adopcion_id=adopcion.id %}"
+    >
+      {% csrf_token %} {{ form.as_p }}
+      <div style="float=left">
+        {% if not user.is_authenticated %}
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="Nombre" required="true"/><br /><br/>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="Email" required="true"/><br /><br/>
+        {% endif %}
+        <label for="mensaje">Mensaje:</label>
+        <textarea id="mensaje" name="Mensaje" cols="40" rows="5" placeholder="Mensaje de su parte que recibirá el dueño de la publicación"></textarea><br /><br />
+        {% if user.is_authenticated %}
+        <p>Se enviarán además su nombre y su email</p>
+        {% endif %}
+        <button type="button submit" class="btn btn-primary botones" style="float: right; margin-right: 0.2cm">Enviar mail de solicitud</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script>
+    function contestarAdopcion(adopcion_id) {
+      const element = document.getElementById("dial_contestar_adopcion"+adopcion_id);
+      element.showModal();
+    }
+  </script>
+
+  <dialog id="dialogoAdopcion{{adopcion.id}}">
+    <p>¿La adopción ya ha sido llevada a cabo?</p>
+    <div>
+      <input
+        type="button"
+        class="special_link"
+        value="No"
+        onclick="cerrarAdopcion({{adopcion.id}})"
+      />
+      <a
+        type="button"
+        class="special_link"
+        href="{% url 'marcar_adopcion_resuelta' nroAdopcion=adopcion.id %}"
+      >
+        Si
+      </a>
+    </div>
+  </dialog>
+
+  <script>
+    function confirmarAdopcion(idAdopcion) {
+      const element = document.getElementById("dialogoAdopcion" + idAdopcion);
+      element.showModal();
+    }
+  </script>
+  <script>
+    function cerrarAdopcion(idAdopcion) {
+      const element = document.getElementById("dialogoAdopcion" + idAdopcion);
+      element.close();
+    }
+  </script>
+  {% endcomment %}
+</div>
+<br />
+{% endfor %} 
+{% else %}
+<h2 class="centerObjects"> No hay publicaciones cargadas</h2>
+{% endif %}
+{% endblock %}

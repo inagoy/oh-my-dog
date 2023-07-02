@@ -2,17 +2,15 @@
 
 <link href="{% static 'css/ver_perro.css' %}" rel="stylesheet" />
 <div class="centerObjects" style="padding-bottom: 1%">
-  <img
-    class="mw-100"
-    src="{% static 'mensaje_concientizacion_banner.png' %}"
-    alt="Foto invitando a adoptar en lugar de cruzar"
-  />
+  <a href="{% url 'adopciones' %}">
+    <img class="mw-100" src="{% static 'mensaje_concientizacion_banner.png' %}" alt="Foto invitando a adoptar en lugar de cruzar" />
+  </a>
 </div>
 
 <div class="container">
   {% for tinder in page %}
   <div class="centerObjects card mb-3 w-50" style="border-radius: 0.5rem">
-    <div class="row">
+    <div class="row px-2">
       <div
         class="col-md-4 text-center"
         style="
@@ -23,7 +21,7 @@
         <img
           src="{{ tinder.perro.foto_url }}"
           alt="Avatar"
-          class="img-fluid my-4"
+          class="img-fluid my-4 "
           style="
             width: 200%;
             height: 200px;

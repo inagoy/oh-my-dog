@@ -5,8 +5,8 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
-from .forms import AdopcionForm, TarjetaForm, DonacionForm, CampaniaDonacionForm
-from .models import Perro, Tarjeta, Postulante, Donacion
+from .forms import AdopcionForm, EncontradoForm, PerdidoForm, TarjetaForm, DonacionForm, CampaniaDonacionForm
+from .models import PerdidoEncontrado, Perro, Tarjeta, Postulante, Donacion
 from publicaciones.models import Adopcion, CampaniaDonacion
 from publicaciones.helpers import enviar_mail_contestar_adopcion
 from usuarios_y_perros.models import Usuario
@@ -47,7 +47,8 @@ def postulantes(request, adopcion_id):
     try:
         adopcion = Adopcion.objects.get(id=adopcion_id)
     except Adopcion.DoesNotExist:
-        messages.error(request, "La adopción a la que intenta acceder no existe")
+        messages.error(
+            request, "La adopción a la que intenta acceder no existe")
         return redirect("adopciones")
     postulantes = Postulante.objects.filter(adopcion=adopcion_id)
     return render(request, 'publicaciones/postulantes.html', {'postulantes': postulantes, 'adopcion': adopcion})
@@ -57,16 +58,19 @@ def donar(request, campania_id=None):
     try:
         campania = CampaniaDonacion.objects.get(id=campania_id)
     except CampaniaDonacion.DoesNotExist:
-        messages.error(request, "La campaña a la que intenta acceder no existe")
+        messages.error(
+            request, "La campaña a la que intenta acceder no existe")
         return redirect("campañas")
     if request.method == 'POST':
         form_tarjeta = TarjetaForm(request.POST)
         form_donacion = DonacionForm(request.POST)
         time.sleep(6)
         if form_tarjeta.is_valid() and form_donacion.is_valid():
-            tarjeta = Tarjeta.objects.get(numero=int(form_tarjeta.cleaned_data['numero']))
+            tarjeta = Tarjeta.objects.get(numero=int(
+                form_tarjeta.cleaned_data['numero']))
             if tarjeta.saldo < form_donacion.cleaned_data['monto']:
-                form_donacion.add_error('monto', 'El monto ingresado excede el límite de la tarjeta')
+                form_donacion.add_error(
+                    'monto', 'El monto ingresado excede el límite de la tarjeta')
                 return render(request, 'publicaciones/donar.html', {'form_donacion': form_donacion, 'form_tarjeta': form_tarjeta, 'campania': campania})
             donacion = form_donacion.save(commit=False)
             donacion.campania = campania
@@ -101,9 +105,12 @@ def donar(request, campania_id=None):
 
 
 def campanias(request):
-    campanias_sin_limite = CampaniaDonacion.objects.filter(fecha_limite__isnull=True).order_by("id")
-    campanias_con_limite = CampaniaDonacion.objects.filter(fecha_limite__isnull=False).order_by("-id")
-    campanias_cumplen = [obj for obj in campanias_con_limite if obj.dias_restantes() >= 0]
+    campanias_sin_limite = CampaniaDonacion.objects.filter(
+        fecha_limite__isnull=True).order_by("id")
+    campanias_con_limite = CampaniaDonacion.objects.filter(
+        fecha_limite__isnull=False).order_by("-id")
+    campanias_cumplen = [
+        obj for obj in campanias_con_limite if obj.dias_restantes() >= 0]
     campanias = list(campanias_sin_limite) + list(campanias_cumplen)
     return render(request, 'publicaciones/campanias.html', {'campanias': campanias})
 
@@ -144,14 +151,17 @@ def contestar_adopcion(request, usuario_id=None, adopcion_id=None):
         nombre_perro = adopcion.nombre
         if request.user.is_authenticated:
             usuario = Usuario.objects.get(id=request.user.id)
-            enviar_mail_contestar_adopcion(usuario.email, usuario.nombre, mensaje, nombre_perro)
+            enviar_mail_contestar_adopcion(
+                usuario.email, usuario.nombre, mensaje, nombre_perro)
             postulante = Postulante(usuario=usuario, adopcion=adopcion)
             postulante.save()
         else:
             nombre = request.POST['Nombre']
             email = request.POST['Email']
-            enviar_mail_contestar_adopcion(email, nombre, mensaje, nombre_perro)
-            postulante = Postulante(nombre=nombre, email=email, adopcion=adopcion)
+            enviar_mail_contestar_adopcion(
+                email, nombre, mensaje, nombre_perro)
+            postulante = Postulante(
+                nombre=nombre, email=email, adopcion=adopcion)
             postulante.save()
         messages.success(request, "Se envío mail de solicitud de adopción")
         return redirect('adopciones')
@@ -164,3 +174,46 @@ def marcar_adopcion_resuelta(request, nroAdopcion=None):
         adopcion.perro.activo = False
     adopcion.save()
     return redirect('adopciones')
+
+
+def crear_perdido(request):
+    if request.method == 'POST':
+        form = PerdidoForm(request.POST, request.FILES)
+        form.fields["perro"].queryset = Perro.objects.filter(dueño=request.user, activo=True)
+        if form.is_valid():
+            perro = form.cleaned_data.get('perro')
+            if perro is not None and PerdidoEncontrado.objects.filter(perro=perro).exists():
+                messages.error(
+                    request, f"{perro} ya tiene una publicación de Perdidos")
+                return redirect('crear_perdido')
+            form.instance.usuario = request.user
+            form.save()
+            messages.success(
+                request, "Se ha creado la publicación de Perdidos")
+            return redirect('perdidos_encontrados')
+    else:
+        form = PerdidoForm()
+        form.fields["perro"].queryset = Perro.objects.filter(dueño=request.user, activo=True)
+    return render(request, 'publicaciones/crear_perdido.html', {'form': form})
+
+
+def crear_encontrado(request):
+    if request.method == 'POST':
+        form = EncontradoForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.instance.usuario = request.user
+            form.save()
+            messages.success(
+                request, "Se ha creado la publicación de Perdidos")
+            return redirect('perdidos_encontrados')
+    else:
+        form = EncontradoForm()
+    return render(request, 'publicaciones/crear_encontrado.html', {'form': form})
+
+
+def perdidos_encontrados(request):
+    if request.method == 'POST':
+        publicaciones = None
+    else:
+        publicaciones = PerdidoEncontrado.objects.all()
+    return render(request, 'publicaciones/perdidos_encontrados.html', {'publicaciones': publicaciones})
