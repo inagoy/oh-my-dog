@@ -3,7 +3,11 @@
 <link href="{% static 'css/ver_perro.css' %}" rel="stylesheet" />
 <div class="centerObjects" style="padding-bottom: 1%">
   <a href="{% url 'adopciones' %}">
-    <img class="mw-100" src="{% static 'mensaje_concientizacion_banner.png' %}" alt="Foto invitando a adoptar en lugar de cruzar" />
+    <img
+      class="mw-100"
+      src="{% static 'mensaje_concientizacion_banner.png' %}"
+      alt="Foto invitando a adoptar en lugar de cruzar"
+    />
   </a>
 </div>
 
@@ -21,7 +25,7 @@
         <img
           src="{{ tinder.perro.foto_url }}"
           alt="Avatar"
-          class="img-fluid my-4 "
+          class="img-fluid my-4"
           style="
             width: 200%;
             height: 200px;
@@ -73,13 +77,21 @@
                   >Anterior</a
                 >
                 {% endif %}
-                <button
-                  class="btn btn-outline-success btn-lg"
-                  style="margin-right: 1rem"
-                  aria-pressed="true"
+                <form
+                  method="post"
+                  action="{% url 'contestar_tinder' perroLiked_id=tinder.perro.id perroLiker_id=perro_id %}"
                 >
-                  Like
-                </button>
+                  {% csrf_token %}
+                  <button
+                    type="submit"
+                    class="btn btn-success btn-lg"
+                    style="margin-right: 1rem"
+                    aria-pressed="true"
+                  >
+                    Like
+                  </button>
+                </form>
+
                 {% if page.has_next %}
                 <a
                   href="{{ request.path }}?page={{ page.next_page_number }}"
@@ -100,5 +112,4 @@
   <h1 class="centerObjects">No hay matchs.</h1>
   {% endfor %}
 </div>
-
 {% endblock %}

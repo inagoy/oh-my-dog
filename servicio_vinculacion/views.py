@@ -1,9 +1,11 @@
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
+from publicaciones.helpers import enviar_mail_contestar_adopcion
 from servicio_vinculacion.forms import EditPerroTinderForm, TinderForm
+from servicio_vinculacion.helpers import enviar_mail_contestar_tinder
 from servicio_vinculacion.models import Tinder
-from usuarios_y_perros.models import Perro
+from usuarios_y_perros.models import Perro, Usuario
 
 
 def ver_mensaje_concientizacion(request):
@@ -59,8 +61,17 @@ def paginar(request, elementos, cantidad):
     page_obj = paginator.get_page(page_number)
     return page_obj
 
-
 def tinder_perro(request, perro_id):
     perro = Perro.objects.get(id=perro_id)
     tinders = Tinder.objects.filter(perro__sexo=perro.sexo_opuesto()).exclude(perro__dueño=request.user)
-    return render(request, 'servicio_vinculacion/tinder_perro.html',  {'page': paginar(request, tinders, 1)})
+    return render(request, 'servicio_vinculacion/tinder_perro.html',  {'page': paginar(request, tinders, 1), 'perro_id': perro_id})
+
+def contestar_tinder(request, perroLiked_id=None, perroLiker_id=None):
+    if request.method == 'POST':
+        perroLiked = Perro.objects.get(id=perroLiked_id)
+        perroLiker = Perro.objects.get(id=perroLiker_id)
+        usuario = Usuario.objects.get(id=request.user.id)
+        enviar_mail_contestar_tinder(
+            usuario.email, usuario.nombre, perroLiker.nombre, perroLiked.nombre)
+        messages.success(request, "Se envío mail notificando el Like")
+        return redirect('ingresar_servicio_vinculacion')
