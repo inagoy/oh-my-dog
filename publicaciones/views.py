@@ -28,7 +28,28 @@ class FilteredDonacionesTabla(SingleTableMixin, FilterView):
     table_class = DonacionTable
     model = Donacion
     template_name = "publicaciones/donaciones_tabla.html"
+    campania = None
     filterset_class = DonacionFilter
+    # filter = DonacionFilter(queryset=Donacion.objects.filter(campania=campania_id))
+    # table_data = Donacion.objects.filter(campania__nombre="aaaa")
+
+    def get_queryset(self):
+        try:
+            self.campania = CampaniaDonacion.objects.get(id=self.kwargs.get('campania_id'))
+            if self.campania is not None:
+                return Donacion.objects.filter(campania__nombre=self.campania.nombre)
+        except CampaniaDonacion.DoesNotExist:
+            return Donacion.objects.all()
+
+
+    def campania(self):
+        self.campania = CampaniaDonacion.objects.get(id=self.kwargs.get('campania_id'))
+
+
+    # def get_table_data(self):
+    #     self.campania = CampaniaDonacion.objects.get(id=self.kwargs.get('campania_id'))
+    #     if self.campania is not None:
+    #         return Donacion.objects.filter(campania__nombre=self.campania.nombre)
 
 
 def agregar_campania(request, ):

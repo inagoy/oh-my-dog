@@ -3,7 +3,6 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <base href="http://127.0.0.1:8000/" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script type="text/javascript">
       $(document).ready(function () {
@@ -73,7 +72,7 @@
               type="button"
               class="botones text-light"
               value="Aceptar"
-              onclick="location.href='usuarios/cerrar_sesion'"
+              onclick="location.href='{% url 'cerrar_sesion' %}'"
               style="float: right; margin-right: 0.2cm"
             />
           </div>

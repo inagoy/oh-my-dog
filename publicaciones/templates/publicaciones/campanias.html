@@ -43,6 +43,7 @@
     {% endif %}
     {% if user.is_staff %}
     <a
+      href="{% url 'donaciones_tabla_individual' campania_id=campania.id %}"
       class="btn btn-primary botones"
       >Ver donaciones</a
     >

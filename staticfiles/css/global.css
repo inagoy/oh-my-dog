@@ -116,3 +116,12 @@ button[type=submit]{
   border-color: #2699b1 !important;
   box-shadow: 0 0 5px rgba(38, 153, 177, 1) !important;
 }
+
+.table {
+  border-color: black;
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th{
+  background-factor: 1;
+  background-color: #ECF8F9;
+}
