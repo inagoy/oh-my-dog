@@ -1,0 +1,70 @@
+{% extends 'base.html' %}{% load static %} {% block content %}
+<link href="{% static 'css/index.css' %}" rel="stylesheet" />
+<link href="{% static 'css/global.css' %}" rel="stylesheet" />
+
+<br/>
+{% if user.is_staff %}
+<p align="center">
+<a class="btn btn-primary botones" style="border: 0.1rem solid white; width: 300px">AGREGAR PASEADOR</a>
+<a class="btn btn-primary botones" style="border: 0.1rem solid white; width: 300px">AGREGAR CUIDADOR</a>
+</p>
+{% else %}
+<div class="banner centerObjects" style="height: 4rem">
+  <div class="vertical_align" style="font-weight: bold">
+    Servicios de paseadores y cuidadores disponibles actualmente
+  </div>
+</div>
+{% endif %}
+<br/>
+
+
+{% if servicios %}
+{% for servicio in servicios %}
+
+<div align="center">
+<div class="card" style="width:90%;">
+
+  <div class="card-body">
+
+    <div class="container">
+
+      <div class="row align-items-center justify-content-between">
+
+        <div class="col-1">
+          {% if servicio.nombre == "Refugio" %}<span class="badge rounded-pill text-bg-warning" style="float:left; font-size: 0.9rem">{{ servicio.nombre }}</span>
+          {% else %}<span class="badge rounded-pill text-bg-info" style="float:left; font-size: 0.9rem">{{ servicio.nombre }}</span>
+          {% endif %}
+        </div>
+
+        <div class="col-3">
+          <a style="font-size: 1.2rem; font-weight: bold">{{ servicio.nombre }}</a>
+        </div>
+
+        <div class="col-5" align="left" style="font-size: 1.1rem;">
+          <div><a>Zona: {{servicio.descripcion }}</a></div>
+        </div>
+
+        <div class="col-2">
+          {% if user.is_staff %}<a class="btn btn-primary botones">Deshabilitar</a>
+          {% else %}<a class="btn btn-primary botones">Contactar</a>
+          {% endif %}
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+</div>
+<p></p>
+
+{% endfor %}
+
+{% else %}
+<h2 class="centerObjects"> No hay servicios disponibles actualmente</h2>
+{% endif %}
+
+
+{% endblock %}

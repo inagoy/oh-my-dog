@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'publicaciones',
     'servicio_vinculacion',
     'sistema_de_turnos',
+    'listados',
     'django_cleanup.apps.CleanupConfig',
     'django_tables2',
     'django_filters',
