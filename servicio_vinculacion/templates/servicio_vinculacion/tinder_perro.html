@@ -68,15 +68,6 @@
               style="margin-top: 5rem"
             >
               <div class="pagination">
-                {% if page.has_previous %}
-                <a
-                  href="{{ request.path }}?page={{ page.previous_page_number }}"
-                  class="btn btn-outline-warning btn-lg"
-                  style="margin-right: 1rem"
-                  aria-pressed="true"
-                  >Anterior</a
-                >
-                {% endif %}
                 <form
                   method="post"
                   action="{% url 'contestar_tinder' perroLiked_id=tinder.perro.id perroLiker_id=perro_id %}"
@@ -96,6 +87,13 @@
                 <a
                   href="{{ request.path }}?page={{ page.next_page_number }}"
                   class="btn btn-outline-danger btn-lg"
+                  style="margin-right: 1rem"
+                  aria-pressed="true"
+                  >Siguiente</a
+                >
+                {% else %}
+                <a
+                  class="btn btn-outline-secondary btn-lg disabled"
                   style="margin-right: 1rem"
                   aria-pressed="true"
                   >Siguiente</a

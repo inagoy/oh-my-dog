@@ -12,7 +12,8 @@ def deshabilitar_perro_tinder(request, tinder_id=None):
     tinder = Tinder.objects.get(id=tinder_id)
     tinder.estado_tinder = "I"
     tinder.save()
-    messages.success(request, 'Se eliminó el perfil del perro en el servicio de vinculación')
+    messages.success(
+        request, 'Se eliminó el perfil del perro en el servicio de vinculación')
     return perros_asociados(request)
 
 
@@ -77,10 +78,17 @@ def paginar(request, elementos, cantidad):
     page_obj = paginator.get_page(page_number)
     return page_obj
 
+
 def tinder_perro(request, perro_id):
     perro = Perro.objects.get(id=perro_id)
-    tinders = Tinder.objects.filter(perro__sexo=perro.sexo_opuesto()).exclude(perro__dueño=request.user)
+    tinders = Tinder.objects.filter(
+        perro__sexo=perro.sexo_opuesto(),
+    ).exclude(
+        perro__dueño=request.user,
+        estado_tinder=Tinder.Estado.INACTIVO,
+    )
     return render(request, 'servicio_vinculacion/tinder_perro.html',  {'page': paginar(request, tinders, 1), 'perro_id': perro_id})
+
 
 def contestar_tinder(request, perroLiked_id=None, perroLiker_id=None):
     if request.method == 'POST':
