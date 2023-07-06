@@ -8,11 +8,16 @@ from servicio_vinculacion.models import Tinder
 from usuarios_y_perros.models import Perro, Usuario
 
 
+def deshabilitar_perro_tinder(request, tinder_id=None):
+    tinder = Tinder.objects.get(id=tinder_id)
+    tinder.estado_tinder = "I"
+
+
 def perros_asociados(request):
     if request.user.is_staff:
         perros = Tinder.objects.filter(estado_tinder="A")
     else:
-        perros = Tinder.objects.filter(perro__dueño=request.user) | Tinder.objects.filter(estado_tinder="A")
+        perros = Tinder.objects.filter(perro__dueño=request.user.id) & Tinder.objects.filter(estado_tinder="A")
     return render(request, 'servicio_vinculacion/perros_asociados_tinder.html', {'perros': perros})
 
 

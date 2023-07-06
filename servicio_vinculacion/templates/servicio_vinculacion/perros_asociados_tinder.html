@@ -28,20 +28,20 @@
           <img src="{{ perro.perro.foto_url }}" alt="Avatar" class="img-fluid my-4" style="height: 100px; border-radius: 320px; object-fit: cover;"/>
         </div>
 
-        <div class="col-3" align="left">
+        <div class="col-2" align="left">
           <a style="font-size: 1.2rem; font-weight: bold">{{ perro.perro.nombre }}</a>
         </div>
 
-        <div class="col-2" align="left" style="font-size: 1.1rem;">
+        <div class="col-1" align="left" style="font-size: 1.1rem;">
           <div><a>{{perro.perro.get_sexo_display }}</a></div>
         </div>
 
-        <div class="col-2" align="left" style="font-size: 1.1rem;">
-          <div><a>{{perro.perro.get_sexo_display }}</a></div>
+        <div class="col-3" align="left" style="font-size: 1.1rem;">
+          <div><a>Último celo: {{perro.perro.fecha_ultimo_celo }}</a></div>
         </div>
 
         <div class="col-2">
-          <a class="btn btn-primary botones">Sacar perfil del servicio</a>
+          <a href="{% url 'deshabilitar_perro_tinder' perro_id=perro.id %}" class="btn btn-primary botones">Sacar perfil del servicio</a>
         </div>
 
       </div>
