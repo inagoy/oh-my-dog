@@ -1,0 +1,65 @@
+{% extends 'base.html' %}{% load static %} {% block content %}
+<link href="{% static 'css/index.css' %}" rel="stylesheet" />
+<link href="{% static 'css/global.css' %}" rel="stylesheet" />
+
+<br/>
+
+<div class="banner centerObjects" style="height: 4rem">
+  <div class="vertical_align" style="font-weight: bold">
+    Tus perros asociados al servicio de vinculación
+  </div>
+</div>
+
+<br/>
+
+{% if perros %}
+{% for perro in perros %}
+
+<div align="center">
+<div class="card" style="width:80%;">
+
+  <div class="card-body">
+
+    <div class="container">
+
+      <div class="row align-items-center justify-content-between">
+
+        <div class="col-2">
+          <img src="{{ perro.perro.foto_url }}" alt="Avatar" class="img-fluid my-4" style="height: 100px; border-radius: 320px; object-fit: cover;"/>
+        </div>
+
+        <div class="col-3" align="left">
+          <a style="font-size: 1.2rem; font-weight: bold">{{ perro.perro.nombre }}</a>
+        </div>
+
+        <div class="col-2" align="left" style="font-size: 1.1rem;">
+          <div><a>{{perro.perro.get_sexo_display }}</a></div>
+        </div>
+
+        <div class="col-2" align="left" style="font-size: 1.1rem;">
+          <div><a>{{perro.perro.get_sexo_display }}</a></div>
+        </div>
+
+        <div class="col-2">
+          <a class="btn btn-primary botones">Sacar perfil del servicio</a>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+</div>
+
+{% endfor %}
+
+</br>
+
+{% else %}
+<h2 class="centerObjects"> No tenés perros asociados al servicio de vinculación actualmente</h2>
+{% endif %}
+
+
+{% endblock %}
