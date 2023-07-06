@@ -11,6 +11,9 @@ from usuarios_y_perros.models import Perro, Usuario
 def deshabilitar_perro_tinder(request, tinder_id=None):
     tinder = Tinder.objects.get(id=tinder_id)
     tinder.estado_tinder = "I"
+    tinder.save()
+    messages.success(request, 'Se eliminó el perfil del perro en el servicio de vinculación')
+    return perros_asociados(request)
 
 
 def perros_asociados(request):
