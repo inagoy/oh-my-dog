@@ -10,18 +10,14 @@
   </button>
 
   <button
-    onclick="location.href='servicio_vinculacion/ver_mensaje_concientizacion'"
-    class="list-group-item list-group-item-action"
-  >
-    Servicio de vinculación
-  </button>
-  <button
     onclick="location.href='publicaciones/perdidos_encontrados'"
     class="list-group-item list-group-item-action"
   >
     Encontrados y perdidos
   </button>
-  <a href="{% url 'paseadores_cuidadores' %}" class="list-group-item list-group-item-action"
+  <a
+    href="{% url 'paseadores_cuidadores' %}"
+    class="list-group-item list-group-item-action"
     >Paseadores y cuidadores</a
   >
   <a href="#" class="list-group-item list-group-item-action"
@@ -41,6 +37,14 @@
   </button>
   {% if not user.is_staff %}
   <button
+    onclick="location.href='servicio_vinculacion/ver_mensaje_concientizacion'"
+    class="btn btn-primary centerObjects botones"
+    type="button"
+    style="width: 50%"
+  >
+    Servicio de vinculación
+  </button>
+  <button
     class="btn btn-primary centerObjects botones"
     type="button"
     style="width: 50%"
@@ -56,7 +60,6 @@
   >
     Solicitar turno
   </button>
-
   <button
     class="btn btn-primary centerObjects botones"
     type="button"
