@@ -1,5 +1,7 @@
 from django.shortcuts import render
 
+from listados.filters import PaseadoresCuidadoresFilter
+from listados.models import Trabajador
 from publicaciones.models import CampaniaDonacion
 
 
@@ -11,4 +13,6 @@ def paseadores_cuidadores(request):
     campanias_cumplen = [
         obj for obj in campanias_con_limite if obj.dias_restantes() >= 0]
     servicios = list(campanias_sin_limite) + list(campanias_cumplen)
-    return render(request, 'listados/paseadores_cuidadores.html', {'servicios': servicios})
+
+    filtro = PaseadoresCuidadoresFilter(request.GET, queryset=Trabajador.objects.all())
+    return render(request, 'listados/paseadores_cuidadores.html', {'servicios': servicios, 'filtro': filtro})

@@ -4,25 +4,34 @@
 
 <br/>
 {% if user.is_staff %}
-<p align="center">
-<a class="btn btn-primary botones" style="border: 0.1rem solid white; width: 300px">AGREGAR PASEADOR</a>
-<a class="btn btn-primary botones" style="border: 0.1rem solid white; width: 300px">AGREGAR CUIDADOR</a>
-</p>
-{% else %}
-<div class="banner centerObjects" style="height: 4rem">
-  <div class="vertical_align" style="font-weight: bold">
-    Servicios de paseadores y cuidadores disponibles actualmente
+  <div align="center">
+    <a class="btn btn-primary botones" style="border: 0.1rem solid white; width: 300px">AGREGAR PASEADOR/ CUIDADOR</a>
   </div>
-</div>
+
+{% else %}
+  <div class="banner centerObjects" style="height: 4rem">
+    <div class="vertical_align" style="font-weight: bold">
+      Paseadores y cuidadores disponibles actualmente
+    </div>
+  </div>
 {% endif %}
+
+</br>
+<div style="padding-left: 15rem">
+  <form method="get">
+    {% for field in filtro.form %}
+    <div style="display: inline-block;"><label for="{{ field.id_for_label }}" style="font-size: 1rem; font-weight: 800">{{ field.label }}</label> <fieldset>{{ field }}</fieldset></div> {% endfor %}
+     <a style="display: inline-block;">&nbsp&nbsp</a><button type="submit" class="btn btn-primary botones" style="display: inline-block; font-size: 1rem">FILTRAR</button>
+  </form>
+</div>
+
 <br/>
 
-
-{% if servicios %}
-{% for servicio in servicios %}
+{% if filtro %}
+{% for trabajador in filtro.qs %}
 
 <div align="center">
-<div class="card" style="width:90%;">
+<div class="card" style="width:70%;">
 
   <div class="card-body">
 
@@ -31,17 +40,17 @@
       <div class="row align-items-center justify-content-between">
 
         <div class="col-1">
-          {% if servicio.nombre == "Refugio" %}<span class="badge rounded-pill text-bg-warning" style="float:left; font-size: 0.9rem">{{ servicio.nombre }}</span>
-          {% else %}<span class="badge rounded-pill text-bg-info" style="float:left; font-size: 0.9rem">{{ servicio.nombre }}</span>
+          {% if trabajador.tipo == "P" %}<span class="badge rounded-pill text-bg-warning" style="float:left; font-size: 0.9rem">{{ trabajador.get_tipo_display }}</span>
+          {% else %}<span class="badge rounded-pill text-bg" style="float:left; font-size: 0.9rem; background-color: #9681EB; color: black">{{ trabajador.get_tipo_display }}</span>
           {% endif %}
         </div>
 
         <div class="col-3">
-          <a style="font-size: 1.2rem; font-weight: bold">{{ servicio.nombre }}</a>
+          <a style="font-size: 1.2rem; font-weight: bold">{{ trabajador.nombre_y_apellido }}</a>
         </div>
 
         <div class="col-5" align="left" style="font-size: 1.1rem;">
-          <div><a>Zona: {{servicio.descripcion }}</a></div>
+          <div><a>Zona: {{trabajador.zona }}</a></div>
         </div>
 
         <div class="col-2">
@@ -58,7 +67,6 @@
 
 </div>
 </div>
-<p></p>
 
 {% endfor %}
 

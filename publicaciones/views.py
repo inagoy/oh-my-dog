@@ -41,10 +41,8 @@ class FilteredDonacionesTabla(SingleTableMixin, FilterView):
         except CampaniaDonacion.DoesNotExist:
             return Donacion.objects.all()
 
-
     def campania(self):
         self.campania = CampaniaDonacion.objects.get(id=self.kwargs.get('campania_id'))
-
 
     # def get_table_data(self):
     #     self.campania = CampaniaDonacion.objects.get(id=self.kwargs.get('campania_id'))
