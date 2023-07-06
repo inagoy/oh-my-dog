@@ -16,7 +16,8 @@ def es_menor_18(birth):
     )
 
 def generar_contraseña():
-    return get_random_string(8)
+    #return get_random_string(8)
+    return "1234"
 
 def enviar_mail_bienvenida(usuario, contraseña):
     send_mail(
