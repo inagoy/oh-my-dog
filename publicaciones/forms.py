@@ -210,6 +210,8 @@ class EncontradoForm(forms.ModelForm):
         label='Foto',
         widget=forms.FileInput(attrs={'class': 'form-control'})
     )
+    nombre = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control'}))
     color = forms.CharField(
         required=False,
         widget=forms.TextInput(
@@ -236,7 +238,7 @@ class EncontradoForm(forms.ModelForm):
 
     class Meta:
         model = PerdidoEncontrado
-        fields = ['color', 'raza', 'donde', 'cuando',
+        fields = ['nombre','color', 'raza', 'donde', 'cuando',
                   'edadAproximada', 'caracteristica', 'foto']
         widgets = {'esPerdido': forms.HiddenInput}
 

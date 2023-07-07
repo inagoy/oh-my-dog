@@ -3,7 +3,7 @@ from django.db import models
 from oh_my_dog import settings
 from usuarios_y_perros.models import Perro, Usuario, generate_unique_filename
 from .managers import CampaniaDonacionManager
-
+from django.templatetags.static import static
 
 class CampaniaDonacion(models.Model):
     nombre = models.CharField(
@@ -80,6 +80,12 @@ class Publicacion(models.Model):
         blank=True,
     )
 
+    def foto_url(self):
+        if self.foto:
+            return self.foto.url
+        else:
+            return static('perro_default.png')
+        
     def edad_meses(self):
         today = date.today()
         age_months = (today.year - self.fecha_nacimiento.year) * \
