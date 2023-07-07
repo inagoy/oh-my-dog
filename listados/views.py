@@ -1,9 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from listados.filters import PaseadoresCuidadoresFilter
 from listados.models import Trabajador
+from .forms import CargarTrabajadorForm
 from publicaciones.models import CampaniaDonacion
-
+from django.contrib import messages
 
 def paseadores_cuidadores(request):
     campanias_sin_limite = CampaniaDonacion.objects.filter(
@@ -16,3 +17,16 @@ def paseadores_cuidadores(request):
 
     filtro = PaseadoresCuidadoresFilter(request.GET, queryset=Trabajador.objects.all())
     return render(request, 'listados/paseadores_cuidadores.html', {'servicios': servicios, 'filtro': filtro})
+
+
+def cargar_trabajador(request):
+    if request.method == "GET":
+        form = CargarTrabajadorForm()
+    else:
+        form = CargarTrabajadorForm(request.POST)
+        form.instance.habilitado=True
+        if form.is_valid():
+            form.save()
+            messages.success(request, "La carga del paseador o cuidador fue exitosa")
+            return redirect('index')
+    return render(request, 'listados/cargar_trabajador.html',{'form': form})
