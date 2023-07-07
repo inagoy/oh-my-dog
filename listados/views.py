@@ -24,7 +24,6 @@ def cargar_trabajador(request):
         form = CargarTrabajadorForm()
     else:
         form = CargarTrabajadorForm(request.POST)
-        form.instance.habilitado=True
         if form.is_valid():
             form.save()
             messages.success(request, "La carga del paseador o cuidador fue exitosa")

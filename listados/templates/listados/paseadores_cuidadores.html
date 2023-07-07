@@ -5,7 +5,7 @@
 <br/>
 {% if user.is_staff %}
   <div align="center">
-    <a class="btn btn-primary botones" style="border: 0.1rem solid white; width: 300px">AGREGAR PASEADOR/ CUIDADOR</a>
+    <a href="{% url 'cargar_trabajador' %}" class="btn btn-primary botones" style="border: 0.1rem solid white; width: 300px">AGREGAR PASEADOR/ CUIDADOR</a>
   </div>
 
 {% else %}
