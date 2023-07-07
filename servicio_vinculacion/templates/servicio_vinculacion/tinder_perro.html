@@ -14,8 +14,11 @@
 <div class="container px-50">
   <div class="row">
     <div class="col-lg-3">
-      <div class="centerObjects card mb-5 w-100" style="border-radius: 0.5rem">
-        <div class=" pb-4">
+      <div
+        class="centerObjects card mb-3 w-100"
+        style="border-radius: 0.5rem; position: relative"
+      >
+        <div class="pb-4">
           <div
             class="text-center"
             style="
@@ -38,22 +41,22 @@
             <p>Tu perro</p>
           </div>
         </div>
+        <img
+          src="{% static 'corazon.png' %}"
+          alt="corazón"
+          class="img-fluid"
+          style="
+            width: 200px;
+            height: auto;
+            position: absolute;
+            bottom: 100px;
+            right: -110px;
+            filter: drop-shadow(2px 2px 2px #4040403e);
+            z-index: 1;
+          "
+        />
       </div>
     </div>
-    <img
-      src="{% static 'corazon.png' %}"
-      alt="corazón"
-      class="img-fluid"
-      style="
-        width: 200px;
-        height: auto;
-        top: 65%;
-        position: absolute;
-        z-index: 1;
-        left: 22.8%;
-        filter: drop-shadow(2px 2px 2px #4040403e);
-      "
-    />
     <div class="col-lg-9">
       {% for tinder in page %}
       <div class="centerObjects card mb-3 w-100" style="border-radius: 0.5rem">
@@ -94,11 +97,11 @@
                 </div>
               </div>
               <div class="row pt-1">
-                <div class="col-6 ">
+                <div class="col-6">
                   <h6>Edad</h6>
                   <p class="text-muted">{{ tinder.perro.edad_meses }} meses</p>
                 </div>
-                <div class="col-6 ">
+                <div class="col-6">
                   <h6>Sexo</h6>
                   <p class="text-muted">
                     {% if tinder.perro.sexo %} {{ tinder.perro.get_sexo_display }} {% else %} Indefinido {% endif %}
