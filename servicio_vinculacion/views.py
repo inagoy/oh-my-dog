@@ -87,7 +87,7 @@ def tinder_perro(request, perro_id):
         perro__dueño=request.user,
         estado_tinder=Tinder.Estado.INACTIVO,
     )
-    return render(request, 'servicio_vinculacion/tinder_perro.html',  {'page': paginar(request, tinders, 1), 'perro_id': perro_id})
+    return render(request, 'servicio_vinculacion/tinder_perro.html',  {'page': paginar(request, tinders, 1), 'perro':perro})
 
 
 def contestar_tinder(request, perroLiked_id=None, perroLiker_id=None):

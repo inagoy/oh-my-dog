@@ -11,103 +11,146 @@
   </a>
 </div>
 
-<div class="container">
-  {% for tinder in page %}
-  <div class="centerObjects card mb-3 w-50" style="border-radius: 0.5rem">
-    <div class="row px-2">
-      <div
-        class="col-md-4 text-center"
-        style="
-          border-top-left-radius: 0.5rem;
-          border-bottom-left-radius: 0.5rem;
-        "
-      >
-        <img
-          src="{{ tinder.perro.foto_url }}"
-          alt="Avatar"
-          class="img-fluid my-4"
-          style="
-            width: 200%;
-            height: 200px;
-            border-radius: 320px;
-            object-fit: cover;
-          "
-        />
-        <h1>{{ tinder.perro.nombre }}</h1>
-        <p>Perro de {{ tinder.perro.dueño.nombre }}</p>
-      </div>
-      <div class="col-md-8">
-        <div class="card-body p-4">
-          <div class="row pt-1">
-            <div class="col-6 mb-3">
-              <h6>Fecha de último celo</h6>
-              <p class="text-muted">{{ tinder.perro.fecha_ultimo_celo }}</p>
-            </div>
-            <div class="col-6 mb-3">
-              <h6>Color</h6>
-              <p class="text-muted">
-                {% if tinder.perro.color %} {{ tinder.perro.color}} {% else %} -
-                {% endif %}
-              </p>
-            </div>
+<div class="container px-50">
+  <div class="row">
+    <div class="col-lg-3">
+      <div class="centerObjects card mb-5 w-100" style="border-radius: 0.5rem">
+        <div class=" pb-4">
+          <div
+            class="text-center"
+            style="
+              border-top-left-radius: 0.5rem;
+              border-bottom-left-radius: 0.5rem;
+            "
+          >
+            <img
+              src="{{ perro.foto_url }}"
+              alt="Avatar"
+              class="img-fluid my-4"
+              style="
+                width: 200px;
+                height: 200px;
+                border-radius: 320px;
+                object-fit: cover;
+              "
+            />
+            <h1>{{ perro.nombre }}</h1>
+            <p>Tu perro</p>
           </div>
-          <div class="row pt-1">
-            <div class="col-6 mb-3">
-              <h6>Edad</h6>
-              <p class="text-muted">{{ tinder.perro.edad_meses }} meses</p>
-            </div>
-            <div class="col-6 mb-3">
-              <h6>Sexo</h6>
-              <p class="text-muted">
-                {% if tinder.perro.sexo %} {{ tinder.perro.get_sexo_display }}
-                {% else %} Indefinido {% endif %}
-              </p>
-            </div>
-            <div
-              class="d-flex justify-content-center align-items-end"
-              style="margin-top: 5rem"
-            >
-              <div class="pagination">
-                <form
-                  method="post"
-                  action="{% url 'contestar_tinder' perroLiked_id=tinder.perro.id perroLiker_id=perro_id %}"
+        </div>
+      </div>
+    </div>
+    <img
+      src="{% static 'corazon.png' %}"
+      alt="corazón"
+      class="img-fluid"
+      style="
+        width: 200px;
+        height: auto;
+        top: 65%;
+        position: absolute;
+        z-index: 1;
+        left: 22.8%;
+        filter: drop-shadow(2px 2px 2px #4040403e);
+      "
+    />
+    <div class="col-lg-9">
+      {% for tinder in page %}
+      <div class="centerObjects card mb-3 w-100" style="border-radius: 0.5rem">
+        <div class="row px-2">
+          <div
+            class="col-md-4 text-center"
+            style="
+              border-top-left-radius: 0.5rem;
+              border-bottom-left-radius: 0.5rem;
+            "
+          >
+            <img
+              src="{{ tinder.perro.foto_url }}"
+              alt="Avatar"
+              class="img-fluid my-4"
+              style="
+                width: 200px;
+                height: 200px;
+                border-radius: 320px;
+                object-fit: cover;
+              "
+            />
+            <h1>{{ tinder.perro.nombre }}</h1>
+            <p>Perro de {{ tinder.perro.dueño.nombre }}</p>
+          </div>
+          <div class="col-md-8">
+            <div class="card-body p-4">
+              <div class="row pt-5 mt-2">
+                <div class="col-6">
+                  <h6>Fecha de último celo</h6>
+                  <p class="text-muted">{{ tinder.perro.fecha_ultimo_celo }}</p>
+                </div>
+                <div class="col-6">
+                  <h6>Color</h6>
+                  <p class="text-muted">
+                    {% if tinder.perro.color %} {{ tinder.perro.color}} {% else %} - {% endif %}
+                  </p>
+                </div>
+              </div>
+              <div class="row pt-1">
+                <div class="col-6 ">
+                  <h6>Edad</h6>
+                  <p class="text-muted">{{ tinder.perro.edad_meses }} meses</p>
+                </div>
+                <div class="col-6 ">
+                  <h6>Sexo</h6>
+                  <p class="text-muted">
+                    {% if tinder.perro.sexo %} {{ tinder.perro.get_sexo_display }} {% else %} Indefinido {% endif %}
+                  </p>
+                </div>
+                <div
+                  class="d-flex justify-content-center align-items-end"
+                  style="margin-top: 5rem"
                 >
-                  {% csrf_token %}
-                  <button
-                    type="submit"
-                    class="btn btn-success btn-lg"
-                    style="margin-right: 1rem"
-                    aria-pressed="true"
-                  >
-                    Like
-                  </button>
-                </form>
+                  <div class="pagination">
+                    <form
+                      method="post"
+                      action="{% url 'contestar_tinder' perroLiked_id=tinder.perro.id perroLiker_id=perro.id %}"
+                    >
+                      {% csrf_token %}
+                      <button
+                        type="submit"
+                        class="btn btn-success btn-lg"
+                        style="margin-right: 1rem"
+                        aria-pressed="true"
+                      >
+                        Like
+                      </button>
+                    </form>
 
-                {% if page.has_next %}
-                <a
-                  href="{{ request.path }}?page={{ page.next_page_number }}"
-                  class="btn btn-outline-danger btn-lg"
-                  style="margin-right: 1rem"
-                  aria-pressed="true"
-                  >Siguiente</a
-                >
-                {% else %}
-                <a
-                  class="btn btn-outline-secondary btn-lg disabled"
-                  style="margin-right: 1rem"
-                  aria-pressed="true"
-                  >Siguiente</a
-                >
-                {% endif %}
+                    {% if page.has_next %}
+                    <a
+                      href="{{ request.path }}?page={{ page.next_page_number }}"
+                      class="btn btn-outline-danger btn-lg"
+                      style="margin-right: 1rem"
+                      aria-pressed="true"
+                      >Siguiente</a
+                    >
+                    {% else %}
+                    <a
+                      class="btn btn-outline-secondary btn-lg disabled"
+                      style="margin-right: 1rem"
+                      aria-pressed="true"
+                      >Siguiente</a
+                    >
+                    {% endif %}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      {% empty %}
+      <h1 class="centerObjects">No hay matchs.</h1>
+      {% endfor %}
     </div>
   </div>
-  {% empty %}
-  <h1 class="centerObjects">No hay matchs.</h1>
-  {% endfor %}
 </div>
 {% endblock %}
