@@ -2,30 +2,24 @@
 
 <link href="{% static 'css/form.css' %}" rel="stylesheet" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<form method="post" enctype="multipart/form-data">
-  {% csrf_token %} {% if form.non_field_errors %}
-  <div class="form-group">
-    <ul class="errorlist">
-      {% for error in form.non_field_errors %}
-      <li>{{ error }}</li>
-      {% endfor %}
-    </ul>
-  </div>
-  {% endif %}
-  <h5 class="centerObjects">Cargar paseador o cuidador</h5>
 
-  {% for field in form %}
-  <div class="form-group">
-    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-    {{ field }} {% if field.errors %}
-    <ul class="errorlist">
-      {% for error in field.errors %}
-      <li>{{ error }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
+{% if user.is_staff %}
+<div class="banner centerObjects" style="height: 4rem">
+  <div class="vertical_align" style="font-weight: bold">
+    Cargar paseador o cuidador
   </div>
-  {% endfor %}
-  <button type="submit" class="btn btn-primary">Cargar información</button>
+</div>
+
+<form method="post" class="form-group">
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit" class="botones text-light">Guardar</button>
 </form>
+
+{% else %}
+<div class="banner centerObjects" style="height: 4rem">
+  <div class="vertical_align" style="font-weight: bold">
+    No tienes permisos para ver esta información
+  </div>
+</div>
+{% endif %}
 {% endblock %}
