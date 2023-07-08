@@ -5,7 +5,7 @@
 <br/>
 {% if user.is_staff %}
   <div align="center">
-    <a href="{% url 'cargar_trabajador' %}" class="btn btn-primary botones" style="border: 0.1rem solid white; width: 300px">AGREGAR PASEADOR/ CUIDADOR</a>
+    <a href="{% url 'cargar_trabajador' %}" class="btn btn-primary botones" style="border: 0.1rem solid white; width: 300px">Agregar paseador o cuidador</a>
   </div>
 
 {% else %}
@@ -24,8 +24,7 @@
      <a style="display: inline-block;">&nbsp&nbsp</a><button type="submit" class="btn btn-primary botones" style="display: inline-block; font-size: 1rem">FILTRAR</button>
   </form>
 </div>
-
-<br/>
+</br>
 
 {% if filtro %}
 {% for trabajador in filtro.qs %}
@@ -39,35 +38,37 @@
 
       <div class="row align-items-center justify-content-between">
 
-        <div class="col-1">
-          {% if trabajador.tipo == "P" %}<span class="badge rounded-pill text-bg-warning" style="float:left; font-size: 0.9rem">{{ trabajador.get_tipo_display }}</span>
-          {% else %}<span class="badge rounded-pill text-bg" style="float:left; font-size: 0.9rem; background-color: #9681EB; color: black">{{ trabajador.get_tipo_display }}</span>
+        <div class="col-2", align="center">
+          {% if trabajador.tipo == "P" %}<span class="badge rounded-pill text-bg-warning" style="font-size: 0.9rem">{{ trabajador.get_tipo_display }}</span>
+          {% else %}<span class="badge rounded-pill text-bg" style="font-size: 0.9rem; background-color: #9681EB; color: black">{{ trabajador.get_tipo_display }}</span>
           {% endif %}
         </div>
 
-        <div class="col-3">
+        <div class="col-4", align="left">
           <a style="font-size: 1.2rem; font-weight: bold">{{ trabajador.nombre_y_apellido }}</a>
         </div>
 
-        <div class="col-5" align="left" style="font-size: 1.1rem;">
-          <div><a>Zona: {{trabajador.zona }}</a></div>
+        <div class="col-4" align="left" style="font-size: 1.1rem;">
+          <div><a>Zona: Plaza {{trabajador.zona }}</a></div>
         </div>
 
         <div class="col-2">
-          {% if user.is_staff and trabajador.habilitado %}
-          <a 
-          onclick="deshabilitarTrabajador({{ trabajador.id }})"
-          class="btn btn-primary botones">
-          Deshabilitar</a>
-          {% elif not user.is_staff %}
-          <a  
-          onclick="contactarTrabajador({{ trabajador.id }})"
-          class="btn btn-primary botones">
-          Contactar</a>
-          {% else %}
-          <a>
-          Deshabilitado hasta {{ trabajador.fecha_fin_deshabilitacion }}</a>
-          {% endif %}
+            {% if user.is_staff %}
+            {% if trabajador.habilitado %}
+            <a
+            onclick="deshabilitarTrabajador({{ trabajador.id }})"
+            class="btn btn-primary botones">
+            Deshabilitar</a>
+            {% else %}
+            <a>
+            Deshabilitado hasta {{ trabajador.fecha_fin_deshabilitacion }}</a>
+            {% endif %}
+            {% else %}
+            <a
+            onclick="contactarTrabajador({{ trabajador.id }})"
+            class="btn btn-primary botones">
+            Contactar</a>
+            {% endif %}
         </div>
 
       </div>
