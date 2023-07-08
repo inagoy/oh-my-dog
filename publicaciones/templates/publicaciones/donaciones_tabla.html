@@ -21,7 +21,7 @@
                 <br/>
                 {#<a class="btn btn-primary" style="font-size: 1rem; width: 150px; background-color: gray; border-color: gray" href="{% url 'campañas' %}" >LIMPIAR</a><br/><br/>#}
                 <form action="" method="get">
-                    {% for field in filter.form %} <div style="display: inline-block;"><label for="{{ field.id_for_label }}" style="width: 180px; font-size: 1rem; font-weight: 600">{{ field.label }}</label> <fieldset >{{ field }}</fieldset></div> {% endfor %}
+                    {% for field in filter.form %} <div style="display: inline-block;"><label for="{{ field.id_for_label }}" style="width: 200px; font-size: 1rem; font-weight: 600">{{ field.label }}</label> <fieldset >{{ field }}</fieldset></div> {% endfor %}
                     <a style="display: inline-block;">&nbsp&nbsp&nbsp</a><button type="submit" class="btn btn-primary botones" style="display: inline-block; font-size: 1rem">FILTRAR</button>
                 </form>
             </div>

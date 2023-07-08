@@ -43,6 +43,7 @@ class Donacion(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     campania = models.ForeignKey(CampaniaDonacion, on_delete=models.CASCADE)
     monto = models.DecimalField(max_digits=11, decimal_places=2,)
+    fecha = models.DateField(default=date.today, blank=True, null=True)
 
 
 class Publicacion(models.Model):

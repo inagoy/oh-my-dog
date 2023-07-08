@@ -13,11 +13,9 @@ class CampaniaDonacionFilter(django_filters.FilterSet):
 
 
 class DonacionFilter(django_filters.FilterSet):
-    nombre_campania = django_filters.AllValuesFilter(field_name='campania__nombre', label='Campaña')
     mail_usuario = django_filters.AllValuesFilter(field_name='usuario__email', label='Usuario email', )
-    nombre_usuario = django_filters.AllValuesFilter(field_name='usuario__nombre')
-    # nombre_us = django_filters.CharFilter(field_name='usuario__nombre', lookup_expr='contains', label='Usuario nombre (cont)')
-    monto = django_filters.AllValuesFilter(field_name='monto', )
+    fecha = django_filters.DateRangeFilter(field_name='fecha')
+    monto = django_filters.NumberFilter(field_name='monto', lookup_expr='gte')
 
     class Meta:
         model = Donacion
@@ -26,8 +24,10 @@ class DonacionFilter(django_filters.FilterSet):
         attrs = {"class": "form-control"}
 
 
-BOOLEAN_CHOICES = (('false', 'Perros encontrados'), ('true', 'Perros perdidos'), ('', 'Todas las publicaciones'))
-
-
 class PerdidoEncontradoFilter(django_filters.FilterSet):
-    tipo = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES, coerce=strtobool, field_name='esPerdido', label="Tipo de publicación")
+    class OpcionesChoice:
+        opciones = (('false', 'Perros encontrados'), ('true', 'Perros perdidos'), ('', 'Todas las publicaciones'))
+
+    tipo = django_filters.TypedChoiceFilter(choices=OpcionesChoice.opciones, coerce=strtobool, field_name='esPerdido', label="Tipo de publicación")
+
+
