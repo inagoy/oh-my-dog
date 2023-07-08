@@ -10,7 +10,8 @@ from .models import PerdidoEncontrado, Perro, Tarjeta, Postulante, Donacion
 from publicaciones.models import Adopcion, CampaniaDonacion
 from publicaciones.helpers import enviar_mail_contestar_adopcion
 from usuarios_y_perros.models import Usuario
-from .tables import CampaniaDonacionTable, CampaniaDonacionFilter, DonacionTable, DonacionFilter
+from .tables import CampaniaDonacionTable, DonacionTable
+from .filters import CampaniaDonacionFilter, DonacionFilter, PerdidoEncontradoFilter
 
 
 # def campanias_tabla(request):
@@ -234,5 +235,5 @@ def perdidos_encontrados(request):
     if request.method == 'POST':
         publicaciones = None
     else:
-        publicaciones = PerdidoEncontrado.objects.all()
+        publicaciones = PerdidoEncontradoFilter(request.GET, queryset=PerdidoEncontrado.objects.all())
     return render(request, 'publicaciones/perdidos_encontrados.html', {'publicaciones': publicaciones})
