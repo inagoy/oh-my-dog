@@ -4,10 +4,18 @@
 <link href="{% static 'css/ver_turnos_solicitados.css' %}" rel="stylesheet" />
 
 <div class="container text-center mb-5">
-  <a class="btn btn-primary w-25" href="{% url 'crear_perdido' %}" role="button">
+  <a
+    class="btn btn-primary w-25"
+    href="{% url 'crear_perdido' %}"
+    role="button"
+  >
     Nuevo Perdido
   </a>
-  <a class="btn btn-primary w-25" href="{% url 'crear_encontrado' %}" role="button">
+  <a
+    class="btn btn-primary w-25"
+    href="{% url 'crear_encontrado' %}"
+    role="button"
+  >
     Nuevo Encontrado
   </a>
 </div>
@@ -18,119 +26,197 @@
   </h1>
 </div>
 
+{% if publicaciones %} {% for publicacion in publicaciones %}
 
-{% if publicaciones %}
-{% for publicacion in publicaciones %}
-
-<div class="card text-center card-s centerObjects">
-  <div class="card-header">
-    <div style="font-size: 1.4rem; font-weight: bold;">{% if publicacion.nombre %} {{ publicacion.nombre }} {% endif %}</div>
-    {% if publicacion.esPerdido %} 
-    <div style="font-size: 1.4rem; font-weight: bold; color:orangered">Perdido</div> {% else %} 
-    <div style="font-size: 1.4rem; font-weight: bold; color:green">Encontrado</div>{% endif %}
-  </div>
-  <div class="card-body">
-    <p class="card-text">
-      Foto: - 
-    </p>
-    <p class="card-text">
-      Raza: {% if publicacion.raza %} {{ publicacion.get_raza_display }} {% else %} - {% endif %}
-    </p>
-    <p class="card-text">
-     Edad: {% if publicacion.fecha_nacimiento %} {{ publicacion.edad_meses }} meses {% else %} - 
-      {% endif %}
-    </p>
-    <p class="card-text">
-      Color: {% if publicacion.color %} {{ publicacion.color }} {% else %} - {% endif %}
-    </p>
-    <p class="card-text">
-     Descripción: {% if publicacion.descripcion %} {{ publicacion.descripcion }} {% else %} - {% endif %}
-    </p>
-
-    {% if publicacion.estado_publicacion == "A" %}
-    <a 
-      {% comment %}
-      onclick="contestarAdopcion({{adopcion.id}})" 
-      {% endcomment %}
-      class="btn btn-primary botones"
-      >Contactar</a
-    >
-    {% endif %}
-
-    <div class="card-footer text-muted">
-      {% if publicacion.estado_publicacion == "I" %}
-      <span class="badge text-bg-secondary">Publicación cerrada</span>
-      {% endif %}
-    </div>
-  </div>
-  {% comment %}
-  <dialog id="dial_contestar_adopcion{{adopcion.id}}">
-    <p></p>
-    <form
-      method="POST"
-      action="{% url 'contestar_adopcion' usuario_id=adopcion.usuario.id adopcion_id=adopcion.id %}"
-    >
-      {% csrf_token %} {{ form.as_p }}
-      <div style="float=left">
-        {% if not user.is_authenticated %}
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="Nombre" required="true"/><br /><br/>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="Email" required="true"/><br /><br/>
+<div class="container py-2" style="font-size: 1 rem">
+  <div class="row d-flex justify-content-center align-items-center h-100">
+    <div class="card mb-3 " style="border-radius: 0.5rem">
+      <div class="card-body">
+        {% if publicacion.esPerdido %}
+        <div style="font-size: 1.4rem; font-weight: bold; color: orangered">
+          Perdido
+        </div>
+        {% else %}
+        <div style="font-size: 1.4rem; font-weight: bold; color: green">
+          Encontrado
+        </div>
         {% endif %}
-        <label for="mensaje">Mensaje:</label>
-        <textarea id="mensaje" name="Mensaje" cols="40" rows="5" placeholder="Mensaje de su parte que recibirá el dueño de la publicación"></textarea><br /><br />
-        {% if user.is_authenticated %}
-        <p>Se enviarán además su nombre y su email</p>
-        {% endif %}
-        <button type="button submit" class="btn btn-primary botones" style="float: right; margin-right: 0.2cm">Enviar mail de solicitud</button>
       </div>
-    </form>
-  </dialog>
+      <div class="row">
+        <div
+          class="col-md-4 gradient-custom text-center"
+          style="
+            border-top-left-radius: 0.5rem;
+            border-bottom-left-radius: 0.5rem;
+          "
+        >
+          <img
+            src="{{ publicacion.foto_url }}"
+            alt="Avatar"
+            class="img-fluid mb-3"
+            style="
+              width: 250px;
+              height: 250px;
+              border-radius: 320px;
+              object-fit: cover;
+            "
+          />
+          {% if publicacion.nombre %}
+          <h1> {{ publicacion.nombre }} </h1>
+          {% else %}  
+          <h3 style="color: grey;"> Nombre <br> desconocido </h3>
+          {% endif %}
+          <div style="font-size: 1.4rem; font-weight: bold"></div>
+        </div>
+        <div class="col-md-8">
+          <div class="card-body p-2">
+            <h6>Información</h6>
+            <hr class="mt-0 mb-2" />
+            <div class="row pt-1">
+              <div class="col-6 mb-3">
+                <h6>Raza</h6>
+                <p class="text-muted">
+                  {% if publicacion.raza %} {{ publicacion.get_raza_display }}
+                  {% else %} - {% endif %}
+                </p>
+              </div>
+              <div class="col-6 mb-2">
+                <h6>Color</h6>
+                <p class="text-muted">
+                  {% if publicacion.color %} {{ publicacion.color}} {% else %} -
+                  {% endif %}
+                </p>
+              </div>
+            </div>
+            <div class="row pt-1">
+              <div class="col-6 mb-2">
+                <h6>Dónde</h6>
+                <p class="text-muted">{{ publicacion.donde }}</p>
+              </div>
+              <div class="col-6 mb-2">
+                <h6>Cuándo</h6>
+                <p class="text-muted">{{ publicacion.cuando }}</p>
+              </div>
+            </div>
+            <h6>Característica distintiva</h6>
+            <hr class="mt-0 " />
+            <p class="text-muted">
+              {% if publicacion.caracteristica %} {{ publicacion.caracteristica }} {% else %} - {% endif %}
+            </p>
+            <div
+              class="d-flex justify-content-center align-items-end"
+            >
+              {% if publicacion.estado_publicacion == "A" %}
+              <a
+                {% comment %}
+                onclick="contestarAdopcion({{adopcion.id}})"
+                {% endcomment %}
+                class="btn btn-primary botones"
+                >Contactar</a
+              >
+              {% endif %}
 
-  <script>
-    function contestarAdopcion(adopcion_id) {
-      const element = document.getElementById("dial_contestar_adopcion"+adopcion_id);
-      element.showModal();
-    }
-  </script>
-
-  <dialog id="dialogoAdopcion{{adopcion.id}}">
-    <p>¿La adopción ya ha sido llevada a cabo?</p>
-    <div>
-      <input
-        type="button"
-        class="special_link"
-        value="No"
-        onclick="cerrarAdopcion({{adopcion.id}})"
-      />
-      <a
-        type="button"
-        class="special_link"
-        href="{% url 'marcar_adopcion_resuelta' nroAdopcion=adopcion.id %}"
-      >
-        Si
-      </a>
+              <div class="text-muted">
+                {% if publicacion.estado_publicacion == "I" %}
+                <span class="badge text-bg-secondary">Publicación cerrada</span>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </dialog>
-
-  <script>
-    function confirmarAdopcion(idAdopcion) {
-      const element = document.getElementById("dialogoAdopcion" + idAdopcion);
-      element.showModal();
-    }
-  </script>
-  <script>
-    function cerrarAdopcion(idAdopcion) {
-      const element = document.getElementById("dialogoAdopcion" + idAdopcion);
-      element.close();
-    }
-  </script>
-  {% endcomment %}
+  </div>
 </div>
-<br />
-{% endfor %} 
-{% else %}
-<h2 class="centerObjects"> No hay publicaciones cargadas</h2>
+{% endfor %} {% else %}
+<h2 class="centerObjects">No hay publicaciones cargadas</h2>
 {% endif %}
-{% endblock %}
+
+
+{% comment %}
+<dialog id="dial_contestar_adopcion{{adopcion.id}}">
+  <p></p>
+  <form
+    method="POST"
+    action="{% url 'contestar_adopcion' usuario_id=adopcion.usuario.id adopcion_id=adopcion.id %}"
+  >
+    {% csrf_token %} {{ form.as_p }}
+    <div style="float=left">
+      {% if not user.is_authenticated %}
+      <label for="nombre">Nombre:</label>
+      <input
+        type="text"
+        id="nombre"
+        name="Nombre"
+        required="true"
+      /><br /><br />
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="Email" required="true" /><br /><br />
+      {% endif %}
+      <label for="mensaje">Mensaje:</label>
+      <textarea
+        id="mensaje"
+        name="Mensaje"
+        cols="40"
+        rows="5"
+        placeholder="Mensaje de su parte que recibirá el dueño de la publicación"
+      ></textarea
+      ><br /><br />
+      {% if user.is_authenticated %}
+      <p>Se enviarán además su nombre y su email</p>
+      {% endif %}
+      <button
+        type="button submit"
+        class="btn btn-primary botones"
+        style="float: right; margin-right: 0.2cm"
+      >
+        Enviar mail de solicitud
+      </button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+  function contestarAdopcion(adopcion_id) {
+    const element = document.getElementById(
+      "dial_contestar_adopcion" + adopcion_id
+    );
+    element.showModal();
+  }
+</script>
+
+<dialog id="dialogoAdopcion{{adopcion.id}}">
+  <p>¿La adopción ya ha sido llevada a cabo?</p>
+  <div>
+    <input
+      type="button"
+      class="special_link"
+      value="No"
+      onclick="cerrarAdopcion({{adopcion.id}})"
+    />
+    <a
+      type="button"
+      class="special_link"
+      href="{% url 'marcar_adopcion_resuelta' nroAdopcion=adopcion.id %}"
+    >
+      Si
+    </a>
+  </div>
+</dialog>
+
+<script>
+  function confirmarAdopcion(idAdopcion) {
+    const element = document.getElementById("dialogoAdopcion" + idAdopcion);
+    element.showModal();
+  }
+</script>
+<script>
+  function cerrarAdopcion(idAdopcion) {
+    const element = document.getElementById("dialogoAdopcion" + idAdopcion);
+    element.close();
+  }
+</script>
+{% endcomment %}
+
+
+ {% endblock %} 
