@@ -54,16 +54,19 @@
         </div>
 
         <div class="col-2">
-          {% if user.is_staff %}
+          {% if user.is_staff and trabajador.habilitado %}
           <a 
           onclick="deshabilitarTrabajador({{ trabajador.id }})"
           class="btn btn-primary botones">
           Deshabilitar</a>
-          {% else %}
+          {% elif not user.is_staff %}
           <a  
           onclick="contactarTrabajador({{ trabajador.id }})"
           class="btn btn-primary botones">
           Contactar</a>
+          {% else %}
+          <a>
+          Deshabilitado hasta {{ trabajador.fecha_fin_deshabilitacion }}</a>
           {% endif %}
         </div>
 
@@ -99,6 +102,52 @@
     }
 
   </script>
+
+</div>
+<dialog id="dialogo_deshabilitar{{trabajador.id}}">
+  <p>Ingrese la fecha hasta la cual esta persona estará deshabilitada</p>
+  <form method="post" action="{% url 'deshabilitar_trabajador' trabajador_id=trabajador.id %}">
+    {% csrf_token %} {{ form.as_p }}
+    <button
+      type="button submit"
+      class="btn btn-primary"
+      style="float: right; margin-right: 0.2cm">
+      Confirmar
+    </button>
+      <input
+      id="fecha_limite"
+      name="Fecha"
+      type="date"
+      style="float: right; margin-right:0.5cm"
+      required="true"
+    />
+
+    <script>
+      var today = new Date();
+      var dd = today.getDate();
+      var mm = today.getMonth() + 1; //January is 0!
+      var yyyy = today.getFullYear();
+
+      if (dd < 10) {
+         dd = '0' + dd;
+      }
+
+      if (mm < 10) {
+         mm = '0' + mm;
+      }
+
+      today = yyyy + '-' + mm + '-' + dd;
+      document.getElementById("fecha_limite").setAttribute("min", today);
+  </script>
+  </form>
+</dialog>
+<script>
+
+  function deshabilitarTrabajador(trabajador_id){
+    const element = document.getElementById("dialogo_deshabilitar"+trabajador_id);
+    element.showModal();
+  }
+</script>
 </div>
 </div>
 

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-
+import datetime
 from listados.filters import PaseadoresCuidadoresFilter
 from listados.models import Trabajador
 from .forms import CargarTrabajadorForm
@@ -32,8 +32,14 @@ def cargar_trabajador(request):
             return redirect('index')
     return render(request, 'listados/cargar_trabajador.html',{'form': form})
 
-def deshabilitar_trabajador(request):
-    return render(request,'index')
+def deshabilitar_trabajador(request,  trabajador_id):
+    trabajador = Trabajador.objects.get(id=trabajador_id)
+    trabajador.habilitado = False
+    trabajador.fecha_fin_deshabilitacion = request.POST['Fecha']
+    fecha_a_mostrar = datetime.datetime.strptime(trabajador.fecha_fin_deshabilitacion, "%Y-%m-%d").strftime("%d/%m/%Y")
+    trabajador.save()
+    messages.success(request, "Esta persona fue deshabilitada hasta " +fecha_a_mostrar)
+    return redirect('paseadores_cuidadores')
 
 def contactar_trabajador(request, trabajador_id=None):
     if request.method == 'POST':
