@@ -25,10 +25,12 @@ class Trabajador(models.Model):
         choices=Tipo.choices,
     )
 
+    email = models.EmailField(default='alive.soluciones.software@gmail.com')
+
     habilitado = models.BooleanField(default=True)
 
     fecha_fin_deshabilitacion = models.DateField(
         verbose_name="Deshabilitar hasta", blank=True, null=True
     )
 
-    REQUIRED_FIELDS = ['zona','nombre_y_apellido',"tipo","habilitado"]
+    REQUIRED_FIELDS = ['zona','nombre_y_apellido',"tipo","habilitado", "email"]

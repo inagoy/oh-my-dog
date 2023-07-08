@@ -54,8 +54,16 @@
         </div>
 
         <div class="col-2">
-          {% if user.is_staff %}<a class="btn btn-primary botones">Deshabilitar</a>
-          {% else %}<a class="btn btn-primary botones">Contactar</a>
+          {% if user.is_staff %}
+          <a 
+          onclick="deshabilitarTrabajador({{ trabajador.id }})"
+          class="btn btn-primary botones">
+          Deshabilitar</a>
+          {% else %}
+          <a  
+          onclick="contactarTrabajador({{ trabajador.id }})"
+          class="btn btn-primary botones">
+          Contactar</a>
           {% endif %}
         </div>
 
@@ -64,7 +72,33 @@
     </div>
 
   </div>
+  <dialog id="dial_contactar_trabajador{{trabajador.id}}">
+    <form method="POST"
+          action="{% url 'contactar_trabajador' trabajador_id=trabajador.id %}">
+    {% csrf_token %} {{ form.as_p }}
+    <div style="float=left">
+      {% if not user.is_authenticated %}
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="Nombre" required="true"/><br /><br/>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="Email" required="true"/><br /><br/>
+        {% endif %}
+        <label for="mensaje">Mensaje:</label>
+        <textarea id="mensaje" name="Mensaje" cols="40" rows="5" placeholder="Mensaje de su parte que recibirá el paseador o cuidador"></textarea><br /><br />
+        {% if user.is_authenticated %}
+        <p>Se enviarán además su nombre y su email</p>
+        {% endif %}
+        <button type="button submit" class="btn btn-primary botones" style="float: right; margin-right: 0.2cm">Enviar mail de solicitud</button>
+    </div>
+    </form>
+  </dialog>
+  <script>
+    function contactarTrabajador(trabajador_id) {
+      const element = document.getElementById("dial_contactar_trabajador"+trabajador_id);
+      element.showModal();
+    }
 
+  </script>
 </div>
 </div>
 
