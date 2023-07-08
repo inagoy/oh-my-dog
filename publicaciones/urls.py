@@ -17,4 +17,6 @@ urlpatterns = [
     path('perdidos_encontrados', views.perdidos_encontrados, name='perdidos_encontrados'),
     path('crear_perdido', views.crear_perdido, name='crear_perdido'),
     path('crear_encontrado', views.crear_encontrado, name='crear_encontrado'),
+    path('contestar_publicacion/<int:publicacion_id>', views.contestar_publicacion, name='contestar_publicacion'),
+    path('marcar_publicacion_resuelta/<int:publicacion_id>', views.marcar_publicacion_resuelta, name='marcar_publicacion_resuelta')
 ]

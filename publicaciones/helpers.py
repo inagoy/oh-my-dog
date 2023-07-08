@@ -14,3 +14,27 @@ def enviar_mail_contestar_adopcion(mail, nombre, mensaje, perro):
         ["alive.soluciones.software@gmail.com"],
         fail_silently=False,
         )
+
+def enviar_mail_contestar_publicacion(mail, nombre, mensaje, perro, esPerdido):
+    send_mail(
+        "Una persona contestó tu publicación en ¡Oh my dog!",
+        generar_texto_mail(mail, nombre, mensaje, perro, esPerdido),
+        settings.EMAIL_HOST_USER,
+        ["alive.soluciones.software@gmail.com"],
+        fail_silently=False,
+        )
+
+
+def generar_texto_mail(email, nombre, mensaje, perro, esPerdido):
+    texto_introduccion = f"Te contamos que {nombre} quiere contactarse con vos debido a que cree "
+
+    if esPerdido:
+        texto_motivo = f"que encontró a tu perro {perro}."
+    else:
+        texto_motivo = f"que el perro que publicaste es suyo."
+    
+    texto_mensaje = f'\nTe dejó este mensaje: {mensaje}' if mensaje  else ""
+    texto_fin = f"""\nPara comunicarte, le podés enviar un mail a la siguiente dirección: {email}.\n
+            Gracias por confiar en ¡Oh my dog!"""
+    return texto_introduccion + texto_motivo + texto_mensaje + texto_fin
+

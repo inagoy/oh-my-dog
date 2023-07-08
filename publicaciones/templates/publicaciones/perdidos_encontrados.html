@@ -116,14 +116,26 @@
             <div
               class="d-flex justify-content-center align-items-end"
             >
-              {% if publicacion.estado_publicacion == "A" %}
+              {% if publicacion.estado_publicacion == "A" and user == publicacion.usuario %}
               <a
-                {% comment %}
-                onclick="contestarAdopcion({{adopcion.id}})"
-                {% endcomment %}
-                class="btn btn-primary botones"
-                >Contactar</a
-              >
+              onclick="marcar_resuelta_publicacion({{publicacion.id}})"
+              class="btn btn-primary botones"
+              >Este perro ya se encontró con su familia</a>
+              
+              {% elif publicacion.estado_publicacion == "A" %}
+                      {% if publicacion.esPerdido %}
+                            <a
+                              onclick="contactar({{publicacion.id}})"
+                              class="btn btn-primary botones"
+                              >Encontré a este perro</a
+                            >
+                      {% else %}
+                            <a
+                              onclick="contactar({{publicacion.id}})"
+                              class="btn btn-primary botones"
+                              >Este perro es mio</a
+                            >
+                      {% endif %}
               {% endif %}
 
               <div class="text-muted">
@@ -137,96 +149,73 @@
       </div>
     </div>
   </div>
+
+  <dialog id="dial_contestar_publicacion{{publicacion.id}}">
+    <p></p>
+    <form
+    method="POST"
+    action="{% url 'contestar_publicacion' publicacion_id=publicacion.id %}"
+    >
+    {% csrf_token %} {{ form.as_p }}
+    <div style="float=left">
+    {% if not user.is_authenticated %}
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="Nombre" required="true"/><br /><br/>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="Email" required="true"/><br /><br/>
+    {% endif %}
+    <label for="mensaje">Mensaje:</label>
+    <textarea id="mensaje" name="Mensaje" required="true"cols="40" rows="5" placeholder="Mensaje de su parte que recibirá el dueño de la publicación"></textarea><br /><br />
+    {% if user.is_authenticated %}
+    <p>Se enviarán además su nombre y su email</p>
+    {% endif %}
+    <button type="button submit" class="btn btn-primary botones" style="float: right; margin-right: 0.2cm">Enviar mail de solicitud</button>
+    </div>
+    </form>
+    </dialog>
+    <script>
+    function contactar(publicacion_id) {
+    const element = document.getElementById("dial_contestar_publicacion"+publicacion_id);
+    element.showModal();
+    }
+    </script>
+  
+  
+  <dialog id="dialogo_cerrar_publicacion{{publicacion.id}}">
+    <p>¿El perro ya se reencontró con su familia?</p>
+    <div>
+    <input
+    type="button"
+    class="special_link"
+    value="No"
+    onclick="cerrarPublicacion({{publicacion.id}})"
+    />
+    <a
+    type="button"
+    class="special_link"
+    href="{% url 'marcar_publicacion_resuelta' publicacion_id=publicacion.id %}"
+    >
+    Si
+    </a>
+    </div>
+    </dialog>
+    
+    <script>
+    function marcar_resuelta_publicacion(publicacion_id) {
+    const element = document.getElementById("dialogo_cerrar_publicacion" + publicacion_id);
+    element.showModal();
+    }
+    </script>
+    <script>
+    function cerrarPublicacion(publicacion_id) {
+    const element = document.getElementById("dialogo_cerrar_publicacion" + publicacion_id);
+    element.close();
+    }
+    </script>
 </div>
 {% endfor %} {% else %}
 <h2 class="centerObjects">No hay publicaciones cargadas</h2>
 {% endif %}
-
-
-{% comment %}
-<dialog id="dial_contestar_adopcion{{adopcion.id}}">
-  <p></p>
-  <form
-    method="POST"
-    action="{% url 'contestar_adopcion' usuario_id=adopcion.usuario.id adopcion_id=adopcion.id %}"
-  >
-    {% csrf_token %} {{ form.as_p }}
-    <div style="float=left">
-      {% if not user.is_authenticated %}
-      <label for="nombre">Nombre:</label>
-      <input
-        type="text"
-        id="nombre"
-        name="Nombre"
-        required="true"
-      /><br /><br />
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="Email" required="true" /><br /><br />
-      {% endif %}
-      <label for="mensaje">Mensaje:</label>
-      <textarea
-        id="mensaje"
-        name="Mensaje"
-        cols="40"
-        rows="5"
-        placeholder="Mensaje de su parte que recibirá el dueño de la publicación"
-      ></textarea
-      ><br /><br />
-      {% if user.is_authenticated %}
-      <p>Se enviarán además su nombre y su email</p>
-      {% endif %}
-      <button
-        type="button submit"
-        class="btn btn-primary botones"
-        style="float: right; margin-right: 0.2cm"
-      >
-        Enviar mail de solicitud
-      </button>
-    </div>
-  </form>
-</dialog>
-
-<script>
-  function contestarAdopcion(adopcion_id) {
-    const element = document.getElementById(
-      "dial_contestar_adopcion" + adopcion_id
-    );
-    element.showModal();
-  }
-</script>
-
-<dialog id="dialogoAdopcion{{adopcion.id}}">
-  <p>¿La adopción ya ha sido llevada a cabo?</p>
-  <div>
-    <input
-      type="button"
-      class="special_link"
-      value="No"
-      onclick="cerrarAdopcion({{adopcion.id}})"
-    />
-    <a
-      type="button"
-      class="special_link"
-      href="{% url 'marcar_adopcion_resuelta' nroAdopcion=adopcion.id %}"
-    >
-      Si
-    </a>
-  </div>
-</dialog>
-
-<script>
-  function confirmarAdopcion(idAdopcion) {
-    const element = document.getElementById("dialogoAdopcion" + idAdopcion);
-    element.showModal();
-  }
-</script>
-<script>
-  function cerrarAdopcion(idAdopcion) {
-    const element = document.getElementById("dialogoAdopcion" + idAdopcion);
-    element.close();
-  }
-</script>
-{% endcomment %}
 
 
  {% endblock %} 

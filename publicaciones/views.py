@@ -8,7 +8,7 @@ from django_tables2 import SingleTableMixin
 from .forms import AdopcionForm, EncontradoForm, PerdidoForm, TarjetaForm, DonacionForm, CampaniaDonacionForm
 from .models import PerdidoEncontrado, Perro, Tarjeta, Postulante, Donacion
 from publicaciones.models import Adopcion, CampaniaDonacion
-from publicaciones.helpers import enviar_mail_contestar_adopcion
+from publicaciones.helpers import enviar_mail_contestar_adopcion, enviar_mail_contestar_publicacion
 from usuarios_y_perros.models import Usuario
 from .tables import CampaniaDonacionTable, DonacionTable
 from .filters import CampaniaDonacionFilter, DonacionFilter, PerdidoEncontradoFilter
@@ -237,3 +237,27 @@ def perdidos_encontrados(request):
     else:
         publicaciones = PerdidoEncontradoFilter(request.GET, queryset=PerdidoEncontrado.objects.all())
     return render(request, 'publicaciones/perdidos_encontrados.html', {'publicaciones': publicaciones})
+
+
+def contestar_publicacion(request, publicacion_id):
+    if request.method == 'POST':
+        mensaje = request.POST['Mensaje']
+        publicacion = PerdidoEncontrado.objects.get(id=publicacion_id)
+        nombre_perro = publicacion.nombre
+        if request.user.is_authenticated:
+            usuario = Usuario.objects.get(id=request.user.id)
+            enviar_mail_contestar_publicacion(
+                usuario.email, usuario.nombre, mensaje, nombre_perro, publicacion.esPerdido)
+        else:
+            nombre = request.POST['Nombre']
+            email = request.POST['Email']
+            enviar_mail_contestar_publicacion(
+                email, nombre, mensaje, nombre_perro, publicacion.esPerdido)
+        messages.success(request, "Se envío mail con tus datos a la persona que creó la publicación")
+        return redirect('perdidos_encontrados')
+
+def marcar_publicacion_resuelta(request, publicacion_id):
+    publicacion = PerdidoEncontrado.objects.get(id=publicacion_id)
+    publicacion.estado_publicacion = 'I'
+    publicacion.save()
+    return redirect('perdidos_encontrados')
