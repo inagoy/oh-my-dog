@@ -45,6 +45,12 @@ class Donacion(models.Model):
     monto = models.DecimalField(max_digits=11, decimal_places=2,)
     fecha = models.DateField(default=date.today, blank=True, null=True)
 
+class Raza(models.TextChoices):
+    MESTIZO = "MEST", "Mestizo"
+    LABRADOR = "LABR", "Labrador"
+    BULLDOG = "BULL", "Bulldog"
+    BEAGLE = "BEAG", "Beagle"
+    BOXER = "BOXE", "Boxer"
 
 class Publicacion(models.Model):
     foto = models.ImageField(
@@ -67,14 +73,6 @@ class Publicacion(models.Model):
         choices=Estado.choices,
         default=Estado.ACTIVA,
     )
-
-    class Raza(models.TextChoices):
-        MESTIZO = "MEST", "Mestizo"
-        LABRADOR = "LABR", "Labrador"
-        BULLDOG = "BULL", "Bulldog"
-        BEAGLE = "BEAG", "Beagle"
-        BOXER = "BOXE", "Boxer"
-
     raza = models.CharField(  # incluir default?
         max_length=4,
         choices=Raza.choices,

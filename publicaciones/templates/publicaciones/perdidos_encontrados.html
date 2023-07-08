@@ -3,6 +3,7 @@
 <link href="{% static 'css/global.css' %}" rel="stylesheet" />
 <link href="{% static 'css/ver_turnos_solicitados.css' %}" rel="stylesheet" />
 
+{% if user.is_authenticated %}
 <div class="container text-center mb-5">
   <a
     class="btn btn-primary w-25"
@@ -19,7 +20,7 @@
     Nuevo Encontrado
   </a>
 </div>
-
+{% endif %}
 <div class="centerObjects container" style="height: 4rem">
   <h1 class="vertical_align" style="font-weight: bold">
     Estos son los perros perdidos y encontrados
@@ -91,11 +92,20 @@
                 </p>
               </div>
               <div class="col-6 mb-2">
-                <h6>Color</h6>
+                {% if publicacion.esPerdido %}
+                <h6>Edad</h6>
                 <p class="text-muted">
-                  {% if publicacion.color %} {{ publicacion.color}} {% else %} -
+                  {% if publicacion.fecha_nacimiento %} {{ publicacion.edad_meses}} meses {% else %} -
                   {% endif %}
                 </p>
+                {% else %}
+                <h6>Edad Aproximada</h6>
+                <p class="text-muted">
+                  {% if publicacion.edadAproximada %} {{ publicacion.edadAproximada}} meses {% else %} -
+                  {% endif %}
+                </p>
+                {% endif %}
+
               </div>
             </div>
             <div class="row pt-1">

@@ -2,8 +2,9 @@ from datetime import date
 from django import forms
 from django.core.exceptions import ValidationError
 from usuarios_y_perros.models import Perro
-from .models import Adopcion, CampaniaDonacion, Donacion, PerdidoEncontrado, Tarjeta
+from .models import Adopcion, CampaniaDonacion, Donacion, PerdidoEncontrado, Tarjeta, Raza
 from .widgets import MonthYearWidget
+from django.core.validators import MinValueValidator
 
 
 class TarjetaForm(forms.ModelForm):
@@ -136,14 +137,14 @@ class PerdidoForm(forms.ModelForm):
         required=False,
         widget=forms.DateInput(
             attrs={'type': 'date',
-                   'placeholder': 'aaaa-mm-dd (DOB)', 'class': 'date'}
+                   'placeholder': 'aaaa-mm-dd (DOB)', 'class': 'form-control'}
         )
     )
     cuando = forms.DateField(
         label='Cuándo',
         widget=forms.DateInput(
             attrs={'type': 'date',
-                   'placeholder': 'aaaa-mm-dd (DOB)', 'class': 'date'}
+                   'placeholder': 'aaaa-mm-dd (DOB)', 'class': 'form-control'}
         )
     )
     donde = forms.CharField(
@@ -157,10 +158,13 @@ class PerdidoForm(forms.ModelForm):
     )
     nombre = forms.CharField(widget=forms.TextInput(
         attrs={'class': 'form-control'}))
-    color = forms.CharField(
+    
+    raza_choices = [("", "Desconocida")] + list(Raza.choices)
+    raza = forms.ChoiceField(
+        choices=raza_choices,
         required=False,
-        widget=forms.TextInput(
-            attrs={'class': 'form-control'}))
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
     caracteristica = forms.CharField(
         label='Característica distintiva',
         required=False,
@@ -184,7 +188,7 @@ class PerdidoForm(forms.ModelForm):
 
     class Meta:
         model = PerdidoEncontrado
-        fields = ['perro', 'nombre', 'color', 'fecha_nacimiento',
+        fields = ['perro', 'nombre', 'fecha_nacimiento',
                   'raza', 'donde', 'cuando', 'caracteristica', 'foto']
         widgets = {'esPerdido': forms.HiddenInput}
 
@@ -198,7 +202,7 @@ class EncontradoForm(forms.ModelForm):
         label='Cuándo',
         widget=forms.DateInput(
             attrs={'type': 'date',
-                   'placeholder': 'aaaa-mm-dd (DOB)', 'class': 'date'}
+                   'placeholder': 'aaaa-mm-dd (DOB)', 'class': 'form-control'}
         )
     )
     donde = forms.CharField(
@@ -210,16 +214,26 @@ class EncontradoForm(forms.ModelForm):
         label='Foto',
         widget=forms.FileInput(attrs={'class': 'form-control'})
     )
-    nombre = forms.CharField(widget=forms.TextInput(
-        attrs={'class': 'form-control'}))
-    color = forms.CharField(
+    nombre = forms.CharField(
         required=False,
-        widget=forms.TextInput(
-            attrs={'class': 'form-control'}))
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+
+    raza_choices = [("", "Desconocida")] + list(Raza.choices)
+    raza = forms.ChoiceField(
+        choices=raza_choices,
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
     caracteristica = forms.CharField(
         label='Característica distintiva',
         required=False,
         widget=forms.TextInput(attrs={'class': 'form-control'}))
+    edadAproximada = forms.IntegerField(
+        required=False,
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'min': '0'}),
+        label='Edad Aproximada (en meses)'
+    )
 
     def clean_edadAproximada(self):
         edadAproximada = self.cleaned_data.get('edadAproximada')
@@ -238,7 +252,7 @@ class EncontradoForm(forms.ModelForm):
 
     class Meta:
         model = PerdidoEncontrado
-        fields = ['nombre','color', 'raza', 'donde', 'cuando',
+        fields = ['nombre', 'raza', 'donde', 'cuando',
                   'edadAproximada', 'caracteristica', 'foto']
         widgets = {'esPerdido': forms.HiddenInput}
 

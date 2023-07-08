@@ -2,6 +2,7 @@
 <link href="{% static 'css/form.css' %}" rel="stylesheet" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <form method="post" enctype="multipart/form-data">
+  <h5>Datos del perro que perdiste</h5>
   {% csrf_token %} {% for field in form %}
   <div class="form-group">
     <label for="{{ field.id_for_label }}">{{ field.label }}</label>
@@ -29,6 +30,7 @@
             $("#id_fecha_nacimiento").val(data.fecha_nacimiento);
             $("#id_color").val(data.color);
             $("#id_raza").val(data.raza);
+            $("#id_caracteristica").val(data.observaciones);
           },
         });
       } else {
@@ -37,6 +39,7 @@
         $("#id_fecha_nacimiento").val("");
         $("#id_color").val("");
         $("#id_raza").val("");
+        $("#id_caracteristica").val("");
       }
     }
 
