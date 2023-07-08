@@ -3,22 +3,18 @@ import datetime
 from listados.filters import PaseadoresCuidadoresFilter
 from listados.models import Trabajador
 from .forms import CargarTrabajadorForm
-from publicaciones.models import CampaniaDonacion
 from django.contrib import messages
 from usuarios_y_perros.models import Usuario
 from listados.helpers import enviar_mail_contactar_trabajador, enviar_mail_a_veterinaria_contactar_trabajador
 
-def paseadores_cuidadores(request):
-    campanias_sin_limite = CampaniaDonacion.objects.filter(
-        fecha_limite__isnull=True).order_by("id")
-    campanias_con_limite = CampaniaDonacion.objects.filter(
-        fecha_limite__isnull=False).order_by("-id")
-    campanias_cumplen = [
-        obj for obj in campanias_con_limite if obj.dias_restantes() >= 0]
-    servicios = list(campanias_sin_limite) + list(campanias_cumplen)
 
-    filtro = PaseadoresCuidadoresFilter(request.GET, queryset=Trabajador.objects.all())
-    return render(request, 'listados/paseadores_cuidadores.html', {'servicios': servicios, 'filtro': filtro})
+def paseadores_cuidadores(request):
+    if request.user.is_staff:
+        trabajadores = Trabajador.objects.all().order_by("-habilitado")
+    else:
+        trabajadores = Trabajador.objects.filter(habilitado=True)
+    filtro = PaseadoresCuidadoresFilter(request.GET, queryset=trabajadores)
+    return render(request, 'listados/paseadores_cuidadores.html', {'filtro': filtro})
 
 
 def cargar_trabajador(request):
@@ -29,8 +25,9 @@ def cargar_trabajador(request):
         if form.is_valid():
             form.save()
             messages.success(request, "La carga del paseador o cuidador fue exitosa")
-            return redirect('index')
+            return redirect('paseadores_cuidadores')
     return render(request, 'listados/cargar_trabajador.html',{'form': form})
+
 
 def deshabilitar_trabajador(request,  trabajador_id):
     trabajador = Trabajador.objects.get(id=trabajador_id)
@@ -40,6 +37,7 @@ def deshabilitar_trabajador(request,  trabajador_id):
     trabajador.save()
     messages.success(request, "Esta persona fue deshabilitada hasta " +fecha_a_mostrar)
     return redirect('paseadores_cuidadores')
+
 
 def contactar_trabajador(request, trabajador_id=None):
     if request.method == 'POST':
