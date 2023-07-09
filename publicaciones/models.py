@@ -23,7 +23,7 @@ class CampaniaDonacion(models.Model):
     def dias_restantes(self):
         if self.fecha_limite is not None:
             return (date(self.fecha_limite.year, self.fecha_limite.month, self.fecha_limite.day) - date.today()).days
-        return -1
+        return 1.1
 
     def actualizar_monto_recaudado(self, donacion):
         self.monto_recaudado += donacion

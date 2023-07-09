@@ -4,7 +4,7 @@
 
 {% if user.is_staff %}
 <p align="center">
-<a href="{% url 'agregar_campaña' %}" class="btn btn-primary botones" style="border: 0.1rem solid white; width: 300px">AGREGAR CAMPAÑA</a>
+<a href="{% url 'agregar_campaña' %}" class="btn btn-primary botones" style="border: 0.1rem solid white; width: 300px">Agregar campaña</a>
 </p>
 <br />
 {% else %}
@@ -33,10 +33,12 @@
     <p id="monto_recaudado" style="font-size: 1.4rem; font-weight: bold; color: green">
       {{ campania.monto_recaudado }}
     </p>
-    {% if campania.dias_restantes == -1 %}
+    {% if campania.dias_restantes == 1.1 %}
     <p style="font-weight: bold;">Esta campaña es permanente</p>
     {% elif campania.dias_restantes == 0 %}
     <p style="font-weight: bold;">La campaña cierra hoy</p>
+    {% elif campania.dias_restantes < 0 %}
+    <p style="font-weight: bold;">CAMPAÑA CERRADA el día {{ campania.fecha_limite }}</p>
     {% else %}
     <p style="font-weight: bold;">En {{ campania.dias_restantes }} días cierra la campaña</p>
     {% endif %}

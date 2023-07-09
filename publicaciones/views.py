@@ -125,13 +125,20 @@ def donar(request, campania_id=None):
 
 
 def campanias(request):
-    campanias_sin_limite = CampaniaDonacion.objects.filter(
-        fecha_limite__isnull=True).order_by("id")
-    campanias_con_limite = CampaniaDonacion.objects.filter(
-        fecha_limite__isnull=False).order_by("-id")
-    campanias_cumplen = [
-        obj for obj in campanias_con_limite if obj.dias_restantes() >= 0]
-    campanias = list(campanias_sin_limite) + list(campanias_cumplen)
+    if request.user.is_staff:
+        campanias_sin_limite = CampaniaDonacion.objects.filter(
+            fecha_limite__isnull=True).order_by("id")
+        campanias_con_limite = CampaniaDonacion.objects.filter(
+            fecha_limite__isnull=False).order_by("-id")
+        campanias = list(campanias_sin_limite) + list(campanias_con_limite)
+    else:
+        campanias_sin_limite = CampaniaDonacion.objects.filter(
+            fecha_limite__isnull=True).order_by("id")
+        campanias_con_limite = CampaniaDonacion.objects.filter(
+            fecha_limite__isnull=False).order_by("-id")
+        campanias_cumplen = [
+            obj for obj in campanias_con_limite if obj.dias_restantes() >= 0]
+        campanias = list(campanias_sin_limite) + list(campanias_cumplen)
     return render(request, 'publicaciones/campanias.html', {'campanias': campanias})
 
 
