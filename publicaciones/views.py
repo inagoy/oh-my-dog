@@ -216,7 +216,7 @@ def crear_perdido(request):
             form.instance.usuario = request.user
             form.save()
             messages.success(
-                request, "Se ha creado la publicación de Perdidos")
+                request, "Se ha creado la publicación de perro perdido")
             return redirect('perdidos_encontrados')
     else:
         form = PerdidoForm()
@@ -231,7 +231,7 @@ def crear_encontrado(request):
             form.instance.usuario = request.user
             form.save()
             messages.success(
-                request, "Se ha creado la publicación de Perdidos")
+                request, "Se ha creado la publicación de perro encontrado")
             return redirect('perdidos_encontrados')
     else:
         form = EncontradoForm()
