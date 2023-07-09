@@ -83,10 +83,13 @@ def tinder_perro(request, perro_id):
     perro = Perro.objects.get(id=perro_id)
     tinders = Tinder.objects.filter(
         perro__sexo=perro.sexo_opuesto(),
+        perro__raza=perro.raza
     ).exclude(
         perro__dueño=request.user,
+    ).exclude(
         estado_tinder=Tinder.Estado.INACTIVO,
     )
+       
     return render(request, 'servicio_vinculacion/tinder_perro.html',  {'page': paginar(request, tinders, 1), 'perro':perro})
 
 
