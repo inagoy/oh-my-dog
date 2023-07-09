@@ -16,6 +16,9 @@
   </div>
 {% endif %}
 
+
+{% if filtro.qs %}
+
 </br>
 <div style="padding-left: 15rem">
   <form method="get">
@@ -26,7 +29,6 @@
 </div>
 </br>
 
-{% if filtro %}
 {% for trabajador in filtro.qs %}
 
 <div align="center">
