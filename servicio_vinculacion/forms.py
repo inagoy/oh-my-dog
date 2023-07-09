@@ -21,7 +21,8 @@ class EditPerroTinderForm(forms.ModelForm):
     fecha_ultimo_celo = forms.DateField(
         widget=forms.DateInput(
             attrs={'type': 'date',
-                   'placeholder': 'aaaa-mm-dd (DOB)', 'class': 'form-control'}
+                   'placeholder': 'aaaa-mm-dd (DOB)', 'class': 'form-control',
+                   'id': 'fecha_ultimo_celo'}
         )
     )
 
