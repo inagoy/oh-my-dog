@@ -9,7 +9,10 @@
     Cargar paseador o cuidador
   </div>
 </div>
-
+<input align="left" type="image" name="volver" 
+    src="{% static 'logo_volver.png' %}" 
+    style="width: 100px; background-color: white;" 
+    onclick="location.href='{% url 'paseadores_cuidadores' %}'">
 <form method="post" class="form-group">
   {% csrf_token %} {{ form.as_p }}
   <button type="submit" class="botones text-light">Guardar</button>

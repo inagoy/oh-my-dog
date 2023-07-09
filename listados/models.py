@@ -25,7 +25,7 @@ class Trabajador(models.Model):
         choices=Tipo.choices,
     )
 
-    email = models.EmailField(default='alive.soluciones.software@gmail.com')
+    email = models.EmailField()
 
     habilitado = models.BooleanField(default=True)
 

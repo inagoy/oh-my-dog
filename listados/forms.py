@@ -6,7 +6,7 @@ class CargarTrabajadorForm(forms.ModelForm):
 
     class Meta:
         model = Trabajador
-        fields = ['nombre_y_apellido', 'zona', 'tipo']
+        fields = ['nombre_y_apellido', 'tipo', 'email',  'zona']
 
 
 
