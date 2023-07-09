@@ -17,7 +17,7 @@
 {% endif %}
 
 
-{% if filtro.qs %}
+{% if filtro.qs or filtro.data %}
 
 </br>
 <div style="padding-left: 15rem">
@@ -28,6 +28,11 @@
   </form>
 </div>
 </br>
+
+{% endif %}
+
+
+{% if filtro.qs %}
 
 {% for trabajador in filtro.qs %}
 
@@ -158,6 +163,9 @@
 
 </br>
 </br></br>
+
+{% elif filtro.data %}
+<h2 class="centerObjects">No hay servicios que coincidan con el filtro</h2>
 {% else %}
 <h2 class="centerObjects"> No hay servicios disponibles actualmente</h2>
 {% endif %}

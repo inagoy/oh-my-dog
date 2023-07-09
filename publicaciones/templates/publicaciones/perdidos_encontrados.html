@@ -29,7 +29,7 @@
 
 
 
-{% if publicaciones.qs %}
+{% if publicaciones.qs or publicaciones.data %}
 
 </br>
 <div style="padding-left: 15rem">
@@ -41,6 +41,9 @@
 </div>
 </br>
 
+{% endif %}
+
+{% if publicaciones.qs %}
 {% for publicacion in publicaciones.qs %}
 
 <div class="container py-2" style="font-size: 1 rem">
@@ -227,7 +230,11 @@
     }
     </script>
 </div>
-{% endfor %} {% else %}
+
+{% endfor %}
+{% elif publicaciones.data %}
+<h2 class="centerObjects">No hay publicaciones que coincidan con el filtro</h2>
+{% else %}
 <h2 class="centerObjects">No hay publicaciones cargadas</h2>
 {% endif %}
 
