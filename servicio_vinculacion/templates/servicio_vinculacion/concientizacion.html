@@ -122,19 +122,35 @@
   ></script>
 </div>
 
-<a
-  href="{% url 'ingresar_servicio_vinculacion' %}"
-  class="btn btn-warning btn-lg centerObjects w-25"
-  role="button"
-  aria-pressed="true"
->
-  Ingresar de todas formas
-</a>
+<div class="container centerObjects">
 
-<a href="{% url 'perros_asociados_tinder' %}" class="btn btn-primary botones"
-  type="button"
->
-  Mis perros asociados
-</a>
+  <div class="row align-items-center justify-content-between">
 
+    <div class="col-4">
+      
+    </div>
+
+    <div class="col-4">
+      <a
+      href="{% url 'ingresar_servicio_vinculacion' %}"
+      class="btn btn-warning centerObjects"
+      role="button"
+      aria-pressed="true"
+    >
+      Ingresar de todas formas
+    </a>
+    </div>
+
+    <div class="col-4" align="left" style="font-size: 1.1rem;">
+      <a href="{% url 'perros_asociados_tinder' %}" class="btn btn-primary botones"
+      role="button"
+    >
+      Mis perros asociados
+    </a>
+    </div>
+
+  </div>
+</br>
+
+</div>
 {% endblock %}
