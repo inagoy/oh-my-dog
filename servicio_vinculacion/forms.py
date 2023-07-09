@@ -25,6 +25,8 @@ class EditPerroTinderForm(forms.ModelForm):
         )
     )
 
+    sexo = forms.ChoiceField(choices=[("", ""), ('H', "Hembra"), ('M', "Macho"), ], required=True, widget=forms.Select(attrs={'class': 'form-control'}))
+
     class Meta:
         model = Perro
         fields = ['sexo', 'fecha_ultimo_celo']
