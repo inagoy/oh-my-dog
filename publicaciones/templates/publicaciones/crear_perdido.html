@@ -52,5 +52,24 @@
     updateFormFields();
   </script>
   <button type="submit" class="btn btn-primary">Cargar perro perdido</button>
+  <script>
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+    var yyyy = today.getFullYear();
+
+    if (dd < 10) {
+       dd = '0' + dd;
+    }
+
+    if (mm < 10) {
+       mm = '0' + mm;
+    }
+
+    today = yyyy + '-' + mm + '-' + dd;
+    document.getElementById("fecha_nacimiento").setAttribute("max", today);
+    document.getElementById("fecha_perdida").setAttribute("max", today);
+</script>
+
 </form>
 {% endblock %}

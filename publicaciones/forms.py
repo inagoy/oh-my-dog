@@ -137,14 +137,17 @@ class PerdidoForm(forms.ModelForm):
         required=False,
         widget=forms.DateInput(
             attrs={'type': 'date',
-                   'placeholder': 'aaaa-mm-dd (DOB)', 'class': 'form-control'}
+                   'placeholder': 'aaaa-mm-dd (DOB)', 
+                   'class': 'form-control',
+                   'id': 'fecha_nacimiento'}
         )
     )
     cuando = forms.DateField(
         label='Cuándo',
         widget=forms.DateInput(
             attrs={'type': 'date',
-                   'placeholder': 'aaaa-mm-dd (DOB)', 'class': 'form-control'}
+                   'placeholder': 'aaaa-mm-dd (DOB)', 'class': 'form-control',
+                   'id': 'fecha_perdida'}
         )
     )
     donde = forms.CharField(
@@ -202,7 +205,8 @@ class EncontradoForm(forms.ModelForm):
         label='Cuándo',
         widget=forms.DateInput(
             attrs={'type': 'date',
-                   'placeholder': 'aaaa-mm-dd (DOB)', 'class': 'form-control'}
+                   'placeholder': 'aaaa-mm-dd (DOB)', 'class': 'form-control',
+                   'id': 'fecha_encontrado'}
         )
     )
     donde = forms.CharField(
