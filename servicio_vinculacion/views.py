@@ -13,7 +13,7 @@ def deshabilitar_perro_tinder(request, tinder_id=None):
     tinder.estado_tinder = "I"
     tinder.save()
     messages.success(
-        request, 'Se eliminó el perfil del perro en el servicio de vinculación')
+        request, 'Se inhabilitó el perfil del perro en el servicio de vinculación. No se mostrará como posible match')
     return perros_asociados(request)
 
 
@@ -42,8 +42,15 @@ def ingresar_servicio_vinculacion(request):
             return redirect('edit_perro_tinder', perro_id=selected_perro.id)
         else:
             perro_id = form.data.get('perro')
-            if Tinder.objects.filter(perro=perro_id).exists():
-                return redirect('tinder_perro', perro_id=perro_id)
+            tinder = Tinder.objects.get(perro=perro_id)
+            if tinder is not None:
+                if tinder.estado_tinder == "I":
+                    tinder.estado_tinder = "A"
+                    tinder.save()
+                    messages.success(request, "Se reingresó el perro al servicio")
+                    return redirect('tinder_perro', perro_id=perro_id)
+                else:
+                    return redirect('tinder_perro', perro_id=perro_id)
     else:
         form = TinderForm()
         form.fields['perro'].queryset = Perro.objects.filter(dueño=request.user)
@@ -59,6 +66,7 @@ def edit_perro_tinder(request, perro_id):
             form.save()
             tinder = Tinder()
             tinder.perro = perro
+            tinder.estado_tinder = "A"
             tinder.save()
             messages.success(
                 request, "La carga del perro al servicio de vinculación fue exitosa!")
@@ -80,7 +88,14 @@ def paginar(request, elementos, cantidad):
 
 
 def tinder_perro(request, perro_id):
-    perro = Perro.objects.get(id=perro_id)
+    try:
+        perro = Perro.objects.get(id=perro_id)
+        if perro.dueño != request.user:
+            messages.error(request, "El perro al que intenta acceder pertenece a otro usuario")
+            return redirect("index")
+    except Perro.DoesNotExist:
+        messages.error(request, "El perro al que intenta acceder no existe")
+        return redirect("index")
     tinders = Tinder.objects.filter(
         perro__sexo=perro.sexo_opuesto(),
         perro__raza=perro.raza

@@ -7,6 +7,7 @@
   <div align="center">
     <a href="{% url 'cargar_trabajador' %}" class="btn btn-primary botones" style="border: 0.1rem solid white; width: 300px">Agregar paseador o cuidador</a>
   </div>
+<br/>
 
 {% else %}
   <div class="banner centerObjects" style="height: 4rem">
@@ -157,12 +158,8 @@
   }
 </script>
 </div>
-</div>
 
 {% endfor %}
-
-</br>
-</br></br>
 
 {% elif filtro.data %}
 <h2 class="centerObjects">No hay servicios que coincidan con el filtro</h2>
