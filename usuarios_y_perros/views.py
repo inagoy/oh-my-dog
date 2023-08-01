@@ -151,7 +151,7 @@ def edit_perro(request, perro_id):
         form = CargarPerroForm(request.POST, request.FILES, instance=perro)
         if form.is_valid():
             nombre_perro = form.cleaned_data['nombre']
-            if Perro.objects.filter(dueño=form.instance.dueño, nombre=nombre_perro).exists():
+            if Perro.objects.filter(dueño=form.instance.dueño, nombre=nombre_perro).exists() and nombre_perro!=perro.nombre :
                 messages.error(
                     request, "Ya tenes un perro con este nombre.")
                 return redirect('edit_perro', perro_id)
